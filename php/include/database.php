@@ -5,21 +5,20 @@
 //If the database does not exists, it will create one and run the sql commands in from the sql file in the "sql" directory. 
 
 // create database connection with variables as parameters
-$servername = "sql7.freesqldatabase.com";
-$username = "sql7594211";
-$password = "Fru826pcJq";
-$database = "sql7594211";
-$port = "3306";
-$connection = new mysqli($servername, $username, $password, $database, $port);
+$servername = "localhost";
+$username = "";
+$password = "";
+$database = "greenhome";
+$connection = new mysqli($servername, $username, $password, $database);
 
 
 // check if the database exists
-$result = mysqli_query($connection, "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'sql7594211' ");
+$result = mysqli_query($connection, "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'greenhome' ");
 
 //if the num of rows that the query returns is 0, then it is true the database does not exist
 if(mysqli_num_rows($result) == 0) {
     // create the database if it doesn't exist
-    mysqli_query($connection, "CREATE DATABASE sql7594211");
+    mysqli_query($connection, "CREATE DATABASE greenhome");
     // select database to specify where to execute sql queries
     mysqli_select_db($connection, $database);
     // select the .sql file to run
