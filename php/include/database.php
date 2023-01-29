@@ -6,7 +6,7 @@
 
 // create database connection with variables as parameters
 $servername = "localhost";
-$username = "";
+$username = "root";
 $password = "";
 $database = "greenhome";
 $connection = new mysqli($servername, $username, $password, $database);
