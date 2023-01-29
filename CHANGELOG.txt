@@ -1,0 +1,107 @@
+***************************************************
+*                                                 *
+*                   CHANGELOG                     *
+*                                                 * 
+***************************************************
+
+Current version: 1.0
+Previous version: n/a
+
+/// LEGEND \\\
+Dates listed are in (dd-mm-yy) format
+### added
+- for new features.
+### Fixed
+- for changes in existing functionality.
+### Deprecated
+- for soon-to-be removed features.
+### Removed
+- for now removed features.
+### Fixed
+- for any bug fixes.
+### Security
+in case of vulnerabilities.
+///////\\\\\\\
+
+
+## [Unreleased]
+the following is being planned for release:
+
+### added
+- Validating user data to gain or deny acces to page 
+    https://stackoverflow.com/questions/44455574/page-only-accesible-to-certain-users-php
+- serverside PHP form validation (htmlspecialchar(), filter_var with the email filter and other validation filters
+- Generate random users with the randomuser.me API
+- redesign the dashboard page to hold bootstrap cards and icons to give users tasks
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.0] / Released 20-12-2022
+
+### added
+- First release of the project which contains the following working features:
+  - Creating new articles by refering to https://www.youtube.com/watch?v=NqP0-UkIQS4&t=1s
+  - Reading articles from table view. - Jeroen
+  - Updating existing articles. - Jeroen
+  - Deleting existing articles. - Jeroen
+- Created page layout in HTML and CSS (Bootstrap). - Jeroen
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.1] / Released 03-1-2022
+
+### added
+- Users database. - Jeroen
+- Users table view GUI. - Jeroen
+- CRUD users handling. - Jeroen
+- Login page. - Jeroen
+- Logged out page. - Jeroen
+- login validation by refering to https://www.youtube.com/watch?v=5L9UhOnuos0. - Jeroen
+- responsive dasboard view depending on logged in or out. - Jeroen
+- added ability to diplay user name in top right if logged in and display a login button when not logged in. - Jeroen
+- added ability to log out via drop down menu on the user name in the top right. - Jeroen
+- created a include file for database to clean up code. - Jeroen
+- added comments to all php code. - Jeroen
+
+### Fixed
+- pagination hrefs not working properly due to directory structuring being changed. - Jeroen
+- GreenHome logo height being changed from 32 to 40 in the header to improve aspect ratio. - Jeroen
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.11] / Released 03-1-2022
+
+### Fixed
+- User registration now always uppercases the first letter of the first and last name. - Jeroen
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.12] / Released 03-1-2022
+
+### added
+- Shorthand syntax for if...else statements by replacing the opening and closing brackets with a colon ":" and "endif" on the GUI pages. - Jeroen
+- Seperate php file for the footer to require_once on all GUI pages to solve the problem of having to update the version number on each page. - Jeroen
+- added the code that will automatically establish a database if one does not exist yet. this happens during the login proces and the "database.php" file. - Jeroen
+- changed the readme file so that the user no longer has to manually upload the database file - Jeroen
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.13] / Released 13-1-2022
+
+### Fixed
+- some links to the databse still linked to the database.php file, which was rebuilt in the previous version for the login handling. a new file was made to replace the old one (new one is db_connect.php) - Jeroen
+
+### added
+- Added a dark mode toggle for all GUI pages which the user can acces - Jeroen
+- Made some other slight changes to bootstrap classes to accomodate the dark mode (remove fixed light mode presets) - Jeroen
+- Added a search bar for the articles page and user page - Jeroen
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.14] / Released 26-1-2022
+
+### added
+- Added the feature to create a logging of actions performed by the user. Resulted in the addition of the files: controller_logfile.
+the logging has been added to the articles and user database - Jeroen
+- Changed the way the CRUD user actions work. all actions are now handled in a class to make the project more OOP. - Jeroen
+- Added validation filters with the filter_var method for input in the user handling forms. 
