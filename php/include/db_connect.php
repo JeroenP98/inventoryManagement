@@ -2,7 +2,7 @@
 
 
 $servername = "localhost";
-$username = "";
+$username = "root";
 $password = "";
 $database = "greenhome";
 $connection = new mysqli($servername, $username, $password, $database);
