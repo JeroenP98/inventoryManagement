@@ -22,6 +22,7 @@ CREATE TABLE employees (
   password varchar(255) NOT NULL, 
   company_id int(10) NOT NULL REFERENCES companies (id), 
   function_name varchar(10) NOT NULL REFERENCES functions (name), 
+  is_active tinyint(1) DEFAULT 1, 
   PRIMARY KEY (id)
 );
 
@@ -37,14 +38,25 @@ CREATE TABLE functions (
 
 INSERT INTO functions VALUES ('admin');
 
+DELIMITER $$
+CREATE TRIGGER add_accessibility_record
+AFTER INSERT ON functions
+FOR EACH ROW
+BEGIN
+  INSERT INTO accessibilities (function_name, can_acces_orders, can_acces_relations, can_acces_articles, can_acces_employees)
+  VALUES (NEW.name, 0, 0, 0, 0);
+END$$
+DELIMITER ;
+
 
 CREATE TABLE accessibilities (
-  function_name varchar(10) NOT NULL REFERENCES functions (name), 
-  can_acces_orders int(1) NOT NULL, 
-  can_acces_relations int(1) NOT NULL, 
-  can_acces_articles int(1) NOT NULL, 
-  can_acces_employees int(1) NOT NULL, 
-  PRIMARY KEY (function_name)
+  function_name varchar(10) NOT NULL, 
+  can_acces_orders tinyint(1) NOT NULL DEFAULT 0, 
+  can_acces_relations tinyint(1) NOT NULL DEFAULT 0, 
+  can_acces_articles tinyint(1) NOT NULL DEFAULT 0, 
+  can_acces_employees tinyint(1) NOT NULL DEFAULT 0, 
+  PRIMARY KEY (function_name),
+  FOREIGN KEY (function_name) REFERENCES functions (name) ON DELETE CASCADE
 );
 
 INSERT INTO accessibilities VALUES ('admin', 1, 1, 1, 1);
@@ -54,12 +66,28 @@ CREATE TABLE orders (
   order_date date NOT NULL, 
   shipping_date date NOT NULL, 
   order_type tinyint(1) NOT NULL, 
-  employee_id int(10) NOT NULL REFERENCES employees (id), 
-  relation_id int(10) NOT NULL REFERENCES relations (id), 
-  company_id int(10) NOT NULL REFERENCES companies (id),
-  PRIMARY KEY (id)
-  -- is_finalized int(1) NOT NULL
+  employee_id int(10) NOT NULL, 
+  relation_id int(10) NOT NULL, 
+  company_id int(10) NOT NULL,
+  is_finalized tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (id),
+  FOREIGN KEY (relation_id) REFERENCES relations (id) ON DELETE RESTRICT,
+  FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE RESTRICT,
+  FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE RESTRICT
 );
+
+DELIMITER $$
+CREATE TRIGGER check_employee_active
+BEFORE INSERT ON orders
+FOR EACH ROW
+BEGIN
+  DECLARE employee_active INT;
+  SELECT is_active INTO employee_active FROM employees WHERE id = NEW.employee_id;
+  IF employee_active <> 1 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot insert order for inactive employee';
+  END IF;
+END $$
+DELIMITER ;
 
 INSERT INTO orders VALUES  (1, '2023-02-20', '2023-02-21', 1, 1, 1, 1), (2, '2023-01-01', '2023-01-10', 0, 1, 1, 1);
 
@@ -84,9 +112,25 @@ CREATE TABLE order_lines (
   order_line int(10) NOT NULL, 
   quantity int(2) NOT NULL, 
   article_id int(10) NOT NULL REFERENCES articles (id), 
-  PRIMARY KEY (order_id, order_line)
-  -- order_type tinyint(1) NOT NULL 
+  PRIMARY KEY (order_id, order_line),
+  FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE,
+  FOREIGN KEY (article_id) REFERENCES articles (id) ON DELETE RESTRICT
 );
+
+DELIMITER $$
+
+CREATE TRIGGER check_article_active
+BEFORE INSERT ON order_lines
+FOR EACH ROW
+BEGIN
+  DECLARE article_active INT;
+  SELECT is_active INTO article_active FROM articles WHERE id = NEW.article_id;
+  IF article_active <> 1 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot insert order line for inactive article';
+  END IF;
+END $$
+
+DELIMITER ;
 
 -- uitslag orders
 INSERT INTO order_lines VALUES (1, 1, 1, 1), (1, 2, 1, 2);
@@ -109,47 +153,7 @@ INSERT INTO articles VALUES (1, 'Hoekbank ''Future'' Groen', 'Luxe groene 5-zits
 INSERT INTO articles VALUES (2, 'Hoekbank ''Future'' Zwart', 'Luxe zwarte 5-zits hoekbank', 2, 500, 789.98, 1);
 
 
--- query to show current orders
-SELECT orders.id AS `Order id`, orders.order_date AS `Order date`, orders.shipping_date AS `Shipping date`, relations.name AS `Customer`, COUNT(order_lines.order_id) AS `Order lines`, CONCAT(employees.first_name, ' ', employees.last_name) AS `Handled by`, IF(orders.order_type = 1, 'Uitslag', 'Inslag') AS 'Order type'
-FROM `orders` 
-JOIN relations
-	ON relations.id = orders.relation_id
-JOIN order_lines
-	ON order_lines.order_id = orders.id
- JOIN employees
- 	ON employees.id = orders.Employee_id
-GROUP BY orders.id;
-    
--- query to show current stock
-WITH total_incoming AS (
-    SELECT articles.id AS article_id, SUM(order_lines.quantity) AS incoming_stock
-    FROM order_lines
-    JOIN orders
-        ON order_lines.order_id = orders.id
-    JOIN articles
-        ON articles.id = order_lines.article_id
-    WHERE orders.order_type = 0 
-    GROUP BY articles.id
-), total_outgoing AS (
-    SELECT articles.id AS article_id, SUM(order_lines.quantity) AS outgoing_stock
-    FROM order_lines
-    JOIN orders
-        ON order_lines.order_id = orders.id
-    JOIN articles
-        ON articles.id = order_lines.article_id
-    WHERE orders.order_type = 1 
-    GROUP BY articles.id
-)
 
-SELECT articles.id AS 'Article ID', articles.name AS 'Article name', (SUM(total_incoming.incoming_stock) - SUM(total_outgoing.outgoing_stock)) AS 'Stock level'
-FROM total_incoming
-JOIN articles   
-    ON articles.id = total_incoming.article_id
-JOIN total_outgoing
-	ON articles.id = total_outgoing.article_id
- GROUP BY articles.id;
 
--- query to show outgoing order lines with article name
--- query to show incoming order lines with article name
 
 

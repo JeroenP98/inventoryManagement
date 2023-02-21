@@ -27,12 +27,14 @@ in case of vulnerabilities.
 ## [Unreleased]
 the following is being planned for release:
 
-### added
+### new additions
 - Validating user data to gain or deny acces to page 
     https://stackoverflow.com/questions/44455574/page-only-accesible-to-certain-users-php
 - serverside PHP form validation (htmlspecialchar(), filter_var with the email filter and other validation filters
 - Generate random users with the randomuser.me API
 - redesign the dashboard page to hold bootstrap cards and icons to give users tasks
+- redesigning the databases
+- making users unable to login when their account is set to inactive in the corresponding users table
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -104,4 +106,12 @@ the following is being planned for release:
 - Added the feature to create a logging of actions performed by the user. Resulted in the addition of the files: controller_logfile.
 the logging has been added to the articles and user database - Jeroen
 - Changed the way the CRUD user actions work. all actions are now handled in a class to make the project more OOP. - Jeroen
-- Added validation filters with the filter_var method for input in the user handling forms. 
+- Added validation filters with the filter_var method for input in the user handling forms. - Jeroen
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.141] / Released 26-1-2022
+
+### added
+- changed database DDL in greenhome.sql
+- created seperate queries file in queries.sql
