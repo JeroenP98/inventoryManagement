@@ -66,3 +66,4 @@
 2023-01-29 @ 15:55:04 [admin instrator] Performed the action: add user with id: Jeroen / jf.post99@student.avans.nl
 2023-01-29 @ 15:55:07 [admin instrator] Performed the action: delete user with id: Jeroen / jf.post99@student.avans.nl
 2023-01-29 @ 15:55:13 [admin instrator] Performed the action: edit user with id: Jeroen / jf.post3@student.avans.nl
+2023-01-31 @ 10:43:40 [admin instrator] Performed the action: edit user with id: Jeroen / jf.post1@student.avans.nl

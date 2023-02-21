@@ -15,8 +15,8 @@ if(!empty($_SESSION['user_name'])){
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!--Bootstrap code-->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/darkMode.js"></script>
   <link rel="shortcut icon" href="images/logo.png">
   <title>Dashboard | GreenHome</title>
@@ -28,7 +28,6 @@ if(!empty($_SESSION['user_name'])){
         <a href="../../POC greenhome/dashboard.php" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none me-5">
           <img src="images/logo.png" alt="company logo" srcset="" width="40" height="40">
         </a>
-
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 nav-pills">
           <li class="nav-item"><a href="dashboard.php" class="nav-link active" aria-current="page">Dashboard</a></li>
           <li class="nav-item"><a href="php/articles/GUI_articles.php" class="nav-link">Articles</a></li>
@@ -37,7 +36,6 @@ if(!empty($_SESSION['user_name'])){
           <li class="nav-item"><a href="php/outgoing_orders/GUI_outgoing.php" class="nav-link">Outgoing orders</a></li>
           <li class="nav-item"><a href="php/users/GUI_users.php" class="nav-link">Users</a></li>
         </ul>
-
         <?php
           //either display the users first name when logged in or give the option to log themselves in
           if(isset($_SESSION['user_id'])):?>
@@ -58,12 +56,10 @@ if(!empty($_SESSION['user_name'])){
             <a href='php/users/GUI_login.php' class='btn btn-outline-primary'>Login</a>
             </div>
           <?php endif;?>
-
       </div>
     </div>
   </header>
   <main class=" d-flex justify-content-center py-4">
-
     <!-- start logout Modal -->
     <div class="modal fade" id="logOutModal" tabindex="-1"     aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -83,16 +79,13 @@ if(!empty($_SESSION['user_name'])){
       </div>
     </div>
     <!-- end logout modal-->
-
     <!-- start action list jumbotron-->
     <div class="p-5 m-4 border rounded-3">
       <div class="container-fluid py-5">
-
         <?php
         //different html body will be shown depending on of the user has logged in or not
         // use the shorthand sytax for if...else by hopping in and out of php mode 
         if(isset($_SESSION["user_id"])):?>
-        
           <h1 class='display-5 fw-bold'>Hello <?=$name?></h1>
           <p class='col-md-8 fs-4'>Welcome back, <br>what would you like to do?</p>
           <div class='list-group'>
@@ -102,24 +95,17 @@ if(!empty($_SESSION['user_name'])){
             <a href='php/outgoing_orders/GUI_outgoing.php' class='list-group-item list-group-item-action text-center mb-5'>Manage outgoing orders</a>
             <button class='btn btn-outline-danger btn-lg' type='button' data-bs-toggle='modal' data-bs-target='#logOutModal'>Log out</button>
           </div>
-
-        
-        
-        <?php else :?>
-          
+        <?php else :?>       
           <div class='p-5 m-4 rounded-3'>
-          <div class='container-fluid py-5'>
-            <h1 class='display-5 fw-bold'>Hello stranger</h1>
-            <p class='col-md fs-4'>You should login before continuing</p>
-            <div class='list-group'>
-              <a href='php/users/GUI_login.php' class='btn btn-primary btn-lg' type='button'>Log in</a>
+            <div class='container-fluid py-5'>
+              <h1 class='display-5 fw-bold'>Hello stranger</h1>
+              <p class='col-md fs-4'>You should login before continuing</p>
+              <div class='list-group'>
+                <a href='php/users/GUI_login.php' class='btn btn-primary btn-lg' type='button'>Log in</a>
               </div>
+            </div>
           </div>
-        </div>
-          
-
         <?php endif;?>
-
       </div>
     </div>
     <!-- end action list jumbotron-->

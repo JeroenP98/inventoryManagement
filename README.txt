@@ -4,7 +4,7 @@
 *     GREENHOME STOCK MANAGEMENT SYSTEM           *
 *                                                 *
 *     By: Jeroen Post         GitHub: JeroenP98   * 
-*         Joel van der Vlies          JoelvdVlies *
+*         Joel van der Vlies          Noro1996    *
 *         Jan van der Waal        Janvanderwaal   *
 *                                                 *
 *                                                 *
