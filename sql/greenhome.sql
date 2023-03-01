@@ -1,7 +1,6 @@
--- DDL
 
 CREATE TABLE companies (
-  id int(10) NOT NULL AUTO_INCREMENT, 
+  id int(10) NOT NULL, 
   name varchar(255) NOT NULL, 
   street varchar(255) NOT NULL, 
   house_nr varchar(10), 
@@ -13,7 +12,7 @@ CREATE TABLE companies (
 );
 
 CREATE TABLE employees (
-  id int(10) NOT NULL AUTO_INCREMENT, 
+  id int(10) NOT NULL, 
   first_name char(255) NOT NULL, 
   last_name char(255) NOT NULL, 
   email_adress varchar(255) NOT NULL UNIQUE, 
@@ -36,7 +35,7 @@ CREATE TABLE accessibilities (
 );
 
 CREATE TABLE orders (
-  id int(10) NOT NULL AUTO_INCREMENT, 
+  id int(10) NOT NULL, 
   order_date date NOT NULL, 
   shipping_date date NOT NULL, 
   order_type tinyint(1) NOT NULL, 
@@ -47,7 +46,7 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE relations (
-  id int(10) NOT NULL AUTO_INCREMENT, 
+  id int(10) NOT NULL, 
   name varchar(255) NOT NULL, 
   street varchar(255) NOT NULL, 
   house_nr varchar(10), 
@@ -67,7 +66,7 @@ CREATE TABLE order_lines (
 
 
 CREATE TABLE articles (
-  id int(10) NOT NULL AUTO_INCREMENT, 
+  id int(10) NOT NULL, 
   name varchar(255) NOT NULL, 
   description varchar(1500),  
   purchase_price float, 
@@ -75,7 +74,6 @@ CREATE TABLE articles (
   is_active tinyint(1) NOT NULL
 );
 
--- DML
 
 INSERT INTO companies VALUES
 (1, 'GreenHome', 'Sterappel', '18', '4793KE', 'Breda', 'NL', 'info@greenhome.com', '+31 6 24 95 45 37');
@@ -101,38 +99,34 @@ INSERT INTO order_lines VALUES (2, 1, 5, 1), (2, 2, 10, 2);
 INSERT INTO relations VALUES (1, 'Furniture Manufacturer B.V.', 'voorstraat', '16A', '1234AB', 'Rotterdam', 'NL', 'info@furniture.com', '+31 10 12 56 77');
 
 
---DDL continued
+ALTER TABLE companies MODIFY COLUMN id INT AUTO_INCREMENT PRIMARY KEY;
 
-ALTER TABLE companies ADD PRIMARY KEY (id);
+ALTER TABLE functions ADD PRIMARY KEY (name);
+
+ALTER TABLE relations MODIFY COLUMN id INT AUTO_INCREMENT PRIMARY KEY;
+
+ALTER TABLE articles MODIFY COLUMN id INT AUTO_INCREMENT PRIMARY KEY;
 
 ALTER TABLE employees
+MODIFY COLUMN id INT AUTO_INCREMENT PRIMARY KEY,
 ADD FOREIGN KEY (company_id) REFERENCES companies (id),
-ADD FOREIGN KEY (function_name) REFERENCES functions (name),
-ADD PRIMARY KEY (id);
-
-ALTER TABLE functions 
-ADD PRIMARY KEY (name);
+ADD FOREIGN KEY (function_name) REFERENCES functions (name);
 
 ALTER TABLE accessibilities
-ADD FOREIGN KEY function_name REFERENCES functions (name) ON DELETE CASCADE,
-ADD PRIMARY KEY function_name;
+ADD PRIMARY KEY (function_name),
+ADD FOREIGN KEY (function_name) REFERENCES functions (name) ON DELETE CASCADE;
+
 
 ALTER TABLE orders
-ADD PRIMARY KEY (id),
+MODIFY COLUMN id INT AUTO_INCREMENT PRIMARY KEY,
 ADD FOREIGN KEY (relation_id) REFERENCES relations (id) ON DELETE RESTRICT,
 ADD FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE RESTRICT,
 ADD FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE RESTRICT;
-
-ALTER TABLE relations
-ADD PRIMARY KEY (id);
 
 ALTER TABLE order_lines
 ADD PRIMARY KEY (order_id, order_line),
 ADD FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE,
 ADD FOREIGN KEY (article_id) REFERENCES articles (id) ON DELETE RESTRICT;
-
-ALTER TABLE articles
-ADD PRIMARY KEY (id);
 
 DELIMITER $$
 CREATE TRIGGER add_accessibility_record
