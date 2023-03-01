@@ -63,7 +63,7 @@ FROM articles;
 -- show all deactivated articles
 SELECT id, name, IF(is_active = 1, 'Active', 'Inactive') AS 'active status'
 FROM articles
-WHERE is_active = 0
+WHERE is_active = 0;
 
 -- show all employees
 SELECT employees.id AS 'Employee ID', employees.first_name AS 'First name', employees.last_name AS 'Last name', employees.email_adress AS 'Email address', employees.function_name AS 'Function', companies.name AS 'Active company'
@@ -91,7 +91,7 @@ JOIN employees
 	ON orders.employee_id = employees.id
 WHERE orders.order_type = 1 AND orders.is_finalized = 1
 GROUP BY 2, 4
-ORDER BY `Month` ASC, 
+ORDER BY `Month` ASC;
 
 -- show customers who generated most turnover all time. Only finalized orders are elligable 
 SELECT orders.relation_id AS 'Relation ID', relations.name AS 'Buyer name', SUM(ROUND((order_lines.quantity * articles.selling_price),2)) AS 'Total turnover'
@@ -104,4 +104,4 @@ JOIN articles
 	ON order_lines.article_id = articles.id
 WHERE orders.is_finalized = 1
 GROUP BY 1
-ORDER BY `Total turnover` DESC
+ORDER BY `Total turnover` DESC;
