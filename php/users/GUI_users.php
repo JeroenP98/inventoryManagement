@@ -5,6 +5,9 @@ session_start();
 //check if user has logged in, in order to gain acces to the page
 require_once '../include/loginCheck.php';
 
+
+// create connection with database and display error message when failed
+require_once '../include/db_connect.php';
 ?>
 
 
@@ -113,13 +116,47 @@ require_once '../include/loginCheck.php';
               <div class="row mb-3">
                 <label class="col-form-label col-sm-3">E-mail</label>
                 <div class="col-sm-6">
-                  <input type="email" class="form-control" name="email" required>
+                  <input type="email" class="form-control" name="email_adress" required>
                 </div>
               </div>
               <div class="row mb-3">
                 <label class="col-form-label col-sm-3">Password</label>
                 <div class="col-sm-6">
                   <input type="password" class="form-control" name="password" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-form-label col-sm-3">Company</label>
+                <div class="col-sm-6">
+                  <select class="form-select" name="company_id" required>
+                    <option value="">-- Select company --</option>
+                    <?php
+                      $sql = "SELECT id, name FROM companies ORDER BY name";
+                      $result = mysqli_query($connection, $sql);
+                      if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                          echo '<option value="' . $row['id'] . '">' . htmlspecialchars($row['name']) . '</option>';
+                        }
+                      }
+                    ?>
+                  </select>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-form-label col-sm-3">Function</label>
+                <div class="col-sm-6">
+                  <select class="form-select" name="function_name" required>
+                    <option selected>-- Select function --</option>
+                    <?php
+                      $sql = "SELECT name FROM functions ORDER BY name";
+                      $result = mysqli_query($connection, $sql);
+                      if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                          echo '<option value="' . $row['name'] . '">' . htmlspecialchars($row['name']) . '</option>';
+                        }
+                      }
+                    ?>
+                  </select>
                 </div>
               </div>
               <div class="modal-footer">
@@ -174,18 +211,23 @@ require_once '../include/loginCheck.php';
             <th>First name</th>
             <th>Last name</th>
             <th>E-mail</th>
+            <th>function</th>
+            <th>Company</th>
+            <th>is active</th>
             <th>Action</th>
           </tr>
         </thead>
 
         <tbody>
         <?php
-        // create connection with database and display error message when failed
-        require_once '../include/db_connect.php';
-        
+      
 
         // select database
-        $sql = "SELECT * FROM users";
+        $sql = 
+        "SELECT employees.id, employees.first_name, employees.last_name, employees.email_adress, employees.function_name, companies.name, IF(employees.is_active = 1, 'Active', 'Non-active') AS 'is_active'
+        FROM employees
+        JOIN companies 
+          ON employees.company_id  = companies.id;";
         $result = $connection->query($sql);
 
         // make a new table row for every row in database
@@ -194,7 +236,10 @@ require_once '../include/loginCheck.php';
           <td>$row[id]</td>
           <td>$row[first_name]</td>
           <td>$row[last_name]</td>
-          <td>$row[email]</td>
+          <td>$row[email_adress]</td>
+          <td>$row[function_name]</td>
+          <td>$row[name]</td>
+          <td>$row[is_active]</td>
           <td>
             <a class='btn btn-primary' href='GUI_userEdit.php?id=$row[id]'>Edit</a>
             <a class='btn btn-danger' href='controller_user.php?action=delete&id=$row[id]'>Delete</a>

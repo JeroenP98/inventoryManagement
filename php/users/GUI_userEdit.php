@@ -15,8 +15,11 @@ require_once '../logging/controller_logfile.php';
 // declare empty variables for form handling
 $first_name = "";
 $last_name = "";
-$email = "";
+$email_adress = "";
 $password = "";
+$company_id = "";
+$function_name = "";
+
 
 // declare variables for form handling when failing
 $errorMessage = "";
@@ -34,7 +37,12 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     $id = $_GET["id"];
 
     // read the row of selected record by searching for the ID
-    $sql = "SELECT * FROM users WHERE id=$id";
+    $sql = 
+    "SELECT employees.id AS 'employees.id', employees.first_name, employees.last_name, employees.email_adress, employees.function_name, companies.name, companies.id AS 'companies.id'
+    FROM employees
+    JOIN companies 
+      ON employees.company_id  = companies.id
+    WHERE employees.id = $id;";
     $result = $connection->query($sql);
     $row = $result->fetch_assoc();
 
@@ -42,16 +50,16 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     if(!$row) {
       header("location: GUI_users.php");
       exit;
-    }
-
+    };
 
     //Store the found data of the query to variables
     $first_name = $row["first_name"];;
     $last_name = $row["last_name"];
-    $email = $row["email"];
-    $password = $row["password"];
+    $email = $row["email_adress"];
+    $company_id = $row["companies.id"];
+    $function_name = $row["function_name"];
 
-}
+};
 ?>
 
 
@@ -101,15 +109,41 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         <div class="row mb-3">
           <label class="col-form-label col-sm-3">E-mail</label>
           <div class="col-sm-6">
-            <input type="email" class="form-control" name="email" value="<?php echo $email; //show the current value of the db record?>" required>
+            <input type="email" class="form-control" name="email_adress" value="<?php echo $email; //show the current value of the db record?>" required>
           </div>
         </div>
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Password</label>
-          <div class="col-sm-6">
-            <input type="password" class="form-control" id="disabledInput" name="password" required>
-          </div>
-        </div>
+                <label class="col-form-label col-sm-3">Company</label>
+                <div class="col-sm-6">
+                  <select class="form-select" name="company_id" required>   
+                    <?php
+                      $sql = "SELECT id, name FROM companies ORDER BY name";
+                      $result = mysqli_query($connection, $sql);
+                      if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                          echo '<option value="' . $row['id'] . '">' . htmlspecialchars($row['name']) . '</option>';
+                        }
+                      }
+                    ?>
+                  </select>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-form-label col-sm-3">Function</label>
+                <div class="col-sm-6">
+                  <select class="form-select" name="function_name" required>
+                    <?php
+                      $sql = "SELECT name FROM functions ORDER BY name";
+                      $result = mysqli_query($connection, $sql);
+                      if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                          echo '<option value="' . $row['name'] . '">' . htmlspecialchars($row['name']) . '</option>';
+                        }
+                      }
+                    ?>
+                  </select>
+                </div>
+              </div>
 
         <div class="row mb-3">
           <div class="offset-sm-3 col-sm-3 d-grid">

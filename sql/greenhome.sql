@@ -164,3 +164,30 @@ BEGIN
 END $$
 DELIMITER ;
 
+DELIMITER $$
+CREATE TRIGGER restrict_deleting_orders
+BEFORE DELETE ON orders
+FOR EACH ROW
+BEGIN
+    IF OLD.is_finalized = 1 THEN
+        SIGNAL SQLSTATE '45000' 
+            SET MESSAGE_TEXT = 'Cannot delete order that has been finalized';
+    END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER restrict_deleting_order_lines
+BEFORE DELETE ON order_lines
+FOR EACH ROW
+BEGIN
+    DECLARE is_finalized INT;
+    SELECT is_finalized INTO is_finalized FROM orders WHERE id = OLD.order_id;
+    IF is_finalized = 1 THEN
+        SIGNAL SQLSTATE '45000' 
+            SET MESSAGE_TEXT = 'Cannot delete order line when order is finalized';
+    END IF;
+END$$
+DELIMITER ;
+
+

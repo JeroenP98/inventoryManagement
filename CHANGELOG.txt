@@ -115,3 +115,10 @@ the logging has been added to the articles and user database - Jeroen
 ### added
 - changed database DDL in greenhome.sql
 - created seperate queries file in queries.sql
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.15] / Released 7-3-2022
+
+### fixed
+- Fixed the user handling with the new employees table
