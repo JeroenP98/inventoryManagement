@@ -15,8 +15,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
   
   
   //prepare sql statement to find the database record which matches the email string
-  $sql = sprintf("SELECT * FROM users
-          WHERE email = '%s'",
+  $sql = sprintf("SELECT * FROM employees
+          WHERE email_adress = '%s'",
           $connection->real_escape_string(strtolower($_POST["email"])));
   
   //execute sql query

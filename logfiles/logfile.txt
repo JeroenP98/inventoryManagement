@@ -67,3 +67,9 @@
 2023-01-29 @ 15:55:07 [admin instrator] Performed the action: delete user with id: Jeroen / jf.post99@student.avans.nl
 2023-01-29 @ 15:55:13 [admin instrator] Performed the action: edit user with id: Jeroen / jf.post3@student.avans.nl
 2023-01-31 @ 10:43:40 [admin instrator] Performed the action: edit user with id: Jeroen / jf.post1@student.avans.nl
+2023-03-07 @ 18:16:40 [admin instrator] Performed the action: add user with id: Jeroen / jeroen@greenhome.com
+2023-03-07 @ 18:38:13 [admin instrator] Performed the action: edit user with id: Jeroen / jeroen@greenhome.com
+2023-03-07 @ 18:38:18 [admin instrator] Performed the action: edit user with id: Jeroen1 / jeroen@greenhome.com
+2023-03-07 @ 18:39:31 [admin instrator] Performed the action: edit user with id: Jeroen1 / jeroen@greenhome.com
+2023-03-07 @ 18:40:24 [admin instrator] Performed the action: delete user with id: Jeroen1 / jeroen@greenhome.com
+2023-03-07 @ 18:40:37 [admin instrator] Performed the action: add user with id: Jeroen / jeroen@greenhome.com
