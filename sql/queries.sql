@@ -57,6 +57,8 @@ JOIN orders
 WHERE orders.order_type = 0;
 
 -- show all articles with status
+SELECT id AS 'Article ID', name AS 'Name', CONCAT(LEFT(description, 25),'...') AS 'Description', IF(is_active = 1, 'Active', 'Inactive') AS 'Active status'
+FROM articles;
 
 -- show all deactivated articles
 SELECT id, name, IF(is_active = 1, 'Active', 'Inactive') AS 'active status'
@@ -64,11 +66,42 @@ FROM articles
 WHERE is_active = 0
 
 -- show all employees
+SELECT employees.id AS 'Employee ID', employees.first_name AS 'First name', employees.last_name AS 'Last name', employees.email_adress AS 'Email address', employees.function_name AS 'Function', companies.name AS 'Active company'
+FROM employees
+JOIN companies 
+	ON employees.company_id  = companies.id;
 
--- show all employees with amount of orders made per month
+-- show all employees with amount of orders made per month of the current year
+SELECT COUNT(orders.id) AS 'Total orders', orders.employee_id AS 'Employee ID', CONCAT(employees.first_name, ' ', employees.last_name) AS 'Name', MONTHNAME(orders.order_date) AS 'Month' 
+FROM orders
+JOIN employees
+	ON employees.id = orders.employee_id
+WHERE YEAR(order_date) = YEAR(CURRENT_DATE()) AND orders.order_type = 1
+GROUP BY 2, 4
+ORDER BY `Month` ASC;
 
--- show employees who made the most turnover per month
+-- show employees who made the most turnover per month. Only finalized orders are elligable 
+SELECT ROUND((order_lines.quantity * articles.selling_price),2) AS 'Total Sales', orders.employee_id AS 'Employee ID', CONCAT(employees.first_name, ' ', employees.last_name) AS 'Name', MONTHNAME(orders.order_date) AS 'Month'
+FROM order_lines
+JOIN articles
+	ON order_lines.article_id = articles.id
+JOIN orders
+	ON order_lines.order_id = orders.id
+JOIN employees
+	ON orders.employee_id = employees.id
+WHERE orders.order_type = 1 AND orders.is_finalized = 1
+GROUP BY 2, 4
+ORDER BY `Month` ASC, 
 
--- show customers who generated most turnover all time
-
--- show outstanding balance of ougoing orders which have not been finalized
+-- show customers who generated most turnover all time. Only finalized orders are elligable 
+SELECT orders.relation_id AS 'Relation ID', relations.name AS 'Buyer name', SUM(ROUND((order_lines.quantity * articles.selling_price),2)) AS 'Total turnover'
+FROM orders
+JOIN relations 
+	ON orders.relation_id = relations.id
+JOIN order_lines
+	ON orders.id = order_lines.order_id
+JOIN articles
+	ON order_lines.article_id = articles.id
+WHERE orders.is_finalized = 1
+GROUP BY 1
+ORDER BY `Total turnover` DESC

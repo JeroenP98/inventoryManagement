@@ -26,9 +26,9 @@ CREATE TABLE employees (
   PRIMARY KEY (id)
 );
 
-INSERT INTO employees (`id`, `first_name`, `last_name`, `email_adress`, `password`, `company_id`, `function_name`) VALUES
-(1, 'admin', 'instrator', 'admin@greenhome.com', '$2y$10$g76JjQO1tYVpT0zMhxFB4Ocru1nAC/iiDeT/aU5jZ4uYy6kdfxXMa', 1, 'admin'),
-(2, 'guest', 'gast', 'guest@greenhome.com', '$2y$10$Vt4IaIKLZUP3x6xNL3sDHObo42gAC8TtfbYi3TTxhZNjEOe3a.8Gy', 1, 'admin');
+INSERT INTO employees VALUES
+(1, 'admin', 'instrator', 'admin@greenhome.com', '$2y$10$g76JjQO1tYVpT0zMhxFB4Ocru1nAC/iiDeT/aU5jZ4uYy6kdfxXMa', 1, 'admin', 1),
+(2, 'guest', 'gast', 'guest@greenhome.com', '$2y$10$Vt4IaIKLZUP3x6xNL3sDHObo42gAC8TtfbYi3TTxhZNjEOe3a.8Gy', 1, 'admin', 1);
 
 
 CREATE TABLE functions (
@@ -89,7 +89,7 @@ BEGIN
 END $$
 DELIMITER ;
 
-INSERT INTO orders VALUES  (1, '2023-02-20', '2023-02-21', 1, 1, 1, 1), (2, '2023-01-01', '2023-01-10', 0, 1, 1, 1);
+INSERT INTO orders VALUES  (1, '2023-02-20', '2023-02-21', 1, 1, 1, 1, 1), (2, '2023-01-01', '2023-01-10', 0, 1, 1, 1, 1);
 
 
 CREATE TABLE relations (
@@ -141,16 +141,15 @@ INSERT INTO order_lines VALUES (2, 1, 5, 1), (2, 2, 10, 2);
 CREATE TABLE articles (
   id int(10) NOT NULL AUTO_INCREMENT, 
   name varchar(255) NOT NULL, 
-  description varchar(1500), 
-  stock_level int(4) NOT NULL DEFAULT 0, 
+  description varchar(1500),  
   purchase_price float, 
   selling_price float, 
   is_active tinyint(1) NOT NULL, 
   PRIMARY KEY (id)
 );
 
-INSERT INTO articles VALUES (1, 'Hoekbank ''Future'' Groen', 'Luxe groene 5-zits hoekbank', 2, 500, 789.98, 1);
-INSERT INTO articles VALUES (2, 'Hoekbank ''Future'' Zwart', 'Luxe zwarte 5-zits hoekbank', 2, 500, 789.98, 1);
+INSERT INTO articles VALUES (1, 'Hoekbank ''Future'' Groen', 'Luxe groene 5-zits hoekbank', 500, 789.98, 1);
+INSERT INTO articles VALUES (2, 'Hoekbank ''Future'' Zwart', 'Luxe zwarte 5-zits hoekbank', 500, 789.98, 1);
 
 
 
