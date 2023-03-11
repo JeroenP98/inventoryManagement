@@ -73,3 +73,15 @@
 2023-03-07 @ 18:39:31 [admin instrator] Performed the action: edit user with id: Jeroen1 / jeroen@greenhome.com
 2023-03-07 @ 18:40:24 [admin instrator] Performed the action: delete user with id: Jeroen1 / jeroen@greenhome.com
 2023-03-07 @ 18:40:37 [admin instrator] Performed the action: add user with id: Jeroen / jeroen@greenhome.com
+2023-03-11 @ 09:43:53 [admin instrator] Performed the action: delete user with id: Jeroen / jeroen@greenhome.com
+2023-03-11 @ 10:33:46 [admin instrator] Performed the action: add user with id: Test item / new article
+2023-03-11 @ 10:33:59 [admin instrator] Performed the action: add user with id: Test item / new article
+2023-03-11 @ 10:35:50 [admin instrator] Performed the action: add user with id: Test item / new article
+2023-03-11 @ 10:36:59 [admin instrator] Performed the action: add user with id: Test item / new article
+2023-03-11 @ 10:38:10 [admin instrator] Performed the action: add user with id: Test item / new article
+2023-03-11 @ 10:39:08 [admin instrator] Performed the action: add user with id: Test item / new article
+2023-03-11 @ 10:41:48 [admin instrator] Performed the action: delete user with id: Test item / delete article
+2023-03-11 @ 10:42:04 [admin instrator] Performed the action: delete user with id: Test item / delete article
+2023-03-11 @ 10:42:33 [admin instrator] Performed the action: delete user with id: Test item / delete article
+2023-03-11 @ 10:46:28 [admin instrator] Performed the action: delete user with id: Test item / delete article
+2023-03-11 @ 10:47:39 [admin instrator] Performed the action: delete user with id: Hoekbank 'Future' Groen / delete article
