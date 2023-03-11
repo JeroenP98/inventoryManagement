@@ -1,3 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Bootstrap code-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="../../images/logo.png">
+    <script src="../../js/formValidator.js"></script>
+    <script src="../../js/tableSearch.js"></script>
+    <script src="../../js/darkMode.js"></script>
+    <title>Articles | GreenHome</title>
+  </head>
 <?php
 
 //if session was started, continue it so it
@@ -46,8 +61,8 @@ class UserController {
 
       //check if all fields are filled
         if ( empty($name) || empty($description) || empty($purchase_price) || empty($selling_price)) {
-            $errorMessage = "All fields are required";
-            echo $errorMessage;
+            $error_message = "All fields are required";
+            echo $error_message;
         }
 
 
@@ -64,8 +79,8 @@ class UserController {
           LogfileHandler::addLogfileRecord($action, $object_type, $name, "new article");
           
         }catch(mysqli_sql_exception $e){
-          $errorMessage = "invalid query: " . $e;
-          echo $errorMessage;
+          $error_message = "invalid query: " . $e;
+          echo $error_message;
         }
 
         //echo $sql;
@@ -84,9 +99,9 @@ class UserController {
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
       //store form data under variables which have been sanitized
-
-      $name = htmlspecialchars($_POST["name"]);
-      $description = htmlspecialchars($_POST["description"]);
+      $id = $_POST["id"];
+      $name = $connection->escape_string($_POST["name"]);
+      $description = $connection->escape_string($_POST["description"]);
       $purchase_price = htmlspecialchars(filter_var($_POST["purchase_price"], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
       $selling_price = htmlspecialchars(filter_var($_POST["selling_price"], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 
@@ -99,20 +114,19 @@ class UserController {
         )
       );
 
-      $is_active = htmlspecialchars(filter_var($_POST["is_active"], FILTER_VALIDATE_INT, $options));
+      $is_active = htmlspecialchars(filter_var($_POST["is_active"], FILTER_SANITIZE_NUMBER_INT, $options));
 
       //check if all fields are filled
-      if ( empty($name) || empty($description) || empty($purchase_price) || empty($selling_price) || empty($is_active)) {
-          $errorMessage = "All fields are required";
-          echo $errorMessage;
+      if ( empty($name) || empty($description) || empty($purchase_price) || empty($selling_price)) {
+          $error_message = "All fields are required";
+          echo $error_message;
       }
-
 
         //update the record or display error message
         try {  
           // prepare sql query for updating the record
-          $sql =  "UPDATE `articles` SET `name`=$name,`description`=$description,`purchase_price`=$purchase_price,`selling_price`=$selling_price,`is_active`=$is_active";
-          
+          $sql = "UPDATE `articles` SET `name`=\"$name\", `description`=\"$description\", `purchase_price`=$purchase_price, `selling_price`=$selling_price, `is_active`=$is_active WHERE `id` = $id";
+
 
           //excecute sql query
           mysqli_query($connection, $sql);
@@ -123,11 +137,10 @@ class UserController {
           LogfileHandler::addLogfileRecord($action, $object_type, $name, "edit article");
     
         }catch(mysqli_sql_exception $e){ // Display error message when not able to perform sql query
-          $errorMessage = "Invalid query: " . $e;
-          echo $errorMessage;
-          break;
+          $error_message = "Invalid query: " . $e;
+          echo $error_message;
         }
-    
+
         // return back to article overview after posting the record
         header("location: GUI_articles.php?action=edit&status=succes&article=$name");
         exit;
@@ -178,3 +191,4 @@ class UserController {
 
 
 ?>
+</html>

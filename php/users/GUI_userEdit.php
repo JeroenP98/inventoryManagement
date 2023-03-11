@@ -38,7 +38,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
     // read the row of selected record by searching for the ID
     $sql = 
-    "SELECT employees.id AS 'employees.id', employees.first_name, employees.last_name, employees.email_adress, employees.function_name, companies.name, companies.id AS 'companies.id'
+    "SELECT employees.id AS 'employees.id', employees.first_name, employees.last_name, employees.email_adress, employees.function_name, companies.name, companies.id AS 'companies.id', is_active
     FROM employees
     JOIN companies 
       ON employees.company_id  = companies.id
@@ -58,6 +58,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     $email = $row["email_adress"];
     $company_id = $row["companies.id"];
     $function_name = $row["function_name"];
+    $is_active = $row["is_active"];
 
 };
 ?>
@@ -113,38 +114,44 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
           </div>
         </div>
         <div class="row mb-3">
-                <label class="col-form-label col-sm-3">Company</label>
-                <div class="col-sm-6">
-                  <select class="form-select" name="company_id" required>   
-                    <?php
-                      $sql = "SELECT id, name FROM companies ORDER BY name";
-                      $result = mysqli_query($connection, $sql);
-                      if (mysqli_num_rows($result) > 0) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                          echo '<option value="' . $row['id'] . '">' . htmlspecialchars($row['name']) . '</option>';
-                        }
-                      }
-                    ?>
-                  </select>
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-form-label col-sm-3">Function</label>
-                <div class="col-sm-6">
-                  <select class="form-select" name="function_name" required>
-                    <?php
-                      $sql = "SELECT name FROM functions ORDER BY name";
-                      $result = mysqli_query($connection, $sql);
-                      if (mysqli_num_rows($result) > 0) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                          echo '<option value="' . $row['name'] . '">' . htmlspecialchars($row['name']) . '</option>';
-                        }
-                      }
-                    ?>
-                  </select>
-                </div>
-              </div>
-
+          <label class="col-form-label col-sm-3">Company</label>
+          <div class="col-sm-6">
+            <select class="form-select" name="company_id" required>   
+              <?php
+                $sql = "SELECT id, name FROM companies ORDER BY name";
+                $result = mysqli_query($connection, $sql);
+                if (mysqli_num_rows($result) > 0) {
+                  while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<option value="' . $row['id'] . '">' . htmlspecialchars($row['name']) . '</option>';
+                  }
+                }
+              ?>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-form-label col-sm-3">Function</label>
+          <div class="col-sm-6">
+            <select class="form-select" name="function_name" required>
+              <?php
+                $sql = "SELECT name FROM functions ORDER BY name";
+                $result = mysqli_query($connection, $sql);
+                if (mysqli_num_rows($result) > 0) {
+                  while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<option value="' . $row['name'] . '">' . htmlspecialchars($row['name']) . '</option>';
+                  }
+                }
+              ?>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-form-label col-sm-3">Active</label>
+          <div class="col-sm-6">
+            <input type="hidden" name="is_active" value="0">
+            <input type="checkbox" name="is_active" value="1" <?php if($is_active == 1) echo "checked"; ?>>
+          </div>
+        </div>
         <div class="row mb-3">
           <div class="offset-sm-3 col-sm-3 d-grid">
             <button type="submit" class="btn btn-primary">Submit</button>

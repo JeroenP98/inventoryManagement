@@ -95,6 +95,15 @@ class UserController {
       $email = filter_var(strtolower($_POST["email_adress"]), FILTER_SANITIZE_EMAIL);
       $company_id = $_POST["company_id"];
       $function_name = htmlspecialchars($_POST["function_name"]);
+      // validate that the is_active status is between 0 and 1
+      $options = array(
+        "options" => array(
+          "min_range"=>0, 
+          "max_range"=>1
+        )
+      );
+
+      $is_active = htmlspecialchars(filter_var($_POST["is_active"], FILTER_SANITIZE_NUMBER_INT, $options));
 
       do {
         if ( empty($first_name) || empty($last_name) || empty($email) || empty($company_id) || empty($function_name)) {
@@ -105,7 +114,7 @@ class UserController {
         //update the record or display error message
         try {  
           // prepare sql query for updating the record
-          $sql =  "UPDATE employees SET first_name='$first_name', last_name='$last_name',email_adress='$email', company_id=$company_id, function_name='$function_name' WHERE id = $id";
+          $sql =  "UPDATE employees SET first_name='$first_name', last_name='$last_name',email_adress='$email', company_id=$company_id, function_name='$function_name', is_active=$is_active WHERE id = $id";
           
 
           //excecute sql query

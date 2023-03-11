@@ -5,6 +5,9 @@ session_start();
 //check if user has logged in, in order to gain acces to the page
 require_once '../include/loginCheck.php';
 
+// create connection with database
+require_once '../include/db_connect.php';
+
 ?>
 
 
@@ -160,6 +163,11 @@ require_once '../include/loginCheck.php';
           </div>
       <?php endif ?>
 
+      <?php
+      if(isset($_GET["error_message"])){
+        echo $e;
+      }
+      ?>
 
       <!-- Search bar-->
       <div class="input-group my-3">
@@ -182,8 +190,7 @@ require_once '../include/loginCheck.php';
 
         <tbody>
         <?php
-        // create connection with database
-        require_once '../include/db_connect.php';
+
         // select database
         $sql = "SELECT id, name, CONCAT(LEFT(description, 25),'...') AS 'description', CONCAT('€ ', purchase_price) AS purchase_price, CONCAT('€ ', selling_price) AS selling_price, IF(is_active = 1, 'Active', 'Inactive') AS 'active_status'
         FROM articles;";

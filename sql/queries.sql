@@ -30,13 +30,14 @@ WITH total_incoming AS (
     GROUP BY articles.id
 )
 
-SELECT articles.id AS 'Article ID', articles.name AS 'Article name', (SUM(total_incoming.incoming_stock) - SUM(total_outgoing.outgoing_stock)) AS 'Stock level'
-FROM total_incoming
-JOIN articles   
+SELECT articles.id AS 'Article ID', articles.name AS 'Article name', 
+       COALESCE(SUM(total_incoming.incoming_stock), 0) - COALESCE(SUM(total_outgoing.outgoing_stock), 0) AS 'Stock level'
+FROM articles
+LEFT JOIN total_incoming
     ON articles.id = total_incoming.article_id
-JOIN total_outgoing
-	ON articles.id = total_outgoing.article_id
- GROUP BY articles.id;
+LEFT JOIN total_outgoing
+    ON articles.id = total_outgoing.article_id
+GROUP BY articles.id, articles.name;
 
 -- query to show outgoing order lines with article name
 SELECT order_lines.order_id AS 'Order id', order_lines.order_line AS 'Order line', articles.name, order_lines.quantity, IF(orders.order_type = 1, 'Uitslag', 'Inslag') AS 'Order type'

@@ -4,6 +4,9 @@ session_start();
 
 //check if user has logged in, in order to gain acces to the page
 require_once '../include/loginCheck.php';
+
+// create connection with database
+require_once '../include/db_connect.php';
 ?>
 
 
@@ -17,6 +20,7 @@ require_once '../include/loginCheck.php';
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   <script src="../../js/darkMode.js"></script>
+  <script src="../../js/tableSearch.js"></script>
   <link rel="shortcut icon" href="../../images/logo.png">
   <title>Stock | GreenHome</title>
 </head>
@@ -60,24 +64,133 @@ require_once '../include/loginCheck.php';
       </div>
     </div>
   </header>
-    <!-- start logout Modal -->
-    <div class="modal fade" id="logOutModal" tabindex="-1"     aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">You are about to log out!</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>Are you sure?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Keep me logged in</button>
-            <a href="../users/GUI_logged_out.php"><button type="button" class="btn btn-warning">Log out</button></a>
-          </div>
+  <!-- start logout Modal -->
+  <div class="modal fade" id="logOutModal" tabindex="-1"     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">You are about to log out!</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Keep me logged in</button>
+          <a href="../users/GUI_logged_out.php"><button type="button" class="btn btn-warning">Log out</button></a>
         </div>
       </div>
     </div>
-    <!-- end logout modal-->
+  </div>
+  <!-- end logout modal-->
+
+  <div class="container">
+    <!-- Search bar-->
+    <div class="input-group my-3">
+        <span class="input-group-text" id="tableSearchBar">Search for article</span>
+        <input type="text" class="form-control" id="searchInput" placeholder="Article name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
+      </div>
+      <!-- End search bar-->
+      <table class="table table-striped table-sm" id="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Article name</th>
+            <th>Stock level</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        <?php
+
+        // set the number of records per page
+        $records_per_page = 25;
+
+        // get the total number of records
+        $sql_count = "SELECT COUNT(*) AS count FROM articles";
+        $result_count = $connection->query($sql_count);
+        $row_count = $result_count->fetch_assoc();
+        $total_records = $row_count['count'];
+
+        // calculate the total number of pages
+        $total_pages = ceil($total_records / $records_per_page);
+
+        // get the current page number
+        $current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+
+        // calculate the offset for the query
+        $offset = ($current_page - 1) * $records_per_page;
+
+        // prepare sql statement
+        $sql = "WITH total_incoming AS (
+          SELECT articles.id AS article_id, SUM(order_lines.quantity) AS incoming_stock
+          FROM order_lines
+          JOIN orders
+              ON order_lines.order_id = orders.id
+          JOIN articles
+              ON articles.id = order_lines.article_id
+          WHERE orders.order_type = 0 
+          GROUP BY articles.id
+        ), total_outgoing AS (
+          SELECT articles.id AS article_id, SUM(order_lines.quantity) AS outgoing_stock
+          FROM order_lines
+          JOIN orders
+              ON order_lines.order_id = orders.id
+          JOIN articles
+              ON articles.id = order_lines.article_id
+          WHERE orders.order_type = 1 
+          GROUP BY articles.id
+        )
+        
+        SELECT articles.id AS 'article_id', articles.name AS 'article_name', 
+              COALESCE(SUM(total_incoming.incoming_stock), 0) - COALESCE(SUM(total_outgoing.outgoing_stock), 0) AS 'stock_level'
+        FROM articles
+        LEFT JOIN total_incoming
+            ON articles.id = total_incoming.article_id
+        LEFT JOIN total_outgoing
+            ON articles.id = total_outgoing.article_id
+        GROUP BY articles.id, articles.name
+        LIMIT $records_per_page
+        OFFSET $offset;";
+        
+        // execute the query
+        $result = $connection->query($sql);
+
+        // make a new table row for every row in database
+        while($row = $result->fetch_assoc()) {
+          echo "<tr>
+          <td>$row[article_id]</td>
+          <td>$row[article_name]</td>
+          <td>$row[stock_level]</td>
+          </tr>";
+
+        }
+        ?>
+
+        <?php if ($total_pages > 1): ?>
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <?php if ($current_page > 1): ?>
+                <li class="page-item"><a class="page-link" href="?page=<?= $current_page - 1 ?>">Previous</a></li>
+              <?php endif; ?>
+              <?php 
+                $start_page = max(1, $current_page - 5);
+                $end_page = min($total_pages, $current_page + 5);
+                for ($i = $start_page; $i <= $end_page; $i++): 
+              ?>
+                <li class="page-item<?= $current_page == $i ? ' active' : '' ?>">
+                  <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                </li>
+              <?php endfor; ?>
+              <?php if ($current_page < $total_pages): ?>
+                <li class="page-item"><a class="page-link" href="?page=<?= $current_page + 1 ?>">Next</a></li>
+              <?php endif; ?>
+            </ul>
+          </nav>
+        <?php endif; ?>
+        </tbody>
+      </table>
+  </div>
+
 </body>
 </html>

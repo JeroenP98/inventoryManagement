@@ -122,3 +122,14 @@ the logging has been added to the articles and user database - Jeroen
 
 ### fixed
 - Fixed the user handling with the new employees table
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.16] / Released 11-3-2022
+
+### Added
+- Added functionality to the inventory page
+- added pagination to the inventory page
+
+### fixed
+- Fixed article handling with the new articles table
