@@ -88,12 +88,79 @@ require_once '../include/loginCheck.php';
     </div>
     <!-- end logout modal-->
  
+        <!-- start new article Modal -->
+        <div class="modal fade" id="newArticleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Create a new article</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="POST" action="controller_article.php?action=add">
+              <div class="row mb-3">
+                <label class="col-form-label col-sm-3">Article name</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" name="name" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-form-label col-sm-3">Description</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" name="description" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-form-label col-sm-3">Purchase price</label>
+                <div class="col-sm-3">
+                  <input type="number" step=".01" class="form-control" name="purchase_price" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-form-label col-sm-3">Selling price</label>
+                <div class="col-sm-3">
+                  <input type="number" step=".01" class="form-control" name="selling_price" required>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <div class="offset-sm-3 col-sm-3 d-grid">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                <div class="col-sm-3 d-grid">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end new article modal-->
   
     <!--Page data-->
     <div class="container">
       <h1>Articles</h1>
-      <a href="controller_articleCreator.php" class="btn btn-primary">Add new</a>
+      <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#newArticleModal'>Add new</button>
       <br>
+
+      <?php if(isset($_GET['action']) && $_GET["status"] == "succes" && $_GET["action"] == "add"):?>
+          <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
+            <p><strong>Succes!</strong> You added: <?=$_GET['article']?></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php elseif (isset($_GET['action']) && $_GET["status"] == "succes" && $_GET["action"] == "edit"): ?>
+          <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
+            <p><strong>Succes!</strong> You edited: <?=$_GET['article']?></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php elseif (isset($_GET['action']) && $_GET["status"] == "succes" && $_GET["action"] == "delete"): ?>
+          <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
+            <p><strong>Succes!</strong> You deleted: <?=$_GET['article']?></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+      <?php endif ?>
+
+
       <!-- Search bar-->
       <div class="input-group my-3">
         <span class="input-group-text" id="tableSearchBar">Search for article</span>
@@ -106,6 +173,9 @@ require_once '../include/loginCheck.php';
             <th>ID</th>
             <th>Article ID</th>
             <th>Description</th>
+            <th>Purchase price</th>
+            <th>Selling price</th>
+            <th>Active</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -115,18 +185,22 @@ require_once '../include/loginCheck.php';
         // create connection with database
         require_once '../include/db_connect.php';
         // select database
-        $sql = "SELECT * FROM articlesgh";
+        $sql = "SELECT id, name, CONCAT(LEFT(description, 25),'...') AS 'description', CONCAT('€ ', purchase_price) AS purchase_price, CONCAT('€ ', selling_price) AS selling_price, IF(is_active = 1, 'Active', 'Inactive') AS 'active_status'
+        FROM articles;";
         $result = $connection->query($sql);
 
         // make a new table row for every row in database
         while($row = $result->fetch_assoc()) {
           echo "<tr>
           <td>$row[id]</td>
-          <td>$row[article_id]</td>
+          <td>$row[name]</td>
           <td>$row[description]</td>
+          <td>$row[purchase_price]</td>
+          <td>$row[selling_price]</td>
+          <td>$row[active_status]</td>
           <td>
-            <a class='btn btn-primary' href='controller_articleEditor.php?id=$row[id]'>Edit</a>
-            <a class='btn btn-danger' href='controller_articleDelete.php?id=$row[id]'>Delete</a>
+          <a class='btn btn-primary' href='GUI_articleEditor.php?id=$row[id]'>Edit</a>
+          <a class='btn btn-danger' href='controller_article.php?action=delete&id=$row[id]'>Delete</a>
           </td>
           </tr>";
 

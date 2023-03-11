@@ -69,9 +69,9 @@ CREATE TABLE articles (
   id int(10) NOT NULL, 
   name varchar(255) NOT NULL, 
   description varchar(1500),  
-  purchase_price float, 
-  selling_price float, 
-  is_active tinyint(1) NOT NULL
+  purchase_price decimal(10,2), 
+  selling_price decimal(10,2), 
+  is_active tinyint(1) NOT NULL DEFAULT 1;
 );
 
 
