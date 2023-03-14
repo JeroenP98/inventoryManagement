@@ -11,7 +11,7 @@ require_once '../include/db_connect.php';
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100" data-bs-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,7 +24,7 @@ require_once '../include/db_connect.php';
   <link rel="shortcut icon" href="../../images/logo.png">
   <title>Relations | GreenHome</title>
 </head>
-<body>
+<body class="d-flex flex-column h-100">
   <header class="p-3 mb-3 border-bottom">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
