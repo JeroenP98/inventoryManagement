@@ -143,3 +143,10 @@ the logging has been added to the articles and user database - Jeroen
 - html headers for various entity edit pages
 - functional relations page with working adding/editing/deleting functions
 
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.18] / Released 12-3-2022
+
+###
+- added export to .csv function to tables by calling upon the class in exportData.php
+
