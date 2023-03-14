@@ -87,7 +87,7 @@ class UserController {
 
         //return back to article overview
         header("location: GUI_articles.php?action=add&status=succes&article=$name");
-        //exit;
+        exit;
     }
   }
 

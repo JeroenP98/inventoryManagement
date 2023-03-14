@@ -40,4 +40,7 @@
     </div>
   </main>
 </body>
+<?php 
+  // use php to use footer
+  require_once '..\include\footer.php'?>
 </html>
