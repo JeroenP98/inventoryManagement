@@ -39,6 +39,7 @@ require_once '../include/db_connect.php';
           <li class="nav-item"><a href="../../dashboard.php" class="nav-link">Dashboard</a></li>
           <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link active" aria-current="page">Articles</a></li>
           <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link" >inventory</a></li>
+          <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
           <li class="nav-item"><a href="../incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
           <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link">Outgoing orders</a></li>
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link">Users</a></li>
@@ -191,9 +192,31 @@ require_once '../include/db_connect.php';
         <tbody>
         <?php
 
-        // select database
+        // set the number of records per page
+        $records_per_page = 25;
+
+        // get the total number of records
+        $sql_count = "SELECT COUNT(*) AS count FROM articles";
+        $result_count = $connection->query($sql_count);
+        $row_count = $result_count->fetch_assoc();
+        $total_records = $row_count['count'];
+
+        // calculate the total number of pages
+        $total_pages = ceil($total_records / $records_per_page);
+
+        // get the current page number
+        $current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+
+        // calculate the offset for the query
+        $offset = ($current_page - 1) * $records_per_page;
+
+        // prepare query
         $sql = "SELECT id, name, CONCAT(LEFT(description, 25),'...') AS 'description', CONCAT('€ ', purchase_price) AS purchase_price, CONCAT('€ ', selling_price) AS selling_price, IF(is_active = 1, 'Active', 'Inactive') AS 'active_status'
-        FROM articles;";
+        FROM articles        
+        LIMIT $records_per_page
+        OFFSET $offset;";
+
+        // Run the query
         $result = $connection->query($sql);
 
         // make a new table row for every row in database
@@ -215,8 +238,33 @@ require_once '../include/db_connect.php';
 
 
         ?>
+
+        <?php if ($total_pages > 1): ?>
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <?php if ($current_page > 1): ?>
+                <li class="page-item"><a class="page-link" href="?page=<?= $current_page - 1 ?>">Previous</a></li>
+              <?php endif; ?>
+              <?php 
+                $start_page = max(1, $current_page - 5);
+                $end_page = min($total_pages, $current_page + 5);
+                for ($i = $start_page; $i <= $end_page; $i++): 
+              ?>
+                <li class="page-item<?= $current_page == $i ? ' active' : '' ?>">
+                  <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                </li>
+              <?php endfor; ?>
+              <?php if ($current_page < $total_pages): ?>
+                <li class="page-item"><a class="page-link" href="?page=<?= $current_page + 1 ?>">Next</a></li>
+              <?php endif; ?>
+            </ul>
+          </nav>
+        <?php endif; ?>
         </tbody>
       </table>
     </div>
   </body>
+  <?php 
+  // use php to use footer
+  require_once '..\include\footer.php'?>
 </html>

@@ -39,6 +39,7 @@ require_once '../include/db_connect.php';
           <li class="nav-item"><a href="../../dashboard.php" class="nav-link">Dashboard</a></li>
           <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link" >Articles</a></li>
           <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link" >inventory</a></li>
+          <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
           <li class="nav-item"><a href="../incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
           <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link" >Outgoing orders</a></li>
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link active" aria-current="page">Users</a></li>
@@ -254,4 +255,7 @@ require_once '../include/db_connect.php';
       </table>
     </div>
   </body>
+  <?php 
+  // use php to use footer
+  require_once '..\include\footer.php'?>
 </html>

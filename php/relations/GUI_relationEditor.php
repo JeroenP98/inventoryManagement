@@ -14,10 +14,13 @@ require_once '../logging/controller_logfile.php';
 
 // declare empty variables for form handling
 $name = "";
-$description = "";
-$purchase_price = "";
-$selling_price = "";
-$is_active = "";
+$street = "";
+$house_nr = "";
+$zip_code = "";
+$city = "";
+$country_code = "";
+$email_adress =  "";
+$phone_number = "";
 
 // declare variables for form handling when failing
 $errorMessage = "";
@@ -28,30 +31,33 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
   // if the method is GET, show the data found in the db record
 
     if(!isset($_GET["id"])){
-    header("location: GUI_articles.php");
+    header("location: GUI_relations.php");
     exit;
     }
 
     $id = $_GET["id"];
 
     // read the row of selected record by searching for the ID
-    $sql = "SELECT * FROM articles WHERE id=$id";
+    $sql = "SELECT * FROM relations WHERE id=$id";
     $result = $connection->query($sql);
     $row = $result->fetch_assoc();
 
     //exit and return to main page if no ID can be found
     if(!$row) {
-      header("location: GUI_articles.php");
+      header("location: GUI_relations.php");
       exit;
     }
 
 
     //Store the found data of the query to variables
     $name = $row["name"];
-    $description = $row["description"];
-    $purchase_price = $row["purchase_price"];
-    $selling_price = $row["selling_price"];
-    $is_active = $row["is_active"];
+    $street = $row["street"];
+    $house_nr = $row["house_nr"];
+    $zip_code = $row["zip_code"];
+    $city = $row["city"];
+    $country_code = $row["country_code"];
+    $email_adress =  $row["email_adress"];
+    $phone_number = $row["phone_number"];
 
 } 
 ?>
@@ -79,9 +85,9 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 nav-pills">
           <li class="nav-item"><a href="../../dashboard.php" class="nav-link">Dashboard</a></li>
-          <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link active" >Articles</a></li>
+          <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link" >Articles</a></li>
           <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link" >inventory</a></li>
-          <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
+          <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link active" aria-current="page" >Relations</a></li>
           <li class="nav-item"><a href="../incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
           <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link" >Outgoing orders</a></li>
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link" aria-current="page">Users</a></li>
@@ -112,7 +118,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
   </header>
   <body>
     <div class="container my-5">
-      <h2 class="mb-5">Edit Article</h2>
+      <h2 class="mb-5">Edit Relation</h2>
 
       <?php
         // display error message when failing to upload data
@@ -127,37 +133,52 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         }
       ?>
 
-      <form method="POST" action="controller_article.php?action=edit">
-      <input type="hidden" value="<?php echo $id; ?>" name="id">
+      <form method="POST" action="controller_relation.php?action=edit">
+        <input type="hidden" value="<?php echo $id; ?>" name="id">
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Name</label>
-          <div class="col-sm-6">
-            <input type="text" class="form-control" name="name" value="<?php echo $name; //show the current value of the db record?>">
+          <label class="col-form-label col-sm-3">Relation name</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" name="name" value="<?php echo $name; //show the current value of the db record?>" required>
           </div>
         </div>
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Description</label>
-          <div class="col-sm-6">
-            <input type="text" class="form-control" name="description" value="<?php echo $description; //show the current value of the db record?>">
+          <label class="col-form-label col-sm-3">Street</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" name="street" required value="<?php echo $street;?>">
           </div>
         </div>
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Purchase price</label>
+          <label class="col-form-label col-sm-3">House Nr.</label>
           <div class="col-sm-3">
-            <input type="number" step=".01" class="form-control" name="purchase_price" value="<?php echo $purchase_price; //show the current value of the db record?>" required>
+            <input type="text" maxlength="10" class="form-control" name="house_nr" value="<?php echo $house_nr;?>">
           </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Selling price</label>
+          <label class="col-form-label col-sm-3">Zip code</label>
           <div class="col-sm-3">
-            <input type="number" step=".01" class="form-control" name="selling_price" value="<?php echo $selling_price; //show the current value of the db record?>" required>
+            <input type="text" class="form-control" name="zip_code" required value="<?php echo $zip_code;?>">
           </div>
         </div>
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Active</label>
-          <div class="col-sm-6">
-            <input type="hidden" name="is_active" value="0">
-            <input type="checkbox" name="is_active" value="1" <?php if($is_active == 1) echo "checked"; ?>>
+          <label class="col-form-label col-sm-3">City</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" name="city" required value="<?php echo $city;?>">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-form-label col-sm-3">Country code</label>
+          <div class="col-sm-3">
+            <input type="text"  maxlength="2" class="form-control" name="country_code" required value="<?php echo $country_code;?>">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-form-label col-sm-3">Email address</label>
+          <div class="col-sm-9">
+            <input type="email" class="form-control" name="email_adress" required value="<?php echo $email_adress;?>">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-form-label col-sm-3">Tel. number</label>
+          <div class="col-sm-9">
+            <input type="tel" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" class="form-control" name="phone_number" required value="<?php echo $phone_number;?>">
           </div>
         </div>
         <div class="row mb-3">
@@ -165,7 +186,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
           <div class="col-sm-3 d-grid">
-            <a href="GUI_articles.php" class="btn btn-outline-danger" role="button">Cancel</a>
+            <a href="GUI_relations.php" class="btn btn-outline-danger" role="button">Cancel</a>
           </div>
         </div>
       </form>

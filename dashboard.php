@@ -32,6 +32,7 @@ if(!empty($_SESSION['user_name'])){
           <li class="nav-item"><a href="dashboard.php" class="nav-link active" aria-current="page">Dashboard</a></li>
           <li class="nav-item"><a href="php/articles/GUI_articles.php" class="nav-link">Articles</a></li>
           <li class="nav-item"><a href="php/stock/GUI_stock.php" class="nav-link">inventory</a></li>
+          <li class="nav-item"><a href="php/relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
           <li class="nav-item"><a href="php/incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
           <li class="nav-item"><a href="php/outgoing_orders/GUI_outgoing.php" class="nav-link">Outgoing orders</a></li>
           <li class="nav-item"><a href="php/users/GUI_users.php" class="nav-link">Users</a></li>
