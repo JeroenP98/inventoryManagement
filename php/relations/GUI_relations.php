@@ -182,9 +182,12 @@ require_once '../include/db_connect.php';
 
   <div class="container">
     <!-- Search bar-->
-    <div class="input-group my-3">
-      <span class="input-group-text" id="tableSearchBar">Search for Relation</span>
-      <input type="text" class="form-control" id="searchInput" placeholder="Relation name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
+    <div class="d-flex nowrap align-items-center">
+      <div class="input-group my-3 me-3">
+        <span class="input-group-text" id="tableSearchBar">Search for article</span>
+        <input type="text" class="form-control" id="searchInput" placeholder="Article name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
+      </div>
+      <a href="../include/exportData.php?report=exportRelations" class="btn btn-success my-3">Export</a>
     </div>
     <!-- End search bar-->
     <table class="table table-striped table-sm" id="table">
