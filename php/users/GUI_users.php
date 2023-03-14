@@ -12,7 +12,7 @@ require_once '../include/db_connect.php';
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100" data-bs-theme="light">
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,7 +26,6 @@ require_once '../include/db_connect.php';
     <script src="../../js/darkMode.js"></script>
     <title>Users | GreenHome</title>
   </head>
-
   <!--Header-->
   <header class="p-3 mb-3 border-bottom">
     <div class="container">
@@ -70,7 +69,7 @@ require_once '../include/db_connect.php';
   </header>
 
   <!--Body-->
-  <body>
+  <body class="d-flex flex-column h-100">
     
     <!-- start logout Modal -->
     <div class="modal fade" id="logOutModal" tabindex="-1"      aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -261,4 +260,5 @@ require_once '../include/db_connect.php';
   <?php 
   // use php to use footer
   require_once '..\include\footer.php'?>
+
 </html>

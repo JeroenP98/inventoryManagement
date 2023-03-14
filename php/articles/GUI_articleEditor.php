@@ -57,7 +57,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 ?>
 
 
-<html lang="en">
+<html lang="en" class="h-100" data-bs-theme="light">
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -110,7 +110,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
       </div>
     </div>
   </header>
-  <body>
+  <body class="d-flex flex-column h-100">
     <div class="container my-5">
       <h2 class="mb-5">Edit Article</h2>
 
