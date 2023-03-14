@@ -90,110 +90,113 @@ require_once '../include/db_connect.php';
 
   <div class="container">
     <!-- Search bar-->
-    <div class="input-group my-3">
+    <div class="d-flex nowrap align-items-center">
+      <div class="input-group my-3 me-3">
         <span class="input-group-text" id="tableSearchBar">Search for article</span>
         <input type="text" class="form-control" id="searchInput" placeholder="Article name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
       </div>
+      <a href="../include/exportData.php?report=exportStock" class="btn btn-success my-3">Export</a>
+    </div>
       <!-- End search bar-->
-      <table class="table table-striped table-sm" id="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Article name</th>
-            <th>Stock level</th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-sm" id="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Article name</th>
+          <th>Stock level</th>
+        </tr>
+      </thead>
 
-        <tbody>
-        <?php
+      <tbody>
+      <?php
 
-        // set the number of records per page
-        $records_per_page = 25;
+      // set the number of records per page
+      $records_per_page = 25;
 
-        // get the total number of records
-        $sql_count = "SELECT COUNT(*) AS count FROM articles";
-        $result_count = $connection->query($sql_count);
-        $row_count = $result_count->fetch_assoc();
-        $total_records = $row_count['count'];
+      // get the total number of records
+      $sql_count = "SELECT COUNT(*) AS count FROM articles";
+      $result_count = $connection->query($sql_count);
+      $row_count = $result_count->fetch_assoc();
+      $total_records = $row_count['count'];
 
-        // calculate the total number of pages
-        $total_pages = ceil($total_records / $records_per_page);
+      // calculate the total number of pages
+      $total_pages = ceil($total_records / $records_per_page);
 
-        // get the current page number
-        $current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+      // get the current page number
+      $current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 
-        // calculate the offset for the query
-        $offset = ($current_page - 1) * $records_per_page;
+      // calculate the offset for the query
+      $offset = ($current_page - 1) * $records_per_page;
 
-        // prepare sql statement
-        $sql = "WITH total_incoming AS (
-          SELECT articles.id AS article_id, SUM(order_lines.quantity) AS incoming_stock
-          FROM order_lines
-          JOIN orders
-              ON order_lines.order_id = orders.id
-          JOIN articles
-              ON articles.id = order_lines.article_id
-          WHERE orders.order_type = 0 
-          GROUP BY articles.id
-        ), total_outgoing AS (
-          SELECT articles.id AS article_id, SUM(order_lines.quantity) AS outgoing_stock
-          FROM order_lines
-          JOIN orders
-              ON order_lines.order_id = orders.id
-          JOIN articles
-              ON articles.id = order_lines.article_id
-          WHERE orders.order_type = 1 
-          GROUP BY articles.id
-        )
-        
-        SELECT articles.id AS 'article_id', articles.name AS 'article_name', 
-              COALESCE(SUM(total_incoming.incoming_stock), 0) - COALESCE(SUM(total_outgoing.outgoing_stock), 0) AS 'stock_level'
-        FROM articles
-        LEFT JOIN total_incoming
-            ON articles.id = total_incoming.article_id
-        LEFT JOIN total_outgoing
-            ON articles.id = total_outgoing.article_id
-        GROUP BY articles.id, articles.name
-        LIMIT $records_per_page
-        OFFSET $offset;";
-        
-        // execute the query
-        $result = $connection->query($sql);
+      // prepare sql statement
+      $sql = "WITH total_incoming AS (
+        SELECT articles.id AS article_id, SUM(order_lines.quantity) AS incoming_stock
+        FROM order_lines
+        JOIN orders
+            ON order_lines.order_id = orders.id
+        JOIN articles
+            ON articles.id = order_lines.article_id
+        WHERE orders.order_type = 0 
+        GROUP BY articles.id
+      ), total_outgoing AS (
+        SELECT articles.id AS article_id, SUM(order_lines.quantity) AS outgoing_stock
+        FROM order_lines
+        JOIN orders
+            ON order_lines.order_id = orders.id
+        JOIN articles
+            ON articles.id = order_lines.article_id
+        WHERE orders.order_type = 1 
+        GROUP BY articles.id
+      )
+      
+      SELECT articles.id AS 'article_id', articles.name AS 'article_name', 
+            COALESCE(SUM(total_incoming.incoming_stock), 0) - COALESCE(SUM(total_outgoing.outgoing_stock), 0) AS 'stock_level'
+      FROM articles
+      LEFT JOIN total_incoming
+          ON articles.id = total_incoming.article_id
+      LEFT JOIN total_outgoing
+          ON articles.id = total_outgoing.article_id
+      GROUP BY articles.id, articles.name
+      LIMIT $records_per_page
+      OFFSET $offset;";
+      
+      // execute the query
+      $result = $connection->query($sql);
 
-        // make a new table row for every row in database
-        while($row = $result->fetch_assoc()) {
-          echo "<tr>
-          <td>$row[article_id]</td>
-          <td>$row[article_name]</td>
-          <td>$row[stock_level]</td>
-          </tr>";
+      // make a new table row for every row in database
+      while($row = $result->fetch_assoc()) {
+        echo "<tr>
+        <td>$row[article_id]</td>
+        <td>$row[article_name]</td>
+        <td>$row[stock_level]</td>
+        </tr>";
 
-        }
-        ?>
+      }
+      ?>
 
-        <?php if ($total_pages > 1): ?>
-          <nav aria-label="Page navigation">
-            <ul class="pagination">
-              <?php if ($current_page > 1): ?>
-                <li class="page-item"><a class="page-link" href="?page=<?= $current_page - 1 ?>">Previous</a></li>
-              <?php endif; ?>
-              <?php 
-                $start_page = max(1, $current_page - 5);
-                $end_page = min($total_pages, $current_page + 5);
-                for ($i = $start_page; $i <= $end_page; $i++): 
-              ?>
-                <li class="page-item<?= $current_page == $i ? ' active' : '' ?>">
-                  <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
-                </li>
-              <?php endfor; ?>
-              <?php if ($current_page < $total_pages): ?>
-                <li class="page-item"><a class="page-link" href="?page=<?= $current_page + 1 ?>">Next</a></li>
-              <?php endif; ?>
-            </ul>
-          </nav>
-        <?php endif; ?>
-        </tbody>
-      </table>
+      <?php if ($total_pages > 1): ?>
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+            <?php if ($current_page > 1): ?>
+              <li class="page-item"><a class="page-link" href="?page=<?= $current_page - 1 ?>">Previous</a></li>
+            <?php endif; ?>
+            <?php 
+              $start_page = max(1, $current_page - 5);
+              $end_page = min($total_pages, $current_page + 5);
+              for ($i = $start_page; $i <= $end_page; $i++): 
+            ?>
+              <li class="page-item<?= $current_page == $i ? ' active' : '' ?>">
+                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+              </li>
+            <?php endfor; ?>
+            <?php if ($current_page < $total_pages): ?>
+              <li class="page-item"><a class="page-link" href="?page=<?= $current_page + 1 ?>">Next</a></li>
+            <?php endif; ?>
+          </ul>
+        </nav>
+      <?php endif; ?>
+      </tbody>
+    </table>
   </div>
   <?php 
   // use php to use footer
