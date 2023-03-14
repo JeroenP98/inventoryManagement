@@ -104,7 +104,7 @@ require_once '../include/loginCheck.php';
         <thead>
           <tr>
             <th>ID</th>
-            <th>Article ID</th>
+            <th>Name</th>
             <th>Description</th>
             <th>Action</th>
           </tr>
@@ -115,14 +115,14 @@ require_once '../include/loginCheck.php';
         // create connection with database
         require_once '../include/db_connect.php';
         // select database
-        $sql = "SELECT * FROM articlesgh";
+        $sql = "SELECT * FROM articles";
         $result = $connection->query($sql);
 
         // make a new table row for every row in database
         while($row = $result->fetch_assoc()) {
           echo "<tr>
           <td>$row[id]</td>
-          <td>$row[article_id]</td>
+          <td>$row[name]</td>
           <td>$row[description]</td>
           <td>
             <a class='btn btn-primary' href='controller_articleEditor.php?id=$row[id]'>Edit</a>

@@ -79,5 +79,69 @@ require_once '../include/loginCheck.php';
       </div>
     </div>
     <!-- end logout modal-->
+
+    <!--Page data-->
+    <div class="container">
+      <h1>Incoming orders</h1>
+      <a href="controller_orderCreator.php" class="btn btn-primary">Add new</a>
+      <br>
+      <!-- Search bar-->
+      <!-- <div class="input-group my-3">
+        <span class="input-group-text" id="tableSearchBar">Search for incoming order</span>
+        <input type="text" class="form-control" id="searchInput" placeholder="Customer name..." aria-label="ordername" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
+      </div> -->
+      <!-- End search bar-->
+      <table class="table table-striped table-sm" id="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Customer</th>
+            <th>Emailadres</th>
+            <th>Cellphone</th>
+            <th>Order date</th>
+            <th>Shipping date</th>
+            <th>Salesman</th>
+            <th>IsFinalized</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        <?php
+        // create connection with database
+        require_once '../include/db_connect.php';
+        // select database
+        $sql = "SELECT orders.id as id, relations.name as name, relations.email_adress as email_adress, relations.phone_number as phone_number, orders.order_date as order_date, orders.shipping_date as shipping_date,employees.first_name as verkoper_name, orders.is_finalized as is_finalized 
+        FROM orders
+        JOIN relations
+        ON orders.relation_id = relations.id
+        JOIN employees
+        ON orders.employee_id = employees.id
+        WHERE order_type = 1";
+        $result = $connection->query($sql);
+
+        // make a new table row for every row in database
+        while($row = $result->fetch_assoc()) {
+          echo "<tr>
+          <td>$row[id]</td>
+          <td>$row[name]</td>
+          <td>$row[email_adress]</td>
+          <td>$row[phone_number]</td>
+          <td>$row[order_date]</td>
+          <td>$row[shipping_date]</td>
+          <td>$row[verkoper_name]</td>
+          <td>$row[is_finalized]</td>
+          <td>
+            <a class='btn btn-primary' href='controller_orderEditor.php?id=$row[id]'>Edit</a>
+            <a class='btn btn-danger' href='controller_orderDelete.php?id=$row[id]'>Delete</a>
+          </td>
+          </tr>";
+
+        }
+
+
+        ?>
+        </tbody>
+      </table>
+    </div>
 </body>
 </html>
