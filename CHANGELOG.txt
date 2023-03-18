@@ -147,6 +147,15 @@ the logging has been added to the articles and user database - Jeroen
 
 ## Version [1.18] / Released 12-3-2022
 
-###
+### added
 - added export to .csv function to tables by calling upon the class in exportData.php
 
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.19] / Released 18-3-2022
+
+### fixed
+- small issue with DDL file 
+
+### added
+- order by clause in various table pages

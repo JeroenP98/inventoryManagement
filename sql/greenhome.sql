@@ -71,7 +71,7 @@ CREATE TABLE articles (
   description varchar(1500),  
   purchase_price decimal(10,2), 
   selling_price decimal(10,2), 
-  is_active tinyint(1) NOT NULL DEFAULT 1;
+  is_active tinyint(1) NOT NULL DEFAULT 1
 );
 
 
