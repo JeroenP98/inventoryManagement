@@ -197,15 +197,39 @@ require_once '../include/db_connect.php';
           </div>
       <?php endif ?>
 
-      <!-- Search bar-->
-      <div class="d-flex nowrap align-items-center">
+      <!-- Actions bar-->
+      <div class="d-flex align-items-center mb-5">
         <div class="input-group my-3 me-3">
           <span class="input-group-text" id="tableSearchBar">Search for article</span>
           <input type="text" class="form-control" id="searchInput" placeholder="Article name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
         </div>
-        <a href="../include/exportData.php?report=exportUsers" class="btn btn-success my-3">Export</a>
+        <a href="../include/exportData.php?report=exportArticles" class="btn btn-success my-3">Export</a>
+        <div class="container d-flex align-items-center justify-content-end my-3 me-3">
+          <form method="get">
+            <div class="form-group row align-items-center">
+              <label for="order_by" class="col-sm-3 col-form-label">Order by:</label>
+              <div class="col-sm-6">
+                <select class="form-control" id="order_by" name="order_by">
+                  <option value="id_asc">ID (Ascending)</option>
+                  <option value="id_desc">ID (Descending)</option>
+                  <option value="first_name_asc">Name (Ascending)</option>
+                  <option value="first_name_desc">Name (Descending)</option>
+                  <option value="name_asc">Company (Ascending)</option>
+                  <option value="name_desc">Company (Descending)</option>
+                  <option value="is_active_asc">Is active (Ascending)</option>
+                  <option value="is_active_desc">Is active (Descending)</option>
+                  <option value="function_name_asc">Function (Ascending)</option>
+                  <option value="function_name_desc">Function (Descending)</option>
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
-      <!-- End search bar-->
+      <!-- End actions bar-->
 
       <table class="table table-striped table-sm" id="table">
         <thead>
@@ -223,14 +247,75 @@ require_once '../include/db_connect.php';
 
         <tbody>
         <?php
-      
+
+        // set the number of records per page
+        $records_per_page = 25;
+
+        // get the total number of records
+        $sql_count = "SELECT COUNT(*) AS count FROM employees";
+        $result_count = $connection->query($sql_count);
+        $row_count = $result_count->fetch_assoc();
+        $total_records = $row_count['count'];
+
+        // calculate the total number of pages
+        $total_pages = ceil($total_records / $records_per_page);
+
+        // get the current page number
+        $current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+
+        // calculate the offset for the query
+        $offset = ($current_page - 1) * $records_per_page;
+
+        // Set order by value
+        if(isset($_GET["order_by"])){
+          $get_order_by = $_GET["order_by"];
+          switch($get_order_by) {
+            case "first_name_asc":
+              $order_by = "first_name ASC"; 
+              break;
+            case "first_name_desc":
+              $order_by = "first_name DESC"; 
+              break;
+            case "id_asc":
+              $order_by = "id ASC"; 
+              break;
+            case "id_desc":
+              $order_by = "id DESC"; 
+              break;
+            case "name_asc":
+              $order_by = "name ASC"; 
+              break;
+            case "name_desc":
+              $order_by = "name DESC"; 
+              break;
+            case "is_active_asc":
+              $order_by = "is_active ASC"; 
+              break;
+            case "is_active_desc":
+              $order_by = "is_active DESC"; 
+              break;
+            case "function_name_asc":
+              $order_by = "function_name ASC"; 
+              break;
+            case "function_name_desc":
+              $order_by = "function_name DESC"; 
+              break;
+            default:
+              $order_by = "id ASC";
+          }
+        } else {
+          $order_by = "id ASC";
+        }
 
         // select database
         $sql = 
         "SELECT employees.id, employees.first_name, employees.last_name, employees.email_adress, employees.function_name, companies.name, IF(employees.is_active = 1, 'Active', 'Non-active') AS 'is_active'
         FROM employees
         JOIN companies 
-          ON employees.company_id  = companies.id;";
+          ON employees.company_id  = companies.id
+        ORDER BY $order_by
+        LIMIT $records_per_page
+        OFFSET $offset;";
         $result = $connection->query($sql);
 
         // make a new table row for every row in database
