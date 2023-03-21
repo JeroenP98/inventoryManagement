@@ -4,7 +4,7 @@
 *     GREENHOME STOCK MANAGEMENT SYSTEM           *
 *                                                 *
 *     By: Jeroen Post         GitHub: JeroenP98   * 
-*         Joel van der Vlies          Noro1996    *
+*         Joel van der Vlies          JoelvdVlies *
 *         Jan van der Waal        Janvanderwaal   *
 *                                                 *
 *                                                 *
@@ -48,9 +48,9 @@ the following is required to make the system operate:
 - Internet connection
 
 follow these steps to setup the databases to work with:
-1) unpack/place the "POC GREENHOME" folder into C:\xampp\htdocs
+1) unpack/place the "inventoryManagement" folder into C:\xampp\htdocs
 2) Open XAMPP and start "Apache" and "MySQL"
-3) Navigate to http://127.0.0.1/poc%20greenhome/dashboard.php 
+3) Navigate to http://127.0.0.1/inventoryManagement/dashboard.php 
 4) when asked to login, you can use the following credentials:
     email: guest@greenhome.com
     password: 123456

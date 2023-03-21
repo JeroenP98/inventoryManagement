@@ -15,11 +15,11 @@ require_once '../logging/controller_logfile.php';
 // declare empty variables for form handling
 $order_id = "";
 $order_date = date('Y-m-d');
-$shipping_date = "";
+$shipping_date = date('Y-m-d');
 $order_type = "0";
 $employee_id = "";
 $relation_id = "";
-$company_id = "";
+$company_id = "1";
 $is_finalized = "0";
 
 $errorMessage = "";
@@ -30,18 +30,15 @@ $errorMessage = "";
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   //store form data under variables which share the same name as db columns
-  $order_id = $_POST["order_id"];
   $shipping_date = $_POST["shipping_date"];
-  $order_type = $_POST["order_type"];
   $employee_id = $_POST["employee_id"];
   $relation_id = $_POST["relation_id"];
-  $company_id = $_POST["company_id"];
   $is_finalized = $_POST["is_finalized"];
 
   //check if all fields are filled
   do {
    // var_dump($order_id, $shipping_date, $order_type, $employee_id, $relation_id, $company_id, $is_finalized);
-   if ( isset($order_id) || isset($shipping_date) || isset($order_type) || isset($employee_id) || isset($relation_id) || isset($company_id) || isset($is_finalized) ) {
+   if ( !isset($shipping_date) || !isset($employee_id) || !isset($relation_id) || !isset($is_finalized) ) {
         $errorMessage = "All fields are required";
        // break;
    }
@@ -66,11 +63,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $order_id = "";
     $order_date = date('Y-m-d');
-    $shipping_date = "";
+    $shipping_date = date('Y-m-d');
     $order_type = "0";
     $employee_id = "";
     $relation_id = "";
-    $company_id = "";
+    $company_id = "1";
     $is_finalized = "0";
 
     // return back to article overview
@@ -116,12 +113,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       <form method="POST">
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Order ID</label>
-          <div class="col-sm-6">
-            <input type="text" class="form-control" name="order_id" value="<?php echo $order_id;  ?>">
-          </div>
-        </div>
-        <div class="row mb-3">
           <label class="col-form-label col-sm-3">Order Date</label>
           <div class="col-sm-6">
             <input type="text" class="form-control" name="order_date" value="<?php echo $order_date;  ?>">
@@ -134,33 +125,47 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
           </div>
         </div>
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Order Type</label>
+          <label class="col-form-label col-sm-3">Employee</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" name="order_type" value="<?php echo $order_type;  ?>">
+            <select class="form-select" name="employee_id" required>
+            <option value="">-- Select employee --</option>
+              <?php
+                $sql = "SELECT id, first_name FROM employees ORDER BY first_name";
+                $result = mysqli_query($connection, $sql);
+                  if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                     echo '<option value="' . $row['id'] . '">' . htmlspecialchars($row['first_name']) . '</option>';
+                    }
+                  }
+              ?>
+            </select>
           </div>
         </div>
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Employee ID</label>
+          <label class="col-form-label col-sm-3">Relation</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" name="employee_id" value="<?php echo $employee_id;  ?>">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Relation ID</label>
-          <div class="col-sm-6">
-            <input type="text" class="form-control" name="relation_id" value="<?php echo $relation_id;  ?>">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Company ID</label>
-          <div class="col-sm-6">
-            <input type="text" class="form-control" name="company_id" value="<?php echo $company_id;  ?>">
+            <select class="form-select" name="relation_id" required>
+            <option value="">-- Select customer --</option>
+              <?php
+                $sql = "SELECT id, name FROM relations ORDER BY name";
+                $result = mysqli_query($connection, $sql);
+                  if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                     echo '<option value="' . $row['id'] . '">' . htmlspecialchars($row['name']) . '</option>';
+                    }
+                  }
+              ?>
+            </select>
           </div>
         </div>
         <div class="row mb-3">
           <label class="col-form-label col-sm-3">Finalized</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" name="is_finalized" value="<?php echo $is_finalized;  ?>">
+            <select class="form-select" name="is_finalized" required>
+            <option value="">-- Select --</option>
+            <option value="0">Not Finalized</option>
+            <option value="1">Finalized</option>
+            </select>
           </div>
         </div>
         <div class="row mb-3">
@@ -173,5 +178,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
       </form>
     </div>
+    <hr class="row mb-3"/>
+
+    <div class="container my-5">
+     <h2>Orderline</h2
+     class="offset-sm-1 col-sm-2">
+     <a href"" class="btn btn-primary">Add Orderline</a>
+    </div>
   </body>
+  <?php 
+  // use php to use footer
+  require_once '..\include\footer.php'?>
 </html>
