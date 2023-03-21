@@ -226,7 +226,7 @@ require_once '../include/db_connect.php';
         while($row = $result->fetch_assoc()) {
           echo "<tr>
           <td>$row[id]</td>
-          <td>$row[name]</td>
+          <td>$row[article_id]</td>
           <td>$row[description]</td>
           <td>$row[purchase_price]</td>
           <td>$row[selling_price]</td>
