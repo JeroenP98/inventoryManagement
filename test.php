@@ -392,7 +392,7 @@ require_once 'php/include/db_connect.php';
                     </select>
                     <label for="month" class="form-label ms-2">Select month</label>
                 </div>
-                <button type="submit" class="btn btn-primary col-3">Submit</button>
+                <button type="submit" class="btn btn-sm btn-primary col-3">Submit</button>
               </form>
 
                 <div style="height: 400px;">
