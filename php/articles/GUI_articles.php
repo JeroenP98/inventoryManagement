@@ -12,7 +12,7 @@ require_once '../include/db_connect.php';
 
 
 <!DOCTYPE html>
-<html lang="en" class="h-100" data-bs-theme="light">
+<html lang="en" data-bs-theme="light">
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -70,7 +70,7 @@ require_once '../include/db_connect.php';
   </header>
 
   <!--Body-->
-  <body class="d-flex flex-column h-100">
+  <body>
     
     <!-- start logout Modal -->
     <div class="modal fade" id="logOutModal" tabindex="-1"     aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -92,8 +92,8 @@ require_once '../include/db_connect.php';
     </div>
     <!-- end logout modal-->
  
-    <!-- start new article Modal -->
-    <div class="modal fade" id="newArticleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- start new article Modal -->
+        <div class="modal fade" id="newArticleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -170,41 +170,20 @@ require_once '../include/db_connect.php';
       }
       ?>
 
-      <!-- Actions bar-->
-      <div class="d-flex align-items-center mb-5">
+      <!-- Search bar-->
+      <div class="d-flex nowrap align-items-center">
         <div class="input-group my-3 me-3">
           <span class="input-group-text" id="tableSearchBar">Search for article</span>
           <input type="text" class="form-control" id="searchInput" placeholder="Article name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
         </div>
         <a href="../include/exportData.php?report=exportArticles" class="btn btn-success my-3">Export</a>
-        <div class="container d-flex align-items-center justify-content-end my-3 me-3">
-          <form method="get">
-            <div class="form-group row align-items-center">
-              <label for="order_by" class="col-sm-3 col-form-label">Order by:</label>
-              <div class="col-sm-6">
-                <select class="form-control" id="order_by" name="order_by">
-                  <option value="id_asc">ID (Ascending)</option>
-                  <option value="id_desc">ID (Descending)</option>
-                  <option value="name_asc">Name (Ascending)</option>
-                  <option value="name_desc">Name (Descending)</option>
-                  <option value="purchase_price_asc">Purchase Price (Ascending)</option>
-                  <option value="purchase_price_desc">Purchase Price (Descending)</option>
-                </select>
-              </div>
-              <div class="col-sm-3">
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </div>
-            </div>
-          </form>
-        </div>
       </div>
-      <!-- End actions bar-->
-
+      <!-- End search bar-->
       <table class="table table-striped table-sm" id="table">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Name</th>
+            <th>Article ID</th>
             <th>Description</th>
             <th>Purchase price</th>
             <th>Selling price</th>
@@ -234,39 +213,9 @@ require_once '../include/db_connect.php';
         // calculate the offset for the query
         $offset = ($current_page - 1) * $records_per_page;
 
-        // Set order by value
-        if(isset($_GET["order_by"])){
-          $get_order_by = $_GET["order_by"];
-          switch($get_order_by) {
-            case "purchase_price_asc":
-              $order_by = "purchase_price ASC"; 
-              break;
-            case "purchase_price_desc":
-              $order_by = "purchase_price DESC"; 
-              break;
-            case "id_asc":
-              $order_by = "id ASC"; 
-              break;
-            case "id_desc":
-              $order_by = "id DESC"; 
-              break;
-            case "name_asc":
-              $order_by = "name ASC"; 
-              break;
-            case "name_desc":
-              $order_by = "name DESC"; 
-              break;
-            default:
-              $order_by = "id ASC";
-          }
-        } else {
-          $order_by = "id ASC";
-        }
-
         // prepare query
         $sql = "SELECT id, name, CONCAT(LEFT(description, 25),'...') AS 'description', CONCAT('€ ', purchase_price) AS purchase_price, CONCAT('€ ', selling_price) AS selling_price, IF(is_active = 1, 'Active', 'Inactive') AS 'active_status'
-        FROM articles
-        ORDER BY $order_by
+        FROM articles        
         LIMIT $records_per_page
         OFFSET $offset;";
 
@@ -296,7 +245,7 @@ require_once '../include/db_connect.php';
       </table>
       <?php if ($total_pages > 1): ?>
           <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
+            <ul class="pagination">
               <?php if ($current_page > 1): ?>
                 <li class="page-item"><a class="page-link" href="?page=<?= $current_page - 1 ?>">Previous</a></li>
               <?php endif; ?>
