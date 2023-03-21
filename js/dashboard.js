@@ -1,7 +1,7 @@
 
 function showSection(sectionId, navLink) {
   // Get all the content sections
-  var sections = document.querySelectorAll('.card-body > div');
+  var sections = document.querySelectorAll('.cardBodyJs > div');
   
   // Loop through each section and hide/show them as appropriate
   for (var i = 0; i < sections.length; i++) {

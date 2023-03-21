@@ -40,6 +40,9 @@ require_once '../include/db_connect.php';
           <li class="nav-item"><a href="../incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
           <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link" >Outgoing orders</a></li>
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link">Users</a></li>
+          <li class="nav-item "><a class="nav-link" href="../companies/GUI_companies.php">Companies</a></li>
+          <li class="nav-item "><a class="nav-link" href="../accessibilities/GUI_accessibilities.php">Accessibility</a></li>
+          <li class="nav-item "><a  href="../functions/GUI_functions.php" class="nav-link">Functions</a></li>
         </ul>
 
         <?php
