@@ -71,7 +71,7 @@ CREATE TABLE articles (
   description varchar(1500),  
   purchase_price decimal(10,2), 
   selling_price decimal(10,2), 
-  is_active tinyint(1) NOT NULL DEFAULT 1;
+  is_active tinyint(1) NOT NULL DEFAULT 1
 );
 
 
@@ -84,7 +84,9 @@ INSERT INTO employees VALUES
 
 INSERT INTO functions VALUES ('admin');
 
-INSERT INTO accessibilities VALUES ('admin', 1, 1, 1, 1);
+INSERT INTO accessibilities (function_name, can_acces_orders, can_acces_relations, can_acces_articles, can_acces_employees) VALUES ('admin', 1, 1, 1, 1);
+
+
 
 
 INSERT INTO articles VALUES (1, 'Hoekbank ''Future'' Groen', 'Luxe groene 5-zits hoekbank', 500, 789.98, 1);
