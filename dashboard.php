@@ -117,7 +117,7 @@ require_once 'php/include/db_connect.php';
                   </div>
                   <div class="card-body">
                     <p class="card-text">Gain quick acces to to article related pages with the buttons below</p>
-                    <a class="w-100 btn btn-lg btn-outline-primary" href="#">SKU overview</a>
+                    <a class="w-100 btn btn-lg btn-outline-primary" href="php/articles/GUI_articles.php">SKU overview</a>
                   </div>
                 </div>
               </div>
@@ -128,8 +128,8 @@ require_once 'php/include/db_connect.php';
                   </div>
                   <div class="card-body">
                     <p class="card-text">Gain quick acces to to order related pages with the buttons below</p>
-                    <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="#">Incoming orders</a>
-                    <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="#">Outgoing orders</a>
+                    <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="php/incoming_orders/GUI_incoming.php">Incoming orders</a>
+                    <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="php/outgoing_orders/GUI_outgoing.php">Outgoing orders</a>
                     <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="#">Order lines</a>
                   </div>
                 </div>
@@ -141,7 +141,7 @@ require_once 'php/include/db_connect.php';
                   </div>
                   <div class="card-body">
                     <p class="card-text">Gain quick acces to the stock related pages with the buttons below</p>
-                    <a class="w-100 btn btn-lg btn-outline-primary" href="#">Stock overview</a>
+                    <a class="w-100 btn btn-lg btn-outline-primary" href="php/stock/GUI_stock.php">Stock overview</a>
                   </div>
                 </div>
               </div>
@@ -156,7 +156,7 @@ require_once 'php/include/db_connect.php';
                 </div>
                 <div class="card-body">
                   <p class="card-text">Gain quick acces to to Relation related pages with the buttons below</p>
-                  <a class="w-100 btn btn-lg btn-outline-primary" href="#">Relation overview</a>
+                  <a class="w-100 btn btn-lg btn-outline-primary" href="php/relations/GUI_relations.php">Relation overview</a>
                 </div>
               </div>
             </div>
@@ -171,7 +171,7 @@ require_once 'php/include/db_connect.php';
                 </div>
                 <div class="card-body">
                   <p class="card-text">Gain quick acces to to Users related pages with the buttons below</p>
-                  <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="#">User overview</a>
+                  <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="php/users/GUI_users.php">User overview</a>
                   <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="#">Functions overview</a>
                   <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="#">Accesibilities overview</a>
                 </div>
@@ -395,8 +395,8 @@ require_once 'php/include/db_connect.php';
                   </select>
                   <label for="year" class="form-label ms-3">Select year</label>
                 </div>
-                <div class="col-3">
-                  <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+                <div class="col-3 d-flex align-items-center">
+                  <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
 
               </form>
