@@ -32,6 +32,7 @@ require_once '../include/loginCheck.php';
           <li class="nav-item"><a href="../../dashboard.php" class="nav-link">Dashboard</a></li>
           <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link" >Articles</a></li>
           <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link" >inventory</a></li>
+          <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
           <li class="nav-item"><a href="../incoming_orders/GUI_incoming.php" class="nav-link active" aria-current="page">Incoming orders</a></li>
           <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link">Outgoing orders</a></li>
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link">Users</a></li>
@@ -101,7 +102,7 @@ require_once '../include/loginCheck.php';
             <th>Order date</th>
             <th>Shipping date</th>
             <th>Salesman</th>
-            <th>IsFinalized</th>
+            <th>Finalized</th>
           </tr>
         </thead>
 
@@ -131,6 +132,7 @@ require_once '../include/loginCheck.php';
           <td>$row[verkoper_name]</td>
           <td>$row[is_finalized]</td>
           <td>
+            <a class='btn btn-secondary' href='controller_viewOrderline.php?id=$row[id]'>View</a>
             <a class='btn btn-primary' href='controller_orderEditor.php?id=$row[id]'>Edit</a>
             <a class='btn btn-danger' href='controller_orderDelete.php?id=$row[id]'>Delete</a>
           </td>
@@ -144,4 +146,7 @@ require_once '../include/loginCheck.php';
       </table>
     </div>
 </body>
+<?php 
+  // use php to use footer
+  require_once '..\include\footer.php'?>
 </html>

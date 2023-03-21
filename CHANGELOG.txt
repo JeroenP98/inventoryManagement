@@ -115,3 +115,38 @@ the logging has been added to the articles and user database - Jeroen
 ### added
 - changed database DDL in greenhome.sql
 - created seperate queries file in queries.sql
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.15] / Released 7-3-2022
+
+### fixed
+- Fixed the user handling with the new employees table
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.16] / Released 11-3-2022
+
+### Added
+- Added functionality to the inventory page
+- added pagination to the inventory page
+
+### fixed
+- Fixed article handling with the new articles table
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.17] / Released 12-3-2022
+
+### added
+- darkmode support for various entity edit pages
+- html headers for various entity edit pages
+- functional relations page with working adding/editing/deleting functions
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.18] / Released 12-3-2022
+
+###
+- added export to .csv function to tables by calling upon the class in exportData.php
+
