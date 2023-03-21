@@ -102,7 +102,7 @@ require_once '../include/loginCheck.php';
             <th>Order date</th>
             <th>Shipping date</th>
             <th>Salesman</th>
-            <th>IsFinalized</th>
+            <th>Finalized</th>
           </tr>
         </thead>
 
@@ -132,6 +132,7 @@ require_once '../include/loginCheck.php';
           <td>$row[verkoper_name]</td>
           <td>$row[is_finalized]</td>
           <td>
+            <a class='btn btn-secondary' href='controller_viewOrderline.php?id=$row[id]'>View</a>
             <a class='btn btn-primary' href='controller_orderEditor.php?id=$row[id]'>Edit</a>
             <a class='btn btn-danger' href='controller_orderDelete.php?id=$row[id]'>Delete</a>
           </td>
