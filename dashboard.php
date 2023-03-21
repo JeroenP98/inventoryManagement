@@ -32,7 +32,7 @@ require_once 'php/include/db_connect.php';
         <a href="../../POC greenhome/dashboard.php" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none me-5">
           <img src="images/logo.png" alt="company logo" srcset="" width="40" height="40">
         </a>
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 nav-pills">
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-cßenter mb-md-0 nav-pills">
           <li class="nav-item"><a href="dashboard.php" class="nav-link active" aria-current="page">Dashboard</a></li>
           <li class="nav-item"><a href="php/articles/GUI_articles.php" class="nav-link">Articles</a></li>
           <li class="nav-item"><a href="php/stock/GUI_stock.php" class="nav-link">inventory</a></li>
@@ -40,6 +40,9 @@ require_once 'php/include/db_connect.php';
           <li class="nav-item"><a href="php/incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
           <li class="nav-item"><a href="php/outgoing_orders/GUI_outgoing.php" class="nav-link">Outgoing orders</a></li>
           <li class="nav-item"><a href="php/users/GUI_users.php" class="nav-link">Users</a></li>
+          <li class="nav-item"><a  href="php/companies/GUI_companies.php" class="nav-link">Companies</a></li>
+          <li class="nav-item "><a  href="php/accessibilities/GUI_accessibilities.php" class="nav-link">Accesibility</a></li>
+          <li class="nav-item "><a  href="php/functions/GUI_functions.php" class="nav-link">Functions</a></li>
         </ul>
         <?php
           //either display the users first name when logged in or give the option to log themselves in
