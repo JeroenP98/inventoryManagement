@@ -110,7 +110,7 @@ require_once 'php/include/db_connect.php';
             </li>
           </ul>
         </div>
-        <div class="card-body" >
+        <div class="card-body cardBodyJs" >
           <div id="section1">
             <div class="row row-cols-1 row-cols-md-3 mb-3 text-center sortable" id="sortable">
               <div class="col draggable">
@@ -118,7 +118,7 @@ require_once 'php/include/db_connect.php';
                   <div class="card-header py-3">
                     <h4 class="my-0 fw-normal">Articles</h4>
                   </div>
-                  <div class="card-body">
+                  <div class="card-body cardBodyJs">
                     <p class="card-text">Gain quick acces to to article related pages with the buttons below</p>
                     <a class="w-100 btn btn-lg btn-outline-primary" href="php/articles/GUI_articles.php">SKU overview</a>
                   </div>
@@ -129,7 +129,7 @@ require_once 'php/include/db_connect.php';
                   <div class="card-header py-3">
                     <h4 class="my-0 fw-normal">Orders</h4>
                   </div>
-                  <div class="card-body">
+                  <div class="card-body cardBodyJs">
                     <p class="card-text">Gain quick acces to to order related pages with the buttons below</p>
                     <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="php/incoming_orders/GUI_incoming.php">Incoming orders</a>
                     <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="php/outgoing_orders/GUI_outgoing.php">Outgoing orders</a>
@@ -142,7 +142,7 @@ require_once 'php/include/db_connect.php';
                   <div class="card-header py-3">
                     <h4 class="my-0 fw-normal">Stock</h4>
                   </div>
-                  <div class="card-body">
+                  <div class="card-body cardBodyJs">
                     <p class="card-text">Gain quick acces to the stock related pages with the buttons below</p>
                     <a class="w-100 btn btn-lg btn-outline-primary" href="php/stock/GUI_stock.php">Stock overview</a>
                   </div>
@@ -157,7 +157,7 @@ require_once 'php/include/db_connect.php';
                 <div class="card-header py-3">
                   <h4 class="my-0 fw-normal">Relations</h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body cardBodyJs">
                   <p class="card-text">Gain quick acces to to Relation related pages with the buttons below</p>
                   <a class="w-100 btn btn-lg btn-outline-primary" href="php/relations/GUI_relations.php">Relation overview</a>
                 </div>
@@ -172,7 +172,7 @@ require_once 'php/include/db_connect.php';
                 <div class="card-header py-3">
                   <h4 class="my-0 fw-normal">Users</h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body cardBodyJs">
                   <p class="card-text">Gain quick acces to to Users related pages with the buttons below</p>
                   <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="php/users/GUI_users.php">User overview</a>
                   <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="#">Functions overview</a>
@@ -185,7 +185,7 @@ require_once 'php/include/db_connect.php';
                 <div class="card-header py-3">
                   <h4 class="my-0 fw-normal">Companies</h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body cardBodyJs">
                   <p class="card-text">Gain quick acces to to company related pages with the buttons below</p>
                   <a class="w-100 btn btn-lg btn-outline-primary" href="#">Company overview</a>
                 </div>
@@ -200,7 +200,7 @@ require_once 'php/include/db_connect.php';
                 <div class="card-header py-3">
                   <h4 class="my-0 fw-normal">Users</h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body cardBodyJs">
                   <p class="card-text">Gain quick acces to the order related reports with the buttons below</p>
                   <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="#">User overview</a>
                   <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="#">Functions overview</a>
@@ -213,7 +213,7 @@ require_once 'php/include/db_connect.php';
                 <div class="card-header py-3">
                   <h4 class="my-0 fw-normal">Companies</h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body cardBodyJs">
                   <p class="card-text">Gain quick acces to to company related pages with the buttons below</p>
                   <a class="w-100 btn btn-lg btn-outline-primary" href="#">Company overview</a>
                 </div>
