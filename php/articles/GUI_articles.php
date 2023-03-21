@@ -215,69 +215,17 @@ require_once '../include/db_connect.php';
 
         <tbody>
         <?php
-
-        // set the number of records per page
-        $records_per_page = 25;
-
-        // get the total number of records
-        $sql_count = "SELECT COUNT(*) AS count FROM articles";
-        $result_count = $connection->query($sql_count);
-        $row_count = $result_count->fetch_assoc();
-        $total_records = $row_count['count'];
-
-        // calculate the total number of pages
-        $total_pages = ceil($total_records / $records_per_page);
-
-        // get the current page number
-        $current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-
-        // calculate the offset for the query
-        $offset = ($current_page - 1) * $records_per_page;
-
-        // Set order by value
-        if(isset($_GET["order_by"])){
-          $get_order_by = $_GET["order_by"];
-          switch($get_order_by) {
-            case "purchase_price_asc":
-              $order_by = "purchase_price ASC"; 
-              break;
-            case "purchase_price_desc":
-              $order_by = "purchase_price DESC"; 
-              break;
-            case "id_asc":
-              $order_by = "id ASC"; 
-              break;
-            case "id_desc":
-              $order_by = "id DESC"; 
-              break;
-            case "name_asc":
-              $order_by = "name ASC"; 
-              break;
-            case "name_desc":
-              $order_by = "name DESC"; 
-              break;
-            default:
-              $order_by = "id ASC";
-          }
-        } else {
-          $order_by = "id ASC";
-        }
-
-        // prepare query
-        $sql = "SELECT id, name, CONCAT(LEFT(description, 25),'...') AS 'description', CONCAT('€ ', purchase_price) AS purchase_price, CONCAT('€ ', selling_price) AS selling_price, IF(is_active = 1, 'Active', 'Inactive') AS 'active_status'
-        FROM articles
-        ORDER BY $order_by
-        LIMIT $records_per_page
-        OFFSET $offset;";
-
-        // Run the query
+        // create connection with database
+        require_once '../include/db_connect.php';
+        // select database
+        $sql = "SELECT * FROM articles";
         $result = $connection->query($sql);
 
         // make a new table row for every row in database
         while($row = $result->fetch_assoc()) {
           echo "<tr>
           <td>$row[id]</td>
-          <td>$row[name]</td>
+          <td>$row[article_id]</td>
           <td>$row[description]</td>
           <td>$row[purchase_price]</td>
           <td>$row[selling_price]</td>
