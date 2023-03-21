@@ -159,3 +159,10 @@ the logging has been added to the articles and user database - Jeroen
 
 ### added
 - order by clause in various table pages
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.2] / Released 21-3-2022
+
+### added
+- new look to the dashboard page using bootstrap cards and chart.js library
