@@ -95,7 +95,7 @@ require_once '../include/db_connect.php';
         <span class="input-group-text" id="tableSearchBar">Search for article</span>
         <input type="text" class="form-control" id="searchInput" placeholder="Article name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
       </div>
-      <a href="../include/exportData.php?report=exportArticles" class="btn btn-success my-3">Export</a>
+      <a href="../include/exportData.php?report=exportStock" class="btn btn-success my-3">Export</a>
       <div class="container d-flex align-items-center justify-content-end my-3 me-3">
         <form method="get">
           <div class="form-group row align-items-center">

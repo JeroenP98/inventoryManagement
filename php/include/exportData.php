@@ -106,7 +106,7 @@ class ExportData {
   public function exportArticles(){
     global $connection;
     $sql = 
-    "SELECT id, name, CONCAT(LEFT(description, 25),'...') AS 'description', CONCAT('€ ', purchase_price) AS purchase_price, CONCAT('€ ', selling_price) AS selling_price, IF(is_active = 1, 'Active', 'Inactive') AS 'active_status'
+    "SELECT id, name, CONCAT(LEFT(description, 25),'...') AS 'description', purchase_price, selling_price, IF(is_active = 1, 'Active', 'Inactive') AS 'active_status'
     FROM articles";
 
     // execute the query
