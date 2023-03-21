@@ -38,7 +38,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     $function_name = $_GET["function_name"];
 
     // read the row of selected record by searching for the function name
-    $sql = "SELECT * FROM accesbilities WHERE function_name=$function_name";
+    $sql = "SELECT * FROM accessibilities WHERE function_name = '$function_name'";
     $result = $connection->query($sql);
     $row = $result->fetch_assoc();
 
