@@ -93,7 +93,7 @@ require_once '../include/db_connect.php';
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Create a new function</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Create a new accessibility</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -107,29 +107,29 @@ require_once '../include/db_connect.php';
             <div class="row mb-3">
               <label class="col-form-label col-sm-3">Can access orders</label>
               <div class="col-sm-9">
-              <input type="hidden" name="is_active" value="0">
-              <input type="checkbox" name="is_active" value="1">
+              <input type="hidden" name="can_access_orders" value="0">
+              <input type="checkbox" name="can_access_orders" value="1">
               </div>
             </div>
             <div class="row mb-3">
               <label class="col-form-label col-sm-3">Can access relations</label>
               <div class="col-sm-9">
-              <input type="hidden" name="is_active" value="0">
-              <input type="checkbox" name="is_active" value="1">
+              <input type="hidden" name="can_access_relations" value="0">
+              <input type="checkbox" name="can_access_relations" value="1">
               </div>
             </div>
             <div class="row mb-3">
               <label class="col-form-label col-sm-3">Can access articles</label>
               <div class="col-sm-9">
-              <input type="hidden" name="is_active" value="0">
-              <input type="checkbox" name="is_active" value="1">
+              <input type="hidden" name="can_access_articles" value="0">
+              <input type="checkbox" name="can_access_articles" value="1">
               </div>
             </div>
             <div class="row mb-3">
               <label class="col-form-label col-sm-3">Can access employees</label>
               <div class="col-sm-9">
-              <input type="hidden" name="is_active" value="0">
-              <input type="checkbox" name="is_active" value="1">
+              <input type="hidden" name="can_access_employees" value="0">
+              <input type="checkbox" name="can_access_employees" value="1">
               </div>
             </div>
 
@@ -149,7 +149,7 @@ require_once '../include/db_connect.php';
   <!-- end new function modal-->
 
   <div class="container">
-    <h1>Functions</h1>
+    <h1>Accessibility</h1>
     <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#newAccessibilityModal'>Add new</button>
 
     <?php if(isset($_GET['action']) && $_GET["status"] == "succes" && $_GET["action"] == "add"):?>
@@ -176,8 +176,8 @@ require_once '../include/db_connect.php';
   <!-- Search bar-->
   <div class="d-flex nowrap align-items-center">
     <div class="input-group my-3 me-3">
-      <span class="input-group-text" id="tableSearchBar">Search for function</span>
-      <input type="text" class="form-control" id="searchInput" placeholder="Function name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
+      <span class="input-group-text" id="tableSearchBar">Search for accessibility</span>
+      <input type="text" class="form-control" id="searchInput" placeholder="Accessibility name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
     </div>
     <a href="../include/exportData.php?report=exportFunction" class="btn btn-success my-3">Export</a>
   </div>

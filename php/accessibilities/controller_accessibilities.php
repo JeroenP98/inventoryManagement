@@ -45,15 +45,44 @@ if(isset($_GET["action"])){
 
 class UserController {
 
-
   public static function addAccessibility(){
-    
-    //retrieve the connection from the global scope to be used in the function
     global $connection;
 
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
-      //store form data under variables which have been sanitized
+      $function_name = htmlspecialchars($_POST["function_name"]);
+      $can_acces_orders = htmlspecialchars($_POST["can_acces_orders"]);
+      $can_acces_relations = htmlspecialchars($_POST["can_acces_relations"]);
+      $can_acces_articles = htmlspecialchars($_POST["can_acces_articles"]);
+      $can_acces_employees = htmlspecialchars($_POST["can_acces_employees"]);
 
+      if (empty($function_name) || empty($can_acces_orders) || empty($can_acces_relations) || empty($can_acces_articles) || empty($can_acces_employees)) {
+        $error_message = "All fields are required";
+        echo $error_message;
+      }
+
+      try {
+        $sql = "INSERT INTO `accessibilities`(`function_name`, `can_acces_orders`, `can_acces_relations`, `can_acces_articles`, `can_acces_employees`) VALUES ('$function_name', '$can_acces_orders', '$can_acces_relations', '$can_acces_articles', '$can_acces_employees')";
+        mysqli_query($connection, $sql);
+        
+        $action = "add";
+        $object_type = "Accessibility";
+        LogfileHandler::addLogfileRecord($action, $object_type, $function_name, "new Accessibility");
+        
+      } catch(mysqli_sql_exception $e){
+        $error_message = "invalid query: " . $e;
+        echo $error_message;
+      }
+
+      header("location: GUI_accessibilities.php?action=add&status=succes&accessibility=$function_name");
+      exit;
+    }
+  }
+
+
+  public static function editAccessibility(){
+    global $connection;
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
       $id = htmlspecialchars($_POST["id"]);
       $function_name = htmlspecialchars($_POST["function_name"]);
       $can_acces_orders = htmlspecialchars($_POST["can_acces_orders"]);
@@ -61,83 +90,25 @@ class UserController {
       $can_acces_articles = htmlspecialchars($_POST["can_acces_articles"]);
       $can_acces_employees = htmlspecialchars($_POST["can_acces_employees"]);
 
-
-      //check if all fields are filled
-      if ( empty($function_name) || empty($can_acces_orders) || empty($can_acces_relations) || empty($can_acces_articles) || empty($can_acces_employees) ) {
-          $error_message = "All fields are required";
-          echo $error_message;
-      }
-
-
-      try { //try to excecute sql query, or display error message
-        //prepare sql query to insert data in the table
-        $sql = "INSERT INTO `accessibilities`(`function_name`, `can_acces_orders`, `can_acces_relations`, `can_acces_articles`, `can_acces_employees`) VALUES ('$function_name', '$can_acces_orders', '$can_acces_relations', '$can_acces_articles', '$can_acces_employees')";
-
-        echo $sql;
-        //excecute sql query
-        mysqli_query($connection, $sql);
-        
-        // add logfile record
-        $action = "add";
-        $object_type = "Accessibility";
-        LogfileHandler::addLogfileRecord($action, $object_type, $name, "new Accessibility");
-        
-      }catch(mysqli_sql_exception $e){
-        $error_message = "invalid query: " . $e;
-        echo $error_message;
-      }
-
-
-      //return back to article overview
-      header("location: GUI_accessibilities.php?action=add&status=succes&accessibility=$name");
-      exit;
-    }
-  }
-
-
-  public static function editAccessibility(){
-    
-    //retrieve the connection from the global scope to be used in the function
-    global $connection;
-
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
-      //store form data under variables which have been sanitized
-      $function_name = htmlspecialchars($_POST["function_name"]);
-      $can_acces_orders = htmlspecialchars($_POST["can_acces_orders"]);
-      $can_acces_relations = htmlspecialchars($_POST["can_acces_relations"]);
-      $can_acces_articles = htmlspecialchars($_POST["can_acces_articles"]);
-      $can_acces_employees = htmlspecialchars($_POST["can_acces_employees"]);
-
-      //check if all fields are filled
-      if ( empty($function_name) || empty($can_acces_orders) || empty($can_acces_relations) || empty($can_acces_articles) || empty($can_acces_employees) ) {
+      if (empty($function_name) || empty($can_acces_orders) || empty($can_acces_relations) || empty($can_acces_articles) || empty($can_acces_employees)) {
         $error_message = "All fields are required";
         echo $error_message;
-    }
+      }
 
-        //update the record or display error message
-      try {  
-        // prepare sql query for updating the record
-        $sql = "UPDATE `accessibilities` SET `function_name`='$function_name',`can_acces_orders`='$can_acces_orders',
-        `can_acces_relations`='$can_acces_relations',
-        `can_acces_articles`='$can_acces_articles',
-        `can_acces_employees`='$can_acces_employees'WHERE `id` = $id";
-
-
-        //excecute sql query
+      try {
+        $sql = "UPDATE `accessibilities` SET `function_name`='$function_name',`can_acces_orders`='$can_acces_orders',`can_acces_relations`='$can_acces_relations',`can_acces_articles`='$can_acces_articles',`can_acces_employees`='$can_acces_employees' WHERE `id` = $id";
         mysqli_query($connection, $sql);
-  
-        // add logfile record
+
         $action = "edit";
         $object_type = "Accessibility";
-        LogfileHandler::addLogfileRecord($action, $object_type, $name, "edit Accessibility");
-  
-      }catch(mysqli_sql_exception $e){ // Display error message when not able to perform sql query
+        LogfileHandler::addLogfileRecord($action, $object_type, $function_name, "edit Accessibility");
+
+      } catch(mysqli_sql_exception $e){
         $error_message = "Invalid query: " . $e;
         echo $error_message;
       }
 
-      // return back to article overview after posting the record
-      header("location: GUI_accessibilities.php?action=edit&status=succes&accessibility=$name");
+      header("location: GUI_accessibilities.php?action=edit&status=succes&accessibility=$function_name");
       exit;
     
       } while(false);
@@ -145,39 +116,36 @@ class UserController {
     }
   
 
-  public static function deleteAccessibility(){
-    //retrieve the connection from the global scope to be used in the function
-    global $connection;
-
-    if(isset($_GET["id"])){
-
-    // retrieve the ID from selected DB record from article overview
-    $id = $_GET["id"];
+    public static function deleteAccessibility() {
+      // Retrieve the connection from the global scope to be used in the function
+      global $connection;
   
-    // declare variables for logging purposes before the article is deleted
-    $stmt = "SELECT name FROM accessibilities WHERE id=$id";
-    $result = $connection->query($stmt);
-    $row = $result->fetch_assoc();
-    $name = $row["name"];
+      if (isset($_GET["function_name"])) {
   
-
-    //prepare query to delete record
-    $sql = "DELETE FROM accessibilities WHERE id=$id";
-
-    // excecute sql query
-    $connection->query($sql);
-
-    // add logfile record
-    $action = "delete";
-    $object_type = "Accessibility";
-    LogfileHandler::addLogfileRecord($action, $object_type, $name, "delete Accessibility");
-
-    // return back to article overview
-    header("location: GUI_accessibilities.php?action=delete&status=succes&accessibility=$name");
-    exit;
-    
-      
-    }
+          // Retrieve the function_name from the selected DB record
+          $function_name = $_GET["function_name"];
+  
+          // Declare variables for logging purposes before the accessibility is deleted
+          $stmt = "SELECT name FROM accessibilities WHERE function_name='$function_name'";
+          $result = $connection->query($stmt);
+          $row = $result->fetch_assoc();
+          $name = $row["name"];
+  
+          // Prepare query to delete record
+          $sql = "DELETE FROM accessibilities WHERE function_name='$function_name'";
+  
+          // Execute sql query
+          $connection->query($sql);
+  
+          // Add logfile record
+          $action = "delete";
+          $object_type = "Accessibility";
+          LogfileHandler::addLogfileRecord($action, $object_type, $name, "delete Accessibility");
+  
+          // Return back to article overview
+          header("location: GUI_accessibilities.php?action=delete&status=succes&accessibility=$name");
+          exit;
+      }
   }
 }
 
