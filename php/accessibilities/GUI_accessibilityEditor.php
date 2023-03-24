@@ -38,7 +38,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     $function_name = $_GET["function_name"];
 
     // read the row of selected record by searching for the function name
-    $sql = "SELECT * FROM accessibilities WHERE function_name = '$function_name'";
+    $sql = "SELECT * FROM accessibilities WHERE function_name='$function_name'";
     $result = $connection->query($sql);
     $row = $result->fetch_assoc();
 
@@ -49,15 +49,13 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     }
 
 
-    //Store the found data of the query to variables
-    $name = $row["name"];
-    $street = $row["street"];
-    $house_nr = $row["house_nr"];
-    $zip_code = $row["zip_code"];
-    $city = $row["city"];
-    $country_code = $row["country_code"];
-    $email_adress =  $row["email_adress"];
-    $phone_number = $row["phone_number"];
+// Store the found data of the query to variables
+$name = $row["name"];
+$can_access_orders = $row["can_access_orders"];
+$can_access_relations = $row["can_access_relations"];
+$can_access_articles = $row["can_access_articles"];
+$can_access_employees = $row["can_access_employees"];
+
 
 } 
 ?>
@@ -135,7 +133,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         }
       ?>
 
-      <form method="POST" action="controller_accessibilities.php?action=edit">
+<form method="POST" action="controller_accessibilities.php?action=edit">
         <input type="hidden" value="<?php echo $function_name; ?>" name="function_name">
         <div class="row mb-3">
           <label class="col-form-label col-sm-3">Function name</label>
@@ -144,43 +142,31 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
           </div>
         </div>
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Street</label>
+          <label class="col-form-label col-sm-3">Can access orders</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" name="street" required value="<?php echo $street;?>">
+            <input type="hidden" name="can_access_orders" value="0">
+            <input type="checkbox" name="can_access_orders" value="1">
           </div>
         </div>
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">House Nr.</label>
-          <div class="col-sm-3">
-            <input type="text" maxlength="10" class="form-control" name="house_nr" value="<?php echo $house_nr;?>">
-          </div>
-          <label class="col-form-label col-sm-3">Zip code</label>
-          <div class="col-sm-3">
-            <input type="text" class="form-control" name="zip_code" required value="<?php echo $zip_code;?>">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">City</label>
+          <label class="col-form-label col-sm-3">Can access relations</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" name="city" required value="<?php echo $city;?>">
+            <input type="hidden" name="can_access_relations" value="0">
+            <input type="checkbox" name="can_access_relations" value="1">
           </div>
         </div>
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Country code</label>
-          <div class="col-sm-3">
-            <input type="text"  maxlength="2" class="form-control" name="country_code" required value="<?php echo $country_code;?>">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Email address</label>
+          <label class="col-form-label col-sm-3">Can access articles</label>
           <div class="col-sm-9">
-            <input type="email" class="form-control" name="email_adress" required value="<?php echo $email_adress;?>">
+            <input type="hidden" name="can_access_articles" value="0">
+            <input type="checkbox" name="can_access_articles" value="1">
           </div>
         </div>
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Tel. number</label>
+          <label class="col-form-label col-sm-3">Can access employees</label>
           <div class="col-sm-9">
-            <input type="tel" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" class="form-control" name="phone_number" required value="<?php echo $phone_number;?>">
+            <input type="hidden" name="can_access_employees" value="0">
+            <input type="checkbox" name="can_access_employees" value="1">
           </div>
         </div>
         <div class="row mb-3">
