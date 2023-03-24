@@ -27,35 +27,36 @@ require_once '../include/loginCheck.php';
         <a href="../../dashboard.php" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none me-5">
           <img src="../../images/logo.png" alt="company logo" srcset="" width="40" height="40">
         </a>
-
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 nav-pills">
-          <li class="nav-item"><a href="../../dashboard.php" class="nav-link">Dashboard</a></li>
-          <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link" >Articles</a></li>
-          <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link" >Inventory</a></li>
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-cßenter mb-md-0 nav-pills">
+          <li class="nav-item"><a href="../../dashboard.php" class="nav-link" aria-current="page">Dashboard</a></li>
+          <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link">Articles</a></li>
+          <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link">inventory</a></li>
           <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
           <li class="nav-item"><a href="../incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
-          <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link active" aria-current="page">Outgoing orders</a></li>
+          <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link active">Outgoing orders</a></li>
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link">Users</a></li>
+          <li class="nav-item"><a  href="../companies/GUI_companies.php" class="nav-link">Companies</a></li>
+          <li class="nav-item "><a  href="../accessibilities/GUI_accessibilities.php" class="nav-link">Accesibility</a></li>
+          <li class="nav-item "><a  href="../functions/GUI_functions.php" class="nav-link">Functions</a></li>
         </ul>
-
         <?php
           //either display the users first name when logged in or give the option to log themselves in
           if(isset($_SESSION['user_id'])):?>
             <div class='dropdown text-end'>
-              <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <?=$_SESSION['user_name']?>
-              </button>
-              <ul class='dropdown-menu text-small'>
-                <li><a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#logOutModal'>Sign out</a></li>
-                <div class="form-check form-switch ms-3">
-                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onclick="toggleTheme()">
-                  <label class="form-check-label" for="flexSwitchCheckDefault">Color theme</label>
-                </div>
-              </ul>
-            </div>
+            <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <?=$_SESSION['user_name']?>
+          </button>
+            <ul class='dropdown-menu text-small'>
+              <li><a class='dropdown-item' href='#' data-bs-toggle='modal' data-bs-target='#logOutModal'>Sign out</a></li>
+              <div class="form-check form-switch ms-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onclick="toggleTheme()">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Color theme</label>
+              </div>
+            </ul>
+          </div>
           <?php else :?>
             <div class='nav-item ml-auto'>
-            <a href='../users/GUI_login.php' class='btn btn-outline-primary'>Login</a>
+            <a href='php/users/GUI_login.php' class='btn btn-outline-primary'>Login</a>
             </div>
           <?php endif;?>
       </div>
