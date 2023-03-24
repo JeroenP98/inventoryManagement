@@ -139,3 +139,24 @@
 2023-03-21 @ 20:35:18 [Admin Instrator] Performed the action: edit Article with id: Hoekbank \'Future\' Groen1 / edit article
 2023-03-21 @ 22:41:39 [Admin Instrator] Performed the action: delete order with id: 2 / 445
 2023-03-24 @ 19:03:13 [Admin Instrator] Performed the action: add Article with id: Test item3 / new article
+2023-03-24 @ 19:26:35 [Admin Instrator] Performed the action: delete Accessibility with id: sales / delete Accessibility
+2023-03-24 @ 19:26:43 [Admin Instrator] Performed the action: add Accessibility with id: sales / new Accessibility
+2023-03-24 @ 19:26:45 [Admin Instrator] Performed the action: delete Accessibility with id: sales / delete Accessibility
+2023-03-24 @ 19:26:47 [Admin Instrator] Performed the action: delete Accessibility with id: admin / delete Accessibility
+2023-03-24 @ 19:26:53 [Admin Instrator] Performed the action: add Accessibility with id: sales / new Accessibility
+2023-03-24 @ 19:30:07 [Admin Instrator] Performed the action: add Accessibility with id: admin / new Accessibility
+2023-03-24 @ 19:33:38 [Admin Instrator] Performed the action: delete Accessibility with id: sales / delete Accessibility
+2023-03-24 @ 19:33:44 [Admin Instrator] Performed the action: add Accessibility with id: sales / new Accessibility
+2023-03-24 @ 19:36:08 [Admin Instrator] Performed the action: delete Accessibility with id: sales / delete Accessibility
+2023-03-24 @ 19:36:13 [Admin Instrator] Performed the action: add Accessibility with id: sales / new Accessibility
+2023-03-24 @ 19:37:11 [Admin Instrator] Performed the action: delete Accessibility with id: sales / delete Accessibility
+2023-03-24 @ 19:37:15 [Admin Instrator] Performed the action: add Accessibility with id: sales / new Accessibility
+2023-03-24 @ 19:37:25 [Admin Instrator] Performed the action: delete Accessibility with id: sales / delete Accessibility
+2023-03-24 @ 19:37:30 [Admin Instrator] Performed the action: add Accessibility with id: Sales / new Accessibility
+2023-03-24 @ 19:51:54 [Admin Instrator] Performed the action: edit Accessibility with id: Sales / edit Accessibility
+2023-03-24 @ 19:52:17 [Admin Instrator] Performed the action: edit Accessibility with id: Sales / edit Accessibility
+2023-03-24 @ 19:54:23 [Admin Instrator] Performed the action: add Company with id: Test item / new Company
+2023-03-24 @ 19:54:28 [Admin Instrator] Performed the action: edit Company with id: Test item / edit Company
+2023-03-24 @ 19:54:30 [Admin Instrator] Performed the action: delete company with id:  / delete company
+2023-03-24 @ 19:54:44 [Admin Instrator] Performed the action: add user with id: Jeroen / trest123@greenhome.com
+2023-03-24 @ 19:55:47 [Admin Instrator] Performed the action: add order with id:  / 2023-03-24

@@ -14,13 +14,10 @@ require_once '../logging/controller_logfile.php';
 
 // declare empty variables for form handling
 $name = "";
-$street = "";
-$house_nr = "";
-$zip_code = "";
-$city = "";
-$country_code = "";
-$email_adress =  "";
-$phone_number = "";
+$can_access_orders = "";
+$can_access_relations = "";
+$can_access_articles = "";
+$can_access_employees = "";
 
 // declare variables for form handling when failing
 $errorMessage = "";
@@ -48,13 +45,12 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
       exit;
     }
 
-
 // Store the found data of the query to variables
-$name = $row["name"];
-$can_access_orders = $row["can_access_orders"];
-$can_access_relations = $row["can_access_relations"];
-$can_access_articles = $row["can_access_articles"];
-$can_access_employees = $row["can_access_employees"];
+$name = $row["function_name"];
+$can_access_orders = $row["can_acces_orders"];
+$can_access_relations = $row["can_acces_relations"];
+$can_access_articles = $row["can_acces_articles"];
+$can_access_employees = $row["can_acces_employees"];
 
 
 } 
@@ -145,28 +141,28 @@ $can_access_employees = $row["can_access_employees"];
           <label class="col-form-label col-sm-3">Can access orders</label>
           <div class="col-sm-9">
             <input type="hidden" name="can_access_orders" value="0">
-            <input type="checkbox" name="can_access_orders" value="1">
+            <input type="checkbox" name="can_access_orders" value="1" <?php if($can_access_orders == 1) echo "checked"; ?>>
           </div>
         </div>
         <div class="row mb-3">
           <label class="col-form-label col-sm-3">Can access relations</label>
           <div class="col-sm-9">
             <input type="hidden" name="can_access_relations" value="0">
-            <input type="checkbox" name="can_access_relations" value="1">
+            <input type="checkbox" name="can_access_relations" value="1" <?php if($can_access_relations == 1) echo "checked"; ?>>
           </div>
         </div>
         <div class="row mb-3">
           <label class="col-form-label col-sm-3">Can access articles</label>
           <div class="col-sm-9">
             <input type="hidden" name="can_access_articles" value="0">
-            <input type="checkbox" name="can_access_articles" value="1">
+            <input type="checkbox" name="can_access_articles" value="1" <?php if($can_access_articles == 1) echo "checked"; ?>>
           </div>
         </div>
         <div class="row mb-3">
           <label class="col-form-label col-sm-3">Can access employees</label>
           <div class="col-sm-9">
-            <input type="hidden" name="can_access_employees" value="0">
-            <input type="checkbox" name="can_access_employees" value="1">
+            <input type="hidden" name="" value="0">
+            <input type="checkbox" name="can_access_employees" value="1" <?php if($can_access_employees == 1) echo "checked"; ?>>
           </div>
         </div>
         <div class="row mb-3">

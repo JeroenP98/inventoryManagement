@@ -11,7 +11,7 @@ require_once '../include/db_connect.php';
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100" data-bs-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,8 +23,8 @@ require_once '../include/db_connect.php';
   <script src="../../js/tableSearch.js"></script>
   <link rel="shortcut icon" href="../../images/logo.png">
   <title>Accessibility | GreenHome</title>
-</head>
-<body>
+</head> 
+<body class="d-flex flex-column h-100">
   <header class="p-3 mb-3 border-bottom">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -215,7 +215,7 @@ require_once '../include/db_connect.php';
     $offset = ($current_page - 1) * $records_per_page;
 
     // prepare sql statement
-    $sql = "SELECT `function_name`, `can_acces_orders`, `can_acces_relations`, `can_acces_articles`, `can_acces_employees` FROM `accessibilities`
+    $sql = "SELECT `function_name`, IF(`can_acces_orders` = 1, 'Yes', 'No') AS 'can_acces_orders', IF(`can_acces_relations` = 1, 'Yes', 'No') AS 'can_acces_relations', IF(`can_acces_articles` = 1, 'Yes', 'No') AS 'can_acces_articles', IF(`can_acces_employees` = 1, 'Yes', 'No') AS 'can_acces_employees' FROM `accessibilities`
     LIMIT $records_per_page
     OFFSET $offset;";
     $result = $connection->query($sql);
@@ -226,10 +226,10 @@ require_once '../include/db_connect.php';
     while($row = $result->fetch_assoc()) {
       echo "<tr>
       <td>{$row['function_name']}</td>
-      <td>" . ($row['can_acces_orders'] ? 'Yes' : 'No') . "</td>
-      <td>" . ($row['can_acces_relations'] ? 'Yes' : 'No') . "</td>
-      <td>" . ($row['can_acces_articles'] ? 'Yes' : 'No') . "</td>
-      <td>" . ($row['can_acces_employees'] ? 'Yes' : 'No') . "</td>
+      <td>" . $row['can_acces_orders'] . "</td>
+      <td>" . $row['can_acces_relations'] . "</td>
+      <td>" . $row['can_acces_articles']. "</td>
+      <td>" . $row['can_acces_employees'] . "</td>
       <td>
       <a class='btn btn-primary' href='GUI_accessibilityEditor.php?function_name=$row[function_name]'>Edit</a>
       <a class='btn btn-danger' href='controller_accessibilities.php?action=delete&function_name=$row[function_name]'>Delete</a>
