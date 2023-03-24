@@ -29,19 +29,16 @@ require_once '../include/loginCheck.php';
           <img src="../../images/logo.png" alt="company logo" srcset="" width="40" height="40">
         </a>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-c�enter mb-md-0 nav-pills">
-          <li class="nav-item"><a href="../../dashboard.php" class="nav-link" aria-current="page">Dashboard</a></li>
-          <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link">Articles</a></li>
-          <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link">inventory</a></li>
+        <li class="nav-item"><a href="../../dashboard.php" class="nav-link">Dashboard</a></li>
+          <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link" >Articles</a></li>
+          <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link" >inventory</a></li>
           <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
           <li class="nav-item"><a href="../incoming_orders/GUI_incoming.php" class="nav-link active">Incoming orders</a></li>
-          <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link">Outgoing orders</a></li>
-          <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link">Users</a></li>
-          <li class="nav-item "><a class="nav-link" href="../companies/GUI_companies.php">Companies</a></li>
-          <li class="nav-item "><a class="nav-link" href="../accessibilities/GUI_accessibilities.php">Accessibility</a></li>
-          <li class="nav-item "><a  href="../functions/GUI_functions.php" class="nav-link">Functions</a></li>
-          <li class="nav-item"><a  href="../companies/GUI_companies.php" class="nav-link">Companies</a></li>
-          <li class="nav-item "><a  href="../accessibilities/GUI_accessibilities.php" class="nav-link">Accesibility</a></li>
-          <li class="nav-item "><a  href="../functions/GUI_functions.php" class="nav-link">Functions</a></li>
+          <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link" >Outgoing orders</a></li>
+          <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link" aria-current="page">Users</a></li>
+          <li class="nav-item"><a href="../companies/GUI_companies.php" class="nav-link">Companies</a></li>
+          <li class="nav-item"><a href="../accessibilities/GUI_accessibilities.php" class="nav-link">Accessibility</a></li>
+          <li class="nav-item"><a href="../functions/GUI_functions.php" class="nav-link">Functions</a></li>
         </ul>
         <?php
           //either display the users first name when logged in or give the option to log themselves in
