@@ -2,6 +2,9 @@
 //if session was started, continue it so it can display the user name and enable logging out
 session_start();
 
+//check if user has logged in, in order to gain acces to the page
+require_once 'php/include/loginCheck.php';
+
 //create user name variable which uppercases the firstl letter in the string
 if(!empty($_SESSION['user_name'])){
   $name = ucfirst($_SESSION['user_name']);

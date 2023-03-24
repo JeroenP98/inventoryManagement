@@ -50,7 +50,8 @@ the following is required to make the system operate:
 follow these steps to setup the databases to work with:
 1) unpack/place the "inventoryManagement" folder into C:\xampp\htdocs
 2) Open XAMPP and start "Apache" and "MySQL"
-3) Navigate to http://127.0.0.1/inventoryManagement/dashboard.php 
-4) when asked to login, you can use the following credentials:
-    email: guest@greenhome.com
+4) create a databse named "greenhome" and import the greenhome.sql file
+5) Navigate to http://127.0.0.1/inventoryManagement/dashboard.php 
+6) when asked to login, you can use the following credentials:
+    email: admin@greenhome.com
     password: 123456
