@@ -95,8 +95,8 @@ require_once '../include/db_connect.php';
     </div>
     <!-- end logout modal-->
  
-        <!-- start new article Modal -->
-        <div class="modal fade" id="newArticleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- start new article Modal -->
+    <div class="modal fade" id="newArticleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
