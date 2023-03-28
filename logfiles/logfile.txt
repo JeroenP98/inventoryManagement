@@ -160,3 +160,17 @@
 2023-03-24 @ 19:54:30 [Admin Instrator] Performed the action: delete company with id:  / delete company
 2023-03-24 @ 19:54:44 [Admin Instrator] Performed the action: add user with id: Jeroen / trest123@greenhome.com
 2023-03-24 @ 19:55:47 [Admin Instrator] Performed the action: add order with id:  / 2023-03-24
+2023-03-26 @ 16:14:36 [Admin Instrator] Performed the action: add order with id: 12 / 1
+2023-03-26 @ 20:54:37 [Admin Instrator] Performed the action: add order with id: 12 / 1
+2023-03-26 @ 20:57:49 [Admin Instrator] Performed the action: add order with id: 12 / 1
+2023-03-26 @ 20:58:32 [Admin Instrator] Performed the action: add order with id: 34 / 1
+2023-03-26 @ 20:59:17 [Admin Instrator] Performed the action: delete order with id: 206 / 0000-00-00
+2023-03-26 @ 20:59:21 [Admin Instrator] Performed the action: delete order with id: 205 / 0000-00-00
+2023-03-26 @ 21:02:47 [Admin Instrator] Performed the action: delete order with id: 204 / 0000-00-00
+2023-03-26 @ 21:02:51 [Admin Instrator] Performed the action: delete order with id: 203 / 0000-00-00
+2023-03-26 @ 21:07:16 [Admin Instrator] Performed the action: add order with id: 12 / 12
+2023-03-26 @ 21:10:56 [Admin Instrator] Performed the action: add order with id: 12 / 5
+2023-03-26 @ 21:11:38 [Admin Instrator] Performed the action: delete order with id: 208 / 0000-00-00
+2023-03-26 @ 21:11:43 [Admin Instrator] Performed the action: delete order with id: 207 / 0000-00-00
+2023-03-26 @ 21:12:02 [Admin Instrator] Performed the action: add order with id: 12 / 1
+2023-03-27 @ 20:55:25 [Admin Instrator] Performed the action: add order with id: 1 / 1

@@ -40,8 +40,13 @@ require_once 'php/include/db_connect.php';
           <li class="nav-item"><a href="php/articles/GUI_articles.php" class="nav-link">Articles</a></li>
           <li class="nav-item"><a href="php/stock/GUI_stock.php" class="nav-link">inventory</a></li>
           <li class="nav-item"><a href="php/relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
-          <li class="nav-item"><a href="php/incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
-          <li class="nav-item"><a href="php/outgoing_orders/GUI_outgoing.php" class="nav-link">Outgoing orders</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Orders</a>
+            <ul class="dropdown-menu">
+              <li><a href="php/incoming_orders/GUI_incoming.php" class="dropdown-item">Incoming orders</a></li>
+              <li><a href="php/outgoing_orders/GUI_outgoing.php" class="dropdown-item">Outgoing orders</a></li>
+            </ul>
+          </li>
           <li class="nav-item"><a href="php/users/GUI_users.php" class="nav-link">Users</a></li>
           <li class="nav-item"><a  href="php/companies/GUI_companies.php" class="nav-link">Companies</a></li>
           <li class="nav-item "><a  href="php/accessibilities/GUI_accessibilities.php" class="nav-link">Accesibility</a></li>

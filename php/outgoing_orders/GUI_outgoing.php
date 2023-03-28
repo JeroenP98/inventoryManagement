@@ -115,13 +115,13 @@ require_once '../include/loginCheck.php';
         // create connection with database
         require_once '../include/db_connect.php';
         // select database
-        $sql = "SELECT orders.id as id, relations.name as name, relations.email_adress as email_adress, relations.phone_number as phone_number, orders.order_date as order_date, orders.shipping_date as shipping_date,employees.first_name as verkoper_name, orders.is_finalized as is_finalized 
+        $sql = "SELECT orders.id as id, relations.name as name, relations.email_adress as email_adress, relations.phone_number as phone_number, orders.order_date as order_date, orders.shipping_date as shipping_date,employees.first_name as verkoper_name, IF(orders.is_finalized = 1, 'Yes', 'No') as is_finalized 
         FROM orders
         JOIN relations
         ON orders.relation_id = relations.id
         JOIN employees
         ON orders.employee_id = employees.id
-        WHERE order_type = 0";
+        WHERE order_type = 1";
         $result = $connection->query($sql);
 
         // make a new table row for every row in database
