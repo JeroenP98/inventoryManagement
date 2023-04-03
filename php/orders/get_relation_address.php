@@ -14,4 +14,5 @@ $address = $row['address'];
 
 // Return the address as a string
 echo $address;
+
 ?>

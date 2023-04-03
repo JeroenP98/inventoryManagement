@@ -1967,4 +1967,18 @@ BEGIN
 END$$
 DELIMITER ;
 
+DELIMITER $$
+CREATE TRIGGER auto_increment_order_line
+BEFORE INSERT ON order_lines
+FOR EACH ROW
+BEGIN
+    SET NEW.order_line = (
+        SELECT COALESCE(MAX(order_line), 0) + 1
+        FROM order_lines
+        WHERE order_id = NEW.order_id
+    );
+END$$
+DELIMITER ;
+
+
 

@@ -43,8 +43,8 @@ require_once 'php/include/db_connect.php';
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Orders</a>
             <ul class="dropdown-menu">
-              <li><a href="php/incoming_orders/GUI_incoming.php" class="dropdown-item">Incoming orders</a></li>
-              <li><a href="php/outgoing_orders/GUI_outgoing.php" class="dropdown-item">Outgoing orders</a></li>
+              <li><a href="php/orders/GUI_incoming.php" class="dropdown-item">Incoming orders</a></li>
+              <li><a href="php/orders/GUI_outgoing.php" class="dropdown-item">Outgoing orders</a></li>
             </ul>
           </li>
           <li class="nav-item"><a href="php/users/GUI_users.php" class="nav-link">Users</a></li>
@@ -139,9 +139,8 @@ require_once 'php/include/db_connect.php';
                   </div>
                   <div class="card-body cardBodyJs">
                     <p class="card-text">Gain quick acces to to order related pages with the buttons below</p>
-                    <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="php/incoming_orders/GUI_incoming.php">Incoming orders</a>
-                    <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="php/outgoing_orders/GUI_outgoing.php">Outgoing orders</a>
-                    <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="#">Order lines</a>
+                    <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="php/orders/GUI_incoming.php">Incoming orders</a>
+                    <a class="w-100 btn btn-lg btn-outline-primary mt-3" href="php/orders/GUI_outgoing.php">Outgoing orders</a>
                   </div>
                 </div>
               </div>
