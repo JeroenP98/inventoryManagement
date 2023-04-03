@@ -48,9 +48,7 @@ class OrderController {
       $employee_id = htmlspecialchars($_POST["employee_id"]);
       $relation_id = htmlspecialchars($_POST["relation_id"]);
       $company_id = htmlspecialchars($_POST["company_id"]);
-
-      echo $order_date;
-
+      
       //check if all fields are filled
       do {
         if ( !isset($order_date) || !isset($shipping_date) || !isset($order_type) || !isset($employee_id) || !isset($relation_id)) {
@@ -75,15 +73,17 @@ class OrderController {
           //excecute sql query
           $result = mysqli_query($connection, $sql);
           
-          // add logfile record
-          $action = "add";
-          $object_type = "order";
-          LogfileHandler::addLogfileRecord($action, $object_type, $relation_id, $employee_id);
+
 
           //retrieve the ID from the record just added, so you are send to the correct edit page
           if($result){
             $order_id = mysqli_insert_id($connection);
           }
+
+          // add logfile record
+          $action = "add";
+          $object_type = "order";
+          LogfileHandler::addLogfileRecord($action, $object_type, $order_id, $order_date);
 
         }catch(mysqli_sql_exception $e){
           $errorMessage = "invalid query: " . $e;
@@ -93,7 +93,7 @@ class OrderController {
 
 
         // return back to article overview
-        header("location: GUI_orderEdit.php?id=$order_id");
+        header("Location: GUI_orderEdit.php?status=succes&id=$order_id&action=add");
         exit;
 
       } while(false);
@@ -109,40 +109,41 @@ class OrderController {
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
       //store form data under variables which have been sanitized
       $id = $_POST['id'];
-      $first_name = htmlspecialchars(ucfirst(strtolower($_POST["first_name"])));
-      $last_name = htmlspecialchars(ucfirst(strtolower($_POST["last_name"])));
-      $email = filter_var(strtolower($_POST["email_adress"]), FILTER_SANITIZE_EMAIL);
-      $company_id = $_POST["company_id"];
-      $function_name = htmlspecialchars($_POST["function_name"]);
-      // validate that the is_active status is between 0 and 1
-      $options = array(
-        "options" => array(
-          "min_range"=>0, 
-          "max_range"=>1
-        )
-      );
+      $order_date = date('Y-m-d', strtotime($_POST["order_date"]));
+      $shipping_date = date('Y-m-d', strtotime($_POST["shipping_date"]));
+      $employee_id = htmlspecialchars($_POST["employee_id"]);
+      $relation_id = htmlspecialchars($_POST["relation_id"]);
+      $company_id = htmlspecialchars($_POST["company_id"]);
+      $is_finalized = htmlspecialchars($_POST["is_finalized"]);
 
-      $is_active = htmlspecialchars(filter_var($_POST["is_active"], FILTER_SANITIZE_NUMBER_INT, $options));
-
+      //check if all fields are filled
       do {
-        if ( empty($first_name) || empty($last_name) || empty($email) || empty($company_id) || empty($function_name)) {
-            $errorMessage = "All fields are required";
-            break;
+        if ( !isset($order_date) || !isset($shipping_date) || !isset($employee_id) || !isset($relation_id)) {
+          $errorMessage = "All fields are required";
+          echo $errorMessage;
+          if($_GET["order_type"] === "incoming"){
+            header("Location: GUI_incoming.php");
+          } elseif($_GET["order_type"] === "outgoing"){
+            header("Location: GUI_outgoing.php");
+          } else {
+            header("Location: ../../dashboard.php");
+          }
+          break;
         }
     
         //update the record or display error message
         try {  
           // prepare sql query for updating the record
-          $sql =  "UPDATE employees SET first_name='$first_name', last_name='$last_name',email_adress='$email', company_id=$company_id, function_name='$function_name', is_active=$is_active WHERE id = $id";
+          $sql =  "UPDATE `orders` SET `order_date`='$order_date',`shipping_date`='$shipping_date',`employee_id`=$employee_id,`relation_id`=$relation_id, `company_id`= $company_id , `is_finalized`=$is_finalized WHERE id = $id";
           
-
+          echo $sql;
           //excecute sql query
           $result = mysqli_query($connection, $sql);
     
           // add logfile record
           $action = "edit";
-          $object_type = "user";
-          LogfileHandler::addLogfileRecord($action, $object_type, $first_name, $email);
+          $object_type = "Order";
+          LogfileHandler::addLogfileRecord($action, $object_type, $id, $order_date);
     
         }catch(mysqli_sql_exception $e){ // Display error message when not able to perform sql query
           $errorMessage = "Invalid query: " . $e;
@@ -151,7 +152,7 @@ class OrderController {
         }
     
         // return back to article overview after posting the record
-        header("location: GUI_users.php?action=edit&status=succes&user=$first_name");
+        header("Location: GUI_orderEdit.php?status=succes&id=$id&action=edit");
         exit;
     
       } while(false);
