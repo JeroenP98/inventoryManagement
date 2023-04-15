@@ -27,14 +27,9 @@ the following frameworks have been used:
 - Bootstrap (HTML/CSS)
 
 The goal of the system is to function as a working stock management system which has the following functions:
-- CRUD a SKU
-- CRUD an Order
-- CRUD an User
-- create a working login
-- Assign authorisation to the user which gives the control to limit the acces of the user to certain pages
-- Show a stock overview
-- Show a order overview
-- Mutate the stock database by altering the order database (increase/decrease stock)
+- CRUD multiple components related to a real life Warehouse Management System.
+- Combine the Warehouse management with a webshop to enter data.
+- 
 
 
 ***************************************************

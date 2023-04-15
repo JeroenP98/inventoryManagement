@@ -368,7 +368,7 @@ require_once '../include/db_connect.php';
           <td>$row[is_finalized]</td>
           <td>
             <a class='btn btn-primary' href='GUI_orderEdit.php?id=$row[id]'>Edit</a>
-            <a class='btn btn-danger' href='controller_orders.php?id=$row[id]&action=delete'>Delete</a>
+            <a class='btn btn-danger' href='controller_orders.php?id=$row[id]&action=delete&order_type=outgoing'>Delete</a>
           </td>
           </tr>";
 

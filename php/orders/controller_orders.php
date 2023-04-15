@@ -166,18 +166,18 @@ class OrderController {
 
     if(isset($_GET["id"])){
 
-    // retrieve the ID from selected DB record from article overview
+    // retrieve the ID from selected DB record from order overview
     $id = $_GET["id"];
   
-    // declare variables for logging purposes before the article is deleted
-    $stmt = "SELECT first_name, email_adress FROM employees WHERE id=$id";
+    // declare variables for logging purposes before the order is deleted
+    $stmt = "SELECT id, order_date FROM orders WHERE id=$id";
     $result = $connection->query($stmt);
     $row = $result->fetch_assoc();
-    $first_name = $row["first_name"];
-    $email = $row["email_adress"];
+    $id = $row["id"];
+    $order_date = $row["order_date"];
 
     //prepare query to delete record
-    $sql = "DELETE FROM employees WHERE id=$id";
+    $sql = "DELETE FROM orders WHERE id=$id";
 
     // excecute sql query
     $connection->query($sql);
@@ -185,10 +185,16 @@ class OrderController {
     // add logfile record
     $action = "delete";
     $object_type = "user";
-    LogfileHandler::addLogfileRecord($action, $object_type, $first_name, $email);
+    LogfileHandler::addLogfileRecord($action, $object_type, $id, $order_date);
 
-    // return back to article overview
-    header("location: GUI_users.php?action=delete&status=succes&user=$first_name");
+    // return back to order overview
+    if($_GET["order_type"] === "incoming"){
+      header("Location: GUI_incoming.php");
+    } elseif($_GET["order_type"] === "outgoing"){
+      header("Location: GUI_outgoing.php");
+    } else {
+      header("Location: ../../dashboard.php");
+    }
     exit;
     
       
