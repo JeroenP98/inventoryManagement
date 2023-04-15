@@ -66,18 +66,16 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--Bootstrap code-->
+    <!--Bootstrap CSS-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <!--Bootstrap JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <link rel="shortcut icon" href="../../images/logo.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../../js/formValidator.js"></script>
     <script src="../../js/darkMode.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.js"
-  integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
-  crossorigin="anonymous"></script>
     <script src="../../js/relationSearch.js"></script>
     <script src="../../js/descriptionSearch.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="../../images/logo.png">
     <title>edit order <?php echo $order_id ?> | GreenHome</title>
   </head>
   <header class="p-3 mb-3 border-bottom">
@@ -167,19 +165,19 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         <div class="row mb-3">
           <label class="col-form-label col-sm-3">Article</label>
           <div class="col-sm-3">
-              <select class="form-select" name="article_id" id="article_id" required>
-                <option value="<?=$article_id?>"><?=$article_name?></option>
-                <?php
-                  $sql = "SELECT id, name FROM articles ORDER BY name";
-                  $result = mysqli_query($connection, $sql);
-                  if (mysqli_num_rows($result) > 0) {
-                    while ($row = mysqli_fetch_assoc($result)) {
-                      echo '<option value="' . $row['id'] . '">' . htmlspecialchars($row['name']) . '</option>';
-                    }
-                  }
-                ?>
-              </select>
-            </div>
+            <select class="form-select" name="article_id" id="article_id" required>
+              <option value="<?=$article_id?>"><?=$article_name?></option>
+              <?php
+              $sql = "SELECT id, name FROM articles ORDER BY name";
+              $result = mysqli_query($connection, $sql);
+              if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                  echo '<option value="' . $row['id'] . '">' . htmlspecialchars($row['name']) . '</option>';
+                }
+              }
+              ?>
+            </select>
+          </div>
         </div>
         <div class="row mb-3">
           <label class="col-form-label col-sm-3">Description</label>

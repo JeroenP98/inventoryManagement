@@ -212,7 +212,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
       <!-- status messages -->
       <?php if(isset($_GET['action']) && $_GET["status"] == "succes" && $_GET["action"] == "add"):?>
         <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
-          <p><strong>Succes!</strong> You added order<?=$_GET['id']?></p>
+          <p><strong>Succes!</strong> You added order <?=$_GET['id']?></p>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         <?php elseif (isset($_GET['action']) && $_GET["status"] == "succes" && $_GET["action"] == "edit"): ?>
