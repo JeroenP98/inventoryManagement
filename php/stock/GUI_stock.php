@@ -37,8 +37,13 @@ require_once '../include/db_connect.php';
           <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link" >Articles</a></li>
           <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link active" aria-current="page" >inventory</a></li>
           <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
-          <li class="nav-item"><a href="../incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
-          <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link" >Outgoing orders</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Orders</a>
+            <ul class="dropdown-menu">
+              <li><a href="../orders/GUI_incoming.php" class="dropdown-item">Incoming orders</a></li>
+              <li><a href="../orders/GUI_outgoing.php" class="dropdown-item">Outgoing orders</a></li>
+            </ul>
+          </li>
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link">Users</a></li>
           <li class="nav-item "><a class="nav-link" href="../companies/GUI_companies.php">Companies</a></li>
           <li class="nav-item "><a class="nav-link" href="../accessibilities/GUI_accessibilities.php">Accessibility</a></li>

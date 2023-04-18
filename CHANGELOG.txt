@@ -166,3 +166,24 @@ the logging has been added to the articles and user database - Jeroen
 
 ### added
 - new look to the dashboard page using bootstrap cards and chart.js library
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.21] / Released 28-3-2022
+
+### added
+- partially reworked the order CRUD system to be more OOP and reduce code, pages
+
+////////////////////////////////////////////////////////////////////////////////
+
+## Version [1.22] / Released 03-04-2022
+
+### added
+- new trigger to auto increment the order_lines table order_line value, so each new order starts with order_line value 1.
+- dynamically changing adress and article description fields with javascript during the order and order lines editing
+- combined all order handling in one file instead of one file per order type. DeleteOrder function in controller_orders is not working yet.
+
+
+### fixed
+- fixed headers links to match new dropdown menu all across the page
+- fixed export and order by buttons not working on order pages
