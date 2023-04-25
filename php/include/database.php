@@ -9,7 +9,7 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $database = "greenhome";
-$connection = new mysqli($servername, $username, $password, $database);
+$connection = new mysqli($servername, $username, $password, /*$database*/);
 
 
 // check if the database exists
