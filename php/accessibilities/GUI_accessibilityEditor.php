@@ -14,13 +14,10 @@ require_once '../logging/controller_logfile.php';
 
 // declare empty variables for form handling
 $name = "";
-$street = "";
-$house_nr = "";
-$zip_code = "";
-$city = "";
-$country_code = "";
-$email_adress =  "";
-$phone_number = "";
+$can_access_orders = "";
+$can_access_relations = "";
+$can_access_articles = "";
+$can_access_employees = "";
 
 // declare variables for form handling when failing
 $errorMessage = "";
@@ -48,13 +45,12 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
       exit;
     }
 
-
 // Store the found data of the query to variables
-$name = $row["name"];
-$can_access_orders = $row["can_access_orders"];
-$can_access_relations = $row["can_access_relations"];
-$can_access_articles = $row["can_access_articles"];
-$can_access_employees = $row["can_access_employees"];
+$name = $row["function_name"];
+$can_access_orders = $row["can_acces_orders"];
+$can_access_relations = $row["can_acces_relations"];
+$can_access_articles = $row["can_acces_articles"];
+$can_access_employees = $row["can_acces_employees"];
 
 
 } 
@@ -86,10 +82,15 @@ $can_access_employees = $row["can_access_employees"];
           <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link" >Articles</a></li>
           <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link" >inventory</a></li>
           <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link " aria-current="page" >Relations</a></li>
-          <li class="nav-item"><a href="../incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
-          <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link" >Outgoing orders</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Orders</a>
+            <ul class="dropdown-menu">
+              <li><a href="../orders/GUI_incoming.php" class="dropdown-item">Incoming orders</a></li>
+              <li><a href="../orders/GUI_outgoing.php" class="dropdown-item">Outgoing orders</a></li>
+            </ul>
+          </li>
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link" aria-current="page">Users</a></li>
-          <li class="nav-item "><a class="nav-link active" href="../accessibilities/GUI_accessibilities.php"">Accessibility</a></li>
+          <li class="nav-item "><a class="nav-link active" href="../accessibilities/GUI_accessibilities.php">Accessibility</a></li>
           <li class="nav-item "><a class="nav-link" href="../functions/GUI_functions.php"">Functions</a></li>
         </ul>
 
@@ -145,28 +146,28 @@ $can_access_employees = $row["can_access_employees"];
           <label class="col-form-label col-sm-3">Can access orders</label>
           <div class="col-sm-9">
             <input type="hidden" name="can_access_orders" value="0">
-            <input type="checkbox" name="can_access_orders" value="1">
+            <input type="checkbox" name="can_access_orders" value="1" <?php if($can_access_orders == 1) echo "checked"; ?>>
           </div>
         </div>
         <div class="row mb-3">
           <label class="col-form-label col-sm-3">Can access relations</label>
           <div class="col-sm-9">
             <input type="hidden" name="can_access_relations" value="0">
-            <input type="checkbox" name="can_access_relations" value="1">
+            <input type="checkbox" name="can_access_relations" value="1" <?php if($can_access_relations == 1) echo "checked"; ?>>
           </div>
         </div>
         <div class="row mb-3">
           <label class="col-form-label col-sm-3">Can access articles</label>
           <div class="col-sm-9">
             <input type="hidden" name="can_access_articles" value="0">
-            <input type="checkbox" name="can_access_articles" value="1">
+            <input type="checkbox" name="can_access_articles" value="1" <?php if($can_access_articles == 1) echo "checked"; ?>>
           </div>
         </div>
         <div class="row mb-3">
           <label class="col-form-label col-sm-3">Can access employees</label>
           <div class="col-sm-9">
-            <input type="hidden" name="can_access_employees" value="0">
-            <input type="checkbox" name="can_access_employees" value="1">
+            <input type="hidden" name="" value="0">
+            <input type="checkbox" name="can_access_employees" value="1" <?php if($can_access_employees == 1) echo "checked"; ?>>
           </div>
         </div>
         <div class="row mb-3">

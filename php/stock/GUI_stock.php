@@ -11,7 +11,7 @@ require_once '../include/db_connect.php';
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100" data-bs-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,7 +24,7 @@ require_once '../include/db_connect.php';
   <link rel="shortcut icon" href="../../images/logo.png">
   <title>Stock | GreenHome</title>
 </head>
-<body>
+<body class="d-flex flex-column h-100">
   <header class="p-3 mb-3 border-bottom">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -37,9 +37,17 @@ require_once '../include/db_connect.php';
           <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link" >Articles</a></li>
           <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link active" aria-current="page" >inventory</a></li>
           <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
-          <li class="nav-item"><a href="../incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
-          <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link" >Outgoing orders</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Orders</a>
+            <ul class="dropdown-menu">
+              <li><a href="../orders/GUI_incoming.php" class="dropdown-item">Incoming orders</a></li>
+              <li><a href="../orders/GUI_outgoing.php" class="dropdown-item">Outgoing orders</a></li>
+            </ul>
+          </li>
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link">Users</a></li>
+          <li class="nav-item "><a class="nav-link" href="../companies/GUI_companies.php">Companies</a></li>
+          <li class="nav-item "><a class="nav-link" href="../accessibilities/GUI_accessibilities.php">Accessibility</a></li>
+          <li class="nav-item "><a  href="../functions/GUI_functions.php" class="nav-link">Functions</a></li>
         </ul>
 
         <?php
@@ -89,15 +97,35 @@ require_once '../include/db_connect.php';
   </div>
 
   <div class="container">
-    <!-- Search bar-->
-    <div class="d-flex nowrap align-items-center">
+    <!-- Actions bar-->
+    <div class="d-flex align-items-center mb-5">
       <div class="input-group my-3 me-3">
         <span class="input-group-text" id="tableSearchBar">Search for article</span>
         <input type="text" class="form-control" id="searchInput" placeholder="Article name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
       </div>
       <a href="../include/exportData.php?report=exportStock" class="btn btn-success my-3">Export</a>
+      <div class="container d-flex align-items-center justify-content-end my-3 me-3">
+        <form method="get">
+          <div class="form-group row align-items-center">
+            <label for="order_by" class="col-sm-3 col-form-label">Order by:</label>
+            <div class="col-sm-6">
+              <select class="form-control" id="order_by" name="order_by">
+                <option value="id_asc">ID (Ascending)</option>
+                <option value="id_desc">ID (Descending)</option>
+                <option value="article_name_asc">Name (Ascending)</option>
+                <option value="article_name_desc">Name (Descending)</option>
+                <option value="stock_level_asc">Stock (Ascending)</option>
+                <option value="stock_level_desc">Stock (Descending)</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-      <!-- End search bar-->
+    <!-- End actions bar-->
     <table class="table table-striped table-sm" id="table">
       <thead>
         <tr>
@@ -128,6 +156,35 @@ require_once '../include/db_connect.php';
       // calculate the offset for the query
       $offset = ($current_page - 1) * $records_per_page;
 
+      // Set order by value
+      if(isset($_GET["order_by"])){
+        $get_order_by = $_GET["order_by"];
+        switch($get_order_by) {
+          case "article_name_asc":
+            $order_by = "article_name ASC"; 
+            break;
+          case "article_name_desc":
+            $order_by = "article_name DESC"; 
+            break;
+          case "id_asc":
+            $order_by = "id ASC"; 
+            break;
+          case "id_desc":
+            $order_by = "id DESC"; 
+            break;
+          case "stock_level_asc":
+            $order_by = "stock_level ASC"; 
+            break;
+          case "stock_level_desc":
+            $order_by = "stock_level DESC"; 
+            break;
+          default:
+            $order_by = "id ASC";
+        }
+      } else {
+        $order_by = "id ASC";
+      }
+
       // prepare sql statement
       $sql = "WITH total_incoming AS (
         SELECT articles.id AS article_id, SUM(order_lines.quantity) AS incoming_stock
@@ -149,7 +206,7 @@ require_once '../include/db_connect.php';
         GROUP BY articles.id
       )
       
-      SELECT articles.id AS 'article_id', articles.name AS 'article_name', 
+      SELECT articles.id AS 'id', articles.name AS 'article_name', 
             COALESCE(SUM(total_incoming.incoming_stock), 0) - COALESCE(SUM(total_outgoing.outgoing_stock), 0) AS 'stock_level'
       FROM articles
       LEFT JOIN total_incoming
@@ -157,6 +214,7 @@ require_once '../include/db_connect.php';
       LEFT JOIN total_outgoing
           ON articles.id = total_outgoing.article_id
       GROUP BY articles.id, articles.name
+      ORDER BY $order_by
       LIMIT $records_per_page
       OFFSET $offset;";
       
@@ -166,38 +224,37 @@ require_once '../include/db_connect.php';
       // make a new table row for every row in database
       while($row = $result->fetch_assoc()) {
         echo "<tr>
-        <td>$row[article_id]</td>
+        <td>$row[id]</td>
         <td>$row[article_name]</td>
         <td>$row[stock_level]</td>
         </tr>";
 
       }
       ?>
-
-      <?php if ($total_pages > 1): ?>
-        <nav aria-label="Page navigation">
-          <ul class="pagination">
-            <?php if ($current_page > 1): ?>
-              <li class="page-item"><a class="page-link" href="?page=<?= $current_page - 1 ?>">Previous</a></li>
-            <?php endif; ?>
-            <?php 
-              $start_page = max(1, $current_page - 5);
-              $end_page = min($total_pages, $current_page + 5);
-              for ($i = $start_page; $i <= $end_page; $i++): 
-            ?>
-              <li class="page-item<?= $current_page == $i ? ' active' : '' ?>">
-                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
-              </li>
-            <?php endfor; ?>
-            <?php if ($current_page < $total_pages): ?>
-              <li class="page-item"><a class="page-link" href="?page=<?= $current_page + 1 ?>">Next</a></li>
-            <?php endif; ?>
-          </ul>
-        </nav>
-      <?php endif; ?>
       </tbody>
     </table>
   </div>
+  <?php if ($total_pages > 1): ?>
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <?php if ($current_page > 1): ?>
+          <li class="page-item"><a class="page-link" href="?page=<?= $current_page - 1 ?>">Previous</a></li>
+        <?php endif; ?>
+        <?php 
+          $start_page = max(1, $current_page - 5);
+          $end_page = min($total_pages, $current_page + 5);
+          for ($i = $start_page; $i <= $end_page; $i++): 
+        ?>
+          <li class="page-item<?= $current_page == $i ? ' active' : '' ?>">
+            <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+          </li>
+        <?php endfor; ?>
+        <?php if ($current_page < $total_pages): ?>
+          <li class="page-item"><a class="page-link" href="?page=<?= $current_page + 1 ?>">Next</a></li>
+        <?php endif; ?>
+      </ul>
+    </nav>
+  <?php endif; ?>
   <?php 
   // use php to use footer
   require_once '..\include\footer.php'?>

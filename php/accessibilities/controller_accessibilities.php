@@ -50,12 +50,12 @@ class UserController {
 
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
       $function_name = htmlspecialchars($_POST["function_name"]);
-      $can_acces_orders = htmlspecialchars($_POST["can_acces_orders"]);
-      $can_acces_relations = htmlspecialchars($_POST["can_acces_relations"]);
-      $can_acces_articles = htmlspecialchars($_POST["can_acces_articles"]);
-      $can_acces_employees = htmlspecialchars($_POST["can_acces_employees"]);
+      $can_acces_orders = htmlspecialchars($_POST["can_access_orders"]);
+      $can_acces_relations = htmlspecialchars($_POST["can_access_relations"]);
+      $can_acces_articles = htmlspecialchars($_POST["can_access_articles"]);
+      $can_acces_employees = htmlspecialchars($_POST["can_access_employees"]);
 
-      if (empty($function_name) || empty($can_acces_orders) || empty($can_acces_relations) || empty($can_acces_articles) || empty($can_acces_employees)) {
+      if (!isset($function_name) || !isset($can_acces_orders) || !isset($can_acces_relations) || !isset($can_acces_articles) || !isset($can_acces_employees)) {
         $error_message = "All fields are required";
         echo $error_message;
       }
@@ -64,6 +64,7 @@ class UserController {
         $sql = "INSERT INTO `accessibilities`(`function_name`, `can_acces_orders`, `can_acces_relations`, `can_acces_articles`, `can_acces_employees`) VALUES ('$function_name', '$can_acces_orders', '$can_acces_relations', '$can_acces_articles', '$can_acces_employees')";
         mysqli_query($connection, $sql);
         
+        echo $sql;
         $action = "add";
         $object_type = "Accessibility";
         LogfileHandler::addLogfileRecord($action, $object_type, $function_name, "new Accessibility");
@@ -83,20 +84,19 @@ class UserController {
     global $connection;
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
-      $id = htmlspecialchars($_POST["id"]);
       $function_name = htmlspecialchars($_POST["function_name"]);
-      $can_acces_orders = htmlspecialchars($_POST["can_acces_orders"]);
-      $can_acces_relations = htmlspecialchars($_POST["can_acces_relations"]);
-      $can_acces_articles = htmlspecialchars($_POST["can_acces_articles"]);
-      $can_acces_employees = htmlspecialchars($_POST["can_acces_employees"]);
+      $can_access_orders = htmlspecialchars($_POST["can_access_orders"]);
+      $can_access_relations = htmlspecialchars($_POST["can_access_relations"]);
+      $can_access_articles = htmlspecialchars($_POST["can_access_articles"]);
+      $can_access_employees = htmlspecialchars($_POST["can_access_employees"]);
 
-      if (empty($function_name) || empty($can_acces_orders) || empty($can_acces_relations) || empty($can_acces_articles) || empty($can_acces_employees)) {
+      if (!isset($function_name) || !isset($can_access_orders) || !isset($can_access_relations) || !isset($can_access_articles) || !isset($can_access_employees)) {
         $error_message = "All fields are required";
         echo $error_message;
       }
 
       try {
-        $sql = "UPDATE `accessibilities` SET `function_name`='$function_name',`can_acces_orders`='$can_acces_orders',`can_acces_relations`='$can_acces_relations',`can_acces_articles`='$can_acces_articles',`can_acces_employees`='$can_acces_employees' WHERE `id` = $id";
+        $sql = "UPDATE `accessibilities` SET `function_name`='$function_name',`can_acces_orders`='$can_access_orders',`can_acces_relations`='$can_access_relations',`can_acces_articles`='$can_access_articles',`can_acces_employees`='$can_access_employees' WHERE `function_name` = '$function_name'";
         mysqli_query($connection, $sql);
 
         $action = "edit";
@@ -126,10 +126,10 @@ class UserController {
           $function_name = $_GET["function_name"];
   
           // Declare variables for logging purposes before the accessibility is deleted
-          $stmt = "SELECT name FROM accessibilities WHERE function_name='$function_name'";
+          $stmt = "SELECT function_name FROM accessibilities WHERE function_name='$function_name'";
           $result = $connection->query($stmt);
           $row = $result->fetch_assoc();
-          $name = $row["name"];
+          $name = $row["function_name"];
   
           // Prepare query to delete record
           $sql = "DELETE FROM accessibilities WHERE function_name='$function_name'";

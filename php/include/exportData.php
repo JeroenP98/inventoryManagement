@@ -106,7 +106,7 @@ class ExportData {
   public function exportArticles(){
     global $connection;
     $sql = 
-    "SELECT id, name, CONCAT(LEFT(description, 25),'...') AS 'description', CONCAT('€ ', purchase_price) AS purchase_price, CONCAT('€ ', selling_price) AS selling_price, IF(is_active = 1, 'Active', 'Inactive') AS 'active_status'
+    "SELECT id, name, CONCAT(LEFT(description, 25),'...') AS 'description', purchase_price, selling_price, IF(is_active = 1, 'Active', 'Inactive') AS 'active_status'
     FROM articles";
 
     // execute the query
@@ -179,6 +179,54 @@ class ExportData {
 
   public function exportOrders(){
     global $connection;
+
+    if($_GET["type"] == "incoming"){
+      $order_type = 0;
+    } else {
+      $order_type = 1;
+    }
+
+    $sql = "SELECT orders.id as id, relations.name as name, orders.order_date as order_date, orders.shipping_date as shipping_date, COUNT(order_lines.order_id) AS num_of_lines, employees.first_name as verkoper_name, IF(orders.is_finalized = 1, 'Yes', 'No') as is_finalized, IF(orders.order_type = 1, 'Outgoing', 'Incoming') AS order_type
+        FROM orders
+        JOIN relations
+          ON orders.relation_id = relations.id
+        JOIN employees
+          ON orders.employee_id = employees.id
+        LEFT JOIN order_lines 
+          ON orders.id = order_lines.order_id
+        WHERE order_type = $order_type
+        GROUP BY orders.id
+        ORDER BY id;";
+
+    // execute the query
+    $result = $connection->query($sql);
+
+    if($result->num_rows > 0){
+
+    $file_name = "Orders overview " . date('Y-m-d H:i:s') . ".csv"; 
+
+
+    $fields = array('Order type', 'Order ID', 'Customer name', 'Order date', 'Shipping date', 'Number of order lines', 'Sales person', 'finalized');
+    fputcsv($this->f, $fields, $this->delimiter); 
+
+    while($row = $result->fetch_assoc()){
+      $lineData = array($row['order_type'] ,$row['id'], $row['name'], $row['order_date'], $row['shipping_date'], $row['num_of_lines'], $row['verkoper_name'], $row['is_finalized']);
+      fputcsv($this->f, $lineData, $this->delimiter); 
+    }
+
+
+    // Move back to beginning of file 
+    fseek($this->f, 0); 
+
+    // Set headers to download file rather than displayed 
+    header('Content-Type: text/csv'); 
+    header('Content-Disposition: attachment; filename="' . $file_name . '";'); 
+      
+    //output all remaining data on a file pointer 
+    fpassthru($this->f); 
+    } 
+    exit; 
+
   }
 
   public function exportRelations(){

@@ -13,14 +13,10 @@ require_once '../include/db_connect.php';
 require_once '../logging/controller_logfile.php';
 
 // declare empty variables for form handling
-$name = "";
-$street = "";
-$house_nr = "";
-$zipcode = "";
-$city = "";
-$country_code = "";
-$email_adress =  "";
-$phone_number = "";
+$order_id = "";
+$order_line = "";
+$article_id = "";
+$quantity = "";
 
 // declare variables for form handling when failing
 $errorMessage = "";
@@ -30,51 +26,57 @@ $errorMessage = "";
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
   // if the method is GET, show the data found in the db record
 
-    if(!isset($_GET["id"])){
-    header("location: GUI_companies.php");
+    if(!isset($_GET["order_id"])){
+    header("location: dashboard.php");
     exit;
     }
 
-    $id = $_GET["id"];
+    $order_id = $_GET["order_id"];
+    $order_line = $_GET["order_line"];
 
     // read the row of selected record by searching for the ID
-    $sql = "SELECT * FROM companies WHERE id=$id";
+    $sql = "SELECT order_id, order_line, article_id, quantity, articles.name AS article_name, articles.description AS article_description FROM order_lines 
+    JOIN articles
+      ON articles.id = order_lines.article_id
+    WHERE order_id=$order_id AND order_line=$order_line";
     $result = $connection->query($sql);
     $row = $result->fetch_assoc();
 
     //exit and return to main page if no ID can be found
     if(!$row) {
-      header("location: GUI_companies.php");
+      header("location: dashboard.php");
       exit;
     }
 
 
     //Store the found data of the query to variables
-    $name = $row["name"];
-    $street = $row["street"];
-    $house_nr = $row["house_nr"];
-    $zipcode = $row["zipcode"];
-    $city = $row["city"];
-    $country_code = $row["country_code"];
-    $email_adress =  $row["email_adress"];
-    $phone_number = $row["phone_number"];
+    $order_id = $row["order_id"];
+    $order_line = $row["order_line"];
+    $article_id = $row["article_id"];
+    $quantity = $row["quantity"];
+    $article_name = $row["article_name"];
+    $article_description = $row["article_description"];
 
 } 
 ?>
 
 
-<html lang="en">
-  <head>
+<html lang="en" class="h-100" data-bs-theme="light">
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--Bootstrap code-->
+    <!--Bootstrap CSS-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <!--Bootstrap JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <link rel="shortcut icon" href="../../images/logo.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../../js/formValidator.js"></script>
     <script src="../../js/darkMode.js"></script>
-    <title>edit <?php echo $name ?> | GreenHome</title>
+    <script src="../../js/relationSearch.js"></script>
+    <script src="../../js/descriptionSearch.js"></script>
+    <link rel="shortcut icon" href="../../images/logo.png">
+    <title>edit order <?php echo $order_id ?> | GreenHome</title>
   </head>
   <header class="p-3 mb-3 border-bottom">
     <div class="container">
@@ -86,19 +88,19 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 nav-pills">
           <li class="nav-item"><a href="../../dashboard.php" class="nav-link">Dashboard</a></li>
           <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link" >Articles</a></li>
-          <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link" aria-current="page" >inventory</a></li>
+          <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link" >inventory</a></li>
           <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Orders</a>
+            <a class="nav-link active dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Orders</a>
             <ul class="dropdown-menu">
               <li><a href="../orders/GUI_incoming.php" class="dropdown-item">Incoming orders</a></li>
               <li><a href="../orders/GUI_outgoing.php" class="dropdown-item">Outgoing orders</a></li>
             </ul>
           </li>
-          <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link">Users</a></li>
-          <li class="nav-item "><a class="nav-link active" href="../companies/GUI_companies.php">Companies</a></li>
-          <li class="nav-item "><a class="nav-link " href="../accessibilities/GUI_accessibilities.php"">Accessibility</a></li>
-          <li class="nav-item "><a class="nav-link" href="../functions/GUI_functions.php"">Functions</a></li>
+          <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link" aria-current="page">Users</a></li>
+          <li class="nav-item"><a href="../companies/GUI_companies.php" class="nav-link">Companies</a></li>
+          <li class="nav-item"><a href="../accessibilities/GUI_accessibilities.php" class="nav-link">Accessibility</a></li>
+          <li class="nav-item"><a href="../functions/GUI_functions.php" class="nav-link">Functions</a></li>
         </ul>
 
         <?php
@@ -124,9 +126,9 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
       </div>
     </div>
   </header>
-  <body>
+  <body class="d-flex flex-column h-100">
     <div class="container my-5">
-      <h2 class="mb-5">Edit Comapny</h2>
+      <h2 class="mb-5">Edit Order line</h2>
 
       <?php
         // display error message when failing to upload data
@@ -141,60 +143,62 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         }
       ?>
 
-      <form method="POST" action="controller_company.php?action=edit">
-        <input type="hidden" value="<?php echo $id; ?>" name="id">
+      <form method="POST" action="controller_order_line.php?action=edit">
+        <input type="hidden" value="<?=$order_id?>" name="order_id">
+        <input type="hidden" value="<?=$order_line?>" name="order_line">
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Company name</label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="name" value="<?php echo $name; //show the current value of the db record?>" required>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Street</label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="street" required value="<?php echo $street;?>">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">House Nr.</label>
+          <label class="col-form-label col-sm-3">Order</label>
           <div class="col-sm-3">
-            <input type="text" maxlength="10" class="form-control" name="house_nr" value="<?php echo $house_nr;?>">
+            <fieldset disabled>
+              <input type="text" class="form-control" value="<?=$order_id?>">
+            </fieldset>
           </div>
-          <label class="col-form-label col-sm-3">Zip code</label>
+        </div>
+        <div class="row mb-3">
+          <label class="col-form-label col-sm-3">Order line</label>
           <div class="col-sm-3">
-            <input type="text" class="form-control" name="zipcode" required value="<?php echo $zipcode;?>">
+            <fieldset disabled>
+              <input type="text" class="form-control" value="<?=$order_line?>">
+            </fieldset>
           </div>
         </div>
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">City</label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="city" required value="<?php echo $city;?>">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Country code</label>
+          <label class="col-form-label col-sm-3">Article</label>
           <div class="col-sm-3">
-            <input type="text"  maxlength="2" class="form-control" name="country_code" required value="<?php echo $country_code;?>">
+            <select class="form-select" name="article_id" id="article_id" required>
+              <option value="<?=$article_id?>"><?=$article_name?></option>
+              <?php
+              $sql = "SELECT id, name FROM articles ORDER BY name";
+              $result = mysqli_query($connection, $sql);
+              if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                  echo '<option value="' . $row['id'] . '">' . htmlspecialchars($row['name']) . '</option>';
+                }
+              }
+              ?>
+            </select>
           </div>
         </div>
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Email address</label>
-          <div class="col-sm-9">
-            <input type="email" class="form-control" name="email_adress" required value="<?php echo $email_adress;?>">
+          <label class="col-form-label col-sm-3">Description</label>
+          <div class="col-sm-3">
+            <fieldset disabled>
+            <input type="text" class="form-control" id="article_description" value="<?=$article_description?>"></input>
+            </fieldset>
           </div>
         </div>
         <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Tel. number</label>
-          <div class="col-sm-9">
-            <input type="tel" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" class="form-control" name="phone_number" required value="<?php echo $phone_number;?>">
+          <label class="col-form-label col-sm-3">Quantity</label>
+          <div class="col-sm-3">
+            <input type="number" step="1" class="form-control" name="quantity" value="<?=$quantity?>" required>
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="offset-sm-3 col-sm-3 d-grid">
-            <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="row mt-5">
+          <div class="col-sm-3">
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
           </div>
-          <div class="col-sm-3 d-grid">
-            <a href="GUI_companies.php" class="btn btn-outline-danger" role="button">Cancel</a>
+          <div class="col-sm-3">
+            <a href="GUI_orderEdit.php?id=<?=$order_id?>" class="btn btn-danger  w-100">Close</a>
           </div>
         </div>
       </form>
