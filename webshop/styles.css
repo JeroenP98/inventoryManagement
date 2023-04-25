@@ -1,0 +1,156 @@
+body {
+overflow-x: hidden;
+}
+
+.container-fluid, .row {
+padding: 0 !important;
+margin: 0 !important;
+}
+
+.container {
+margin-top: 100px;
+}
+
+.image-wrapper {
+    width: 100%;
+    height: 700px; /* Set your desired height */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 17px;
+
+}
+
+body > div:nth-child(4) > div > div.col-8 > a > img {
+    border-radius: 17px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+}
+
+.image-anchor {
+    display: block;
+    
+}
+
+.navIcon {
+height: 37.07px;
+width: 37.07px;
+margin-right: 15px;
+}
+
+nav > a > img {
+width: 50px;
+margin-left: 30px;
+}
+
+#navbarNav > ul.navbar-nav.mr-auto > li > a, #iconText-shop, #iconText-user
+{
+margin-left: 10px;
+}
+
+.navbar-nav a {
+color: #343A40;
+}
+
+li > a {
+color: #343A40 !important
+}
+
+.hero-image {
+background-image: url('https://picsum.photos/id/1042/1920/1080');
+background-size: cover;
+background-position: center;
+height: 100vh;
+}
+
+.hero-text {
+color: #fff;
+text-align: center;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+
+.hero-text h1 {
+font-size: 5rem;
+font-weight: bold;
+margin-bottom: 2rem;
+}
+
+.hero-text p {
+font-size: 1.5rem;
+}
+
+/* Set full height of hero section */
+body > section > div > div > div > div > img
+{
+height: 100vh;
+width: 100vw;
+object-fit: cover;
+object-position: left;
+}
+
+body > section > div > div > div {
+padding: 0 !important
+}
+
+ h1, h2 {
+color: #508279;
+font-weight: 100;
+
+
+}
+
+.hero-section .grid_item_2 button {
+color: #343a40;
+background-color: white;
+box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+margin-top: 10%;
+margin-bottom: 100px;
+border: none;
+border-radius: 50px;
+min-width: 40%;
+min-height: 15%;
+font-size: 1rem;
+transition: all ease 0.5s;
+padding: 10px 29px
+}
+
+
+@media (min-width: 992px) {
+.hidden-on-mobile {
+display: none;
+}
+
+}
+
+@media (max-width: 992px) {
+.present-on-mobile {
+display: none;
+}
+
+.image-wrapper {
+    height: 400px;
+}
+
+}
+
+@media (min-width: 1250px) {
+.hero-section .grid_item_2 button {
+    margin-top: 5%;
+    border-radius: 50px;
+    width: 20%;
+    height: 7.5%;
+}
+
+
+}
+
+@media (min-width: 550px) {
+.hero-section .grid_item_2 button {
+    margin-top: 5%;
+    border-radius: 50px;
+    width: 
+    padding: 10px auto;
+}
+}
