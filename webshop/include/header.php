@@ -26,8 +26,8 @@
 <body class="d-flex flex-column h-100">
     <!-- Nav begin -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
-        <a class="navbar-brand" href="#">
-            <img src="/inventorymanagement/images/logo-green.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+        <a class="navbar-brand" href="../index/Index.php">
+            <img src="../images/logo-green.svg" width="30" height="30" class="d-inline-block align-top" alt="">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,24 +36,24 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">COLLECTIE <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="../collectie/GUI_collectie.php">COLLECTIE <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="shop\GUI_shop.php">SHOP <span class="sr-only"></span></a>
+                    <a class="nav-link" href="../shop/GUI_shop.php">SHOP <span class="sr-only"></span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">DUURZAAMHEID</a>
+                    <a class="nav-link" href="../duurzaamheid/GUI_duurzaamheid.php">DUURZAAMHEID</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">OVER ONS</a>
+                    <a class="nav-link" href="../over ons/GUI_over_ons.php">OVER ONS</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">CONTACT</a>
+                    <a class="nav-link" href="../contact/GUI_contact.php">CONTACT</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
                 <!-- shoppingcart -->
-                <a class="navIcon shopIcon nav-item collection present-on-mobile" href="winkelwagen.html"
+                <a class="navIcon shopIcon nav-item collection present-on-mobile" href="../shop/GUI_cart.php"
                     aria-label="Link naar het winkelmandje">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" id="shopBasket" class="navitem shop-icon">
@@ -62,7 +62,7 @@
                     </svg>
                 </a>
                 <!-- user profile -->
-                <a class="navIcon userIcon nav-item collection present-on-mobile" href="login.html"
+                <a class="navIcon userIcon nav-item collection present-on-mobile" href="../profiel/GUI_profiel.php"
                     aria-label="Link naar het gebruikersprofiel">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="navitem user-icon">
@@ -71,11 +71,11 @@
                     </svg>
                 </a>
                 <li class="nav-item hidden-on-mobile">
-                    <a id="iconText-shop" class="iconText navitem collection nav-link" href="winkelwagen.html"
+                    <a id="iconText-shop" class="iconText navitem collection nav-link" href="../shop/GUI_cart.php"
                         aria-label="Link naar het winkelmandje">WINKELWAGEN</a>
                 </li>
                 <li class="nav-item hidden-on-mobile">
-                    <a id="iconText-user" class="iconText navitem collection nav-link" href="login.html"
+                    <a id="iconText-user" class="iconText navitem collection nav-link" href="../profiel/GUI_profiel.php"
                         aria-label="Link naar het gebruikersprofiel">PROFIEL</a>
                 </li>
             </ul>
