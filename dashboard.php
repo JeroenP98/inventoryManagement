@@ -352,6 +352,8 @@ require_once 'php/include/db_connect.php';
               // execute the query and store the results in $result
               $result2 = mysqli_query($connection, $sql2);
 
+
+
               // initialize an array to store the results
               $data2 = array();
           
@@ -359,7 +361,8 @@ require_once 'php/include/db_connect.php';
               while ($row2 = mysqli_fetch_assoc($result2)) {
                   $data2[] = $row2;
               }
-          
+              
+
               // encode the data as JSON
               $json_data2 = json_encode($data2);
               ?>
@@ -405,9 +408,6 @@ require_once 'php/include/db_connect.php';
                   </select>
                   <label for="year" class="form-label ms-3">Select year</label>
                 </div>
-                <div class="col-3 d-flex align-items-center">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
 
               </form>
 
@@ -416,8 +416,8 @@ require_once 'php/include/db_connect.php';
                 </div>
 
               <script>
-                // parse the JSON data
                 var jsonData = <?php echo $json_data2; ?>;
+                console.log(jsonData);                // parse the JSON data
                 // extract the labels and data from the JSON data
                 var labels = jsonData.map(function(item) { return item['Name']; });
                 var data = jsonData.map(function(item) { return item['Total Sales']; });
@@ -466,7 +466,7 @@ require_once 'php/include/db_connect.php';
                       myChart.update();
                     }
                   };
-                  xhttp.open('GET', 'get_data.php?month=' + selectedMonth + '&year=' + selectedYear, true);
+                  xhttp.open('GET', './php/include/get_chart_data.php?month=' + selectedMonth + '&year=' + selectedYear, true);
                   xhttp.send();
                 });
               </script>

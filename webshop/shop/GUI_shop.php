@@ -1,104 +1,158 @@
 <?php
 
-session_start();
-$page_name = "Shop | GreenHome";
-require_once "../include/header.php";
-require_once "../../php/include/db_connect.php";
+  session_start();
+  $page_name = "Shop | GreenHome";
+  require_once "../include/header.php";
+  require_once "../../php/include/db_connect.php";
 
-//pagination
-// set the number of records per page
-$records_per_page = 36;
+  //pagination
+  // set the number of records per page
+  $records_per_page = 36;
 
-// get the total number of records
-$sql_count = "SELECT COUNT(*) AS count FROM articles WHERE is_active = 1";
-$result_count = $connection->query($sql_count);
-$row_count = $result_count->fetch_assoc();
-$total_records = $row_count['count'];
+  // get the total number of records
+  $sql_count = "SELECT COUNT(*) AS count FROM articles WHERE is_active = 1";
+  $result_count = $connection->query($sql_count);
+  $row_count = $result_count->fetch_assoc();
+  $total_records = $row_count['count'];
 
-// calculate the total number of pages
-$total_pages = ceil($total_records / $records_per_page);
+  // calculate the total number of pages
+  $total_pages = ceil($total_records / $records_per_page);
 
-// get the current page number
-$current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+  // get the current page number
+  $current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 
-// calculate the offset for the query
-$offset = ($current_page - 1) * $records_per_page;
+  // calculate the offset for the query
+  $offset = ($current_page - 1) * $records_per_page;
 
-// retrieve article data
-/*$sql = "SELECT * FROM articles 
-LIMIT $records_per_page
-OFFSET $offset;";*/
+  // retrieve the search input with a shorthand if statement
+  $searchInput = isset($_GET['search_input']) ? $_GET['search_input'] : '';
+  
+  // retrieve article data
+  $sql = "WITH total_incoming AS (
+    SELECT articles.id AS article_id, SUM(order_lines.quantity) AS incoming_stock
+    FROM order_lines
+    JOIN orders
+        ON order_lines.order_id = orders.id
+    JOIN articles
+        ON articles.id = order_lines.article_id
+    WHERE orders.order_type = 0 
+    GROUP BY articles.id
+  ), total_outgoing AS (
+    SELECT articles.id AS article_id, SUM(order_lines.quantity) AS outgoing_stock
+    FROM order_lines
+    JOIN orders
+        ON order_lines.order_id = orders.id
+    JOIN articles
+        ON articles.id = order_lines.article_id
+    WHERE orders.order_type = 1 
+    GROUP BY articles.id
+  )
 
-$sql = "WITH total_incoming AS (
-  SELECT articles.id AS article_id, SUM(order_lines.quantity) AS incoming_stock
-  FROM order_lines
-  JOIN orders
-      ON order_lines.order_id = orders.id
-  JOIN articles
-      ON articles.id = order_lines.article_id
-  WHERE orders.order_type = 0 
-  GROUP BY articles.id
-), total_outgoing AS (
-  SELECT articles.id AS article_id, SUM(order_lines.quantity) AS outgoing_stock
-  FROM order_lines
-  JOIN orders
-      ON order_lines.order_id = orders.id
-  JOIN articles
-      ON articles.id = order_lines.article_id
-  WHERE orders.order_type = 1 
-  GROUP BY articles.id
-)
+  SELECT articles.id AS 'id', articles.name AS 'article_name', articles.selling_price AS 'selling_price',
+        COALESCE(SUM(total_incoming.incoming_stock), 0) - COALESCE(SUM(total_outgoing.outgoing_stock), 0) AS 'stock_level'
+  FROM articles
+  LEFT JOIN total_incoming
+      ON articles.id = total_incoming.article_id
+  LEFT JOIN total_outgoing
+      ON articles.id = total_outgoing.article_id
+  WHERE articles.is_active = 1";
 
-SELECT articles.id AS 'id', articles.name AS 'article_name', articles.selling_price AS 'selling_price',
-      COALESCE(SUM(total_incoming.incoming_stock), 0) - COALESCE(SUM(total_outgoing.outgoing_stock), 0) AS 'stock_level'
-FROM articles
-LEFT JOIN total_incoming
-    ON articles.id = total_incoming.article_id
-LEFT JOIN total_outgoing
-    ON articles.id = total_outgoing.article_id
-WHERE articles.is_active = 1
-GROUP BY articles.id, articles.name
-LIMIT $records_per_page
-OFFSET $offset;";
+  // Append the search input condition if it is set
+  if (!empty($searchInput)) {
+    $sql .= " AND articles.name LIKE '%$searchInput%'";
+  }
 
-// Run the query
-$result = $connection->query($sql);
+  $sql .= " GROUP BY articles.id, articles.name
+  LIMIT $records_per_page
+  OFFSET $offset;";
+
+  // Run the query
+  $result = $connection->query($sql);
 
 ?>
 <!-- Page content -->
 <div class="container">
     <h2 class="text-center fw-bold">Artikelen</h2>
+
+    
+    
     <div class="row justify-content-center">
-        <?php while ($row = $result->fetch_assoc()) {?>  
-        <div class="card col-md-3 px-0 mx-2 my-4">
-        <img src="../../php/articles/article_images/product2.png" class="card-img-top" alt="Item image">
-            <div class="card-body">
-                <h5 class="card-title"><?=$row['article_name']?></h5>
-                <p class="card-text">€<?=$row['selling_price']?></p>
-                <p class="card-text">Stock status: <?php if($row['stock_level'] >= 1):?>
-                <span class="text-success">In stock</span></p>
-                <?php else:?>
-                <span class="text-danger">Out of stock</span></p>
-                <?php endif; ?>
+    <div class="col-md-9 mt-5">
+      <form method="GET">
+          <div class="input-group mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" name="search_input" id="search_input" placeholder="Zoek een artikel" aria-label="Search term">
+              <label for="search_input">Zoek een artikel</label>
+
             </div>
-            <div class="card-footer d-flex justify-content-center">
-                <form action="controller_cart.php" method="POST" class="form-control">
-                <div class="input-group">
-                  <span class="input-group-text">Pieces</span>
-                  <input type="number" step="1" class="form-control" name="quantity" min="1" required>
-                    <?php if($row['stock_level'] <= 0):?>
-                    <button type="submit" class="btn btn-secondary disabled form-control">Add</button>
-                    <?php else: ?>
-                    <button type="submit" class="btn btn-success form-control">Add</button>
-                    <?php endif; ?>
-                </div>
-                <input type="hidden" name="article_id" value="<?=$row['id']?>">
-                <input type="hidden" name="article_name" value="<?=$row['article_name']?>">
-                <input type="hidden" name="selling_price" value="<?=$row['selling_price']?>">
-                </form>
-            </div>
-        </div>
-        <?php } //while ($row = $result->fetch_assoc()) { ?>
+            <button class="btn btn-primary" type="submit">Zoek</button>
+          </div>
+          <?php
+            if (isset($_GET['search_input'])) {
+              $searchInput = $_GET['search_input'];
+          ?>
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                Zoekterm: <?php echo $searchInput; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="clearSearch()"></button>
+              </div>
+              <script>
+                function clearSearch() {
+                  // Redirect to the same page without the search_input parameter
+                  window.location.href = window.location.pathname;
+                }
+              </script>
+          <?php
+            }
+          ?>
+        
+
+        </form>
+    </div>
+      <?php 
+        if (mysqli_num_rows($result) > 0) {
+        
+          while ($row = $result->fetch_assoc()) {?>  
+          <div class="card col-md-3 px-0 mx-2 my-4">
+          <img src="../../php/articles/article_images/product2.png" class="card-img-top" alt="Item image">
+              <div class="card-body">
+                  <h5 class="card-title"><?=$row['article_name']?></h5>
+                  <p class="card-text">€<?=$row['selling_price']?></p>
+                  <p class="card-text">Stock status: <?php if($row['stock_level'] >= 1):?>
+                  <span class="text-success">In stock</span></p>
+                  <?php else:?>
+                  <span class="text-danger">Out of stock</span></p>
+                  <?php endif; ?>
+              </div>
+              <div class="card-footer d-flex justify-content-center">
+                  <form action="controller_cart.php" method="POST" class="form-control">
+                  <div class="input-group">
+                    <span class="input-group-text">Pieces</span>
+                    <input type="number" step="1" class="form-control" name="quantity" min="1" required>
+                      <?php if($row['stock_level'] <= 0):?>
+                      <button type="submit" class="btn btn-secondary disabled form-control">Add</button>
+                      <?php else: ?>
+                      <button type="submit" class="btn btn-success form-control">Add</button>
+                      <?php endif; ?>
+                  </div>
+                  <input type="hidden" name="article_id" value="<?=$row['id']?>">
+                  <input type="hidden" name="article_name" value="<?=$row['article_name']?>">
+                  <input type="hidden" name="selling_price" value="<?=$row['selling_price']?>">
+                  </form>
+              </div>
+          </div>
+          <?php 
+          } //while ($row = $result->fetch_assoc()) { 
+        } else {
+          // If no results were found, insert the search input into searches_not_found table
+          $searchInputEscaped = mysqli_real_escape_string($connection, $searchInput);
+        
+          $insertQuery = "INSERT INTO searches_not_found (search_input, times_searched) 
+          VALUES ('$searchInputEscaped', 1)
+          ON DUPLICATE KEY UPDATE times_searched = times_searched + 1";
+          mysqli_query($connection, $insertQuery);
+          
+        }
+      ?>
     </div>
 </div>
 <?php if ($total_pages > 1): ?>
