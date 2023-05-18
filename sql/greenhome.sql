@@ -66,13 +66,17 @@ CREATE TABLE order_lines (
 
 
 CREATE TABLE articles (
-  id int(10) NOT NULL, 
-  name varchar(255) NOT NULL, 
-  description varchar(1500),  
-  purchase_price decimal(10,2), 
-  selling_price decimal(10,2), 
-  is_active tinyint(1) NOT NULL DEFAULT 1
+  id int(10) NOT NULL AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
+  description varchar(1500),
+  purchase_price decimal(10,2),
+  selling_price decimal(10,2),
+  is_active tinyint(1) NOT NULL DEFAULT 1,
+  image_data MEDIUMBLOB,
+  image_mime varchar(50),
 );
+
+
 
 
 INSERT INTO `accessibilities` (`function_name`, `can_acces_orders`, `can_acces_relations`, `can_acces_articles`, `can_acces_employees`) VALUES

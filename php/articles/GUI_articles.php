@@ -100,54 +100,86 @@ require_once '../include/db_connect.php';
     </div>
     <!-- end logout modal-->
  
-    <!-- start new article Modal -->
-    <div class="modal fade" id="newArticleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Create a new article</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- start new article Modal -->
+<div class="modal fade" id="newArticleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Create a new article</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="controller_article.php?action=add" enctype="multipart/form-data">
+          <div class="row mb-3">
+            <label class="col-form-label col-sm-3">Article name</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" name="name" required>
+            </div>
           </div>
-          <div class="modal-body">
-            <form method="POST" action="controller_article.php?action=add">
-              <div class="row mb-3">
-                <label class="col-form-label col-sm-3">Article name</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" name="name" required>
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-form-label col-sm-3">Description</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" name="description" required>
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-form-label col-sm-3">Purchase price</label>
-                <div class="col-sm-3">
-                  <input type="number" step=".01" class="form-control" name="purchase_price" required>
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-form-label col-sm-3">Selling price</label>
-                <div class="col-sm-3">
-                  <input type="number" step=".01" class="form-control" name="selling_price" required>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <div class="offset-sm-3 col-sm-3 d-grid">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-                <div class="col-sm-3 d-grid">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </form>
+          <div class="row mb-3">
+            <label class="col-form-label col-sm-3">Description</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" name="description" required>
+            </div>
           </div>
-        </div>
+          <div class="row mb-3">
+            <label class="col-form-label col-sm-3">Purchase price</label>
+            <div class="col-sm-3">
+              <input type="number" step=".01" class="form-control" name="purchase_price" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-form-label col-sm-3">Selling price</label>
+            <div class="col-sm-3">
+              <input type="number" step=".01" class="form-control" name="selling_price" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-form-label col-sm-3">Article Image</label>
+            <div class="col-sm-9">
+              <input type="file" class="form-control" name="article_image">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="offset-sm-3 col-sm-3 d-grid">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            <div class="col-sm-3 d-grid">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-    <!-- end new article modal-->
+  </div>
+</div>
+<!-- end new article modal -->
+
+<!-- start CSV import Modal -->
+<div class="modal fade" id="csvImportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Import CSV File</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="controller_article.php?action=import" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="csvFile" class="form-label">Upload CSV File</label>
+            <input class="form-control" type="file" id="csvFile" name="csvFile" accept=".csv">
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Import</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end CSV import modal -->
+
   
     <!--Page data-->
     <div class="container">
@@ -185,6 +217,7 @@ require_once '../include/db_connect.php';
         <input type="text" class="form-control" id="searchInput" placeholder="Article name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
       </div>
       <a href="../include/exportData.php?report=exportArticles" class="btn btn-success my-3">Export</a>
+      <a href="#" class="btn btn-primary my-3 btn-success" data-bs-toggle="modal" data-bs-target="#csvImportModal">Import</a>
       <div class="container d-flex align-items-center justify-content-end my-3 me-3">
         <form method="get">
           <div class="form-group row align-items-center">
@@ -324,7 +357,5 @@ require_once '../include/db_connect.php';
         <?php endif; ?>
     </div>
   </body>
-  <?php 
-  // use php to use footer
-  require_once '..\include\footer.php'?>
+
 </html>
