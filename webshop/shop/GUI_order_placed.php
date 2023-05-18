@@ -1,0 +1,101 @@
+<?php
+session_start();
+$page_name = "Order confirmation | GreenHome";
+require_once "../include/header.php";
+require_once "../../php/include/db_connect.php";
+
+$order_id = $_GET['order_id'];
+
+
+?>
+
+
+<main>
+  <div class="container justify-content-center">
+    <div class="row">
+      <h1 class="fw-bold text-center mb-5">Bestelling geplaatst!</h1>
+    </div>
+    <div class="row text-center">
+      <h5 class="mb-5 text-black">
+        Harterlijk dank voor uw bestelling met nummer: <strong style="color: #508279;"><?=$order_id?></strong><br> Zie uw details hieronder:
+      </h5>
+      <hr>
+    </div>
+    <div class="row">
+      <h5 class="fw-bold">Verzend informatie</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <?php
+            // get order data
+            $sql = "SELECT name, street, house_nr, zip_code, city, country_code, email_adress, phone_number, orders.order_date AS 'order_date', orders.shipping_date as 'shipping_date'
+            FROM relations
+            JOIN orders
+              ON orders.relation_id = relations.id
+            WHERE orders.id = $order_id;";
+
+            $result = $connection->query($sql);
+            $row = mysqli_fetch_assoc($result);
+
+          ?>
+          <p><strong>Naam:</strong> <?php echo $row['name']; ?></p>
+          <p><strong>Straat:</strong> <?php echo $row['street']; ?></p>
+          <p><strong>Huisnummer:</strong> <?php echo $row['house_nr']; ?></p>
+          <p><strong>Postcode:</strong> <?php echo $row['zip_code']; ?></p>
+          <p><strong>Stad:</strong> <?php echo $row['city']; ?></p>
+          <p><strong>Land:</strong> <?php echo $row['country_code']; ?></p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Email adres:</strong> <?php echo $row['email_adress']; ?></p>
+          <p><strong>Telefoon:</strong> <?php echo $row['phone_number']; ?></p>
+          <p><strong>Besteldatum:</strong> <?php echo $row['order_date']; ?></p>
+          <p><strong>Verwachte verzenddatum:</strong> <?php echo $row['shipping_date']; ?></p>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <table class="table table-bordered table-striped table-hover" id="table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Article</th>
+            <th>Quantity</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          
+        <?php 
+          
+          // get order data
+          $sql = "SELECT articles.name AS 'article_name', order_lines.quantity AS 'quantity', articles.selling_price AS 'selling_price'
+          FROM order_lines
+          JOIN articles
+            ON articles.id = order_lines.article_id
+          WHERE order_lines.order_id = $order_id
+          ;";
+
+          $result = $connection->query($sql);
+          
+          while($row = $result->fetch_assoc()): ?>
+            <tr>
+              <td><img src="../../php/articles/article_images/product2.png" class="img-thumbnail" alt="Item image" style="width: 120px; height: 120px;"></td>
+              <td><?=$row['article_name']?></td>
+              <td><?=$row['quantity']?></td>
+              <td>€<?=$row['quantity'] * $row['selling_price']?></td>
+            </tr>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-6 text-center">
+        <a href="../index/Index.php" class="btn btn-primary w-100">Terug naar Home</a>
+      </div>
+    </div>
+
+
+  </div>
+</main>
+
+<?php require_once "../include/footer.php";?>
