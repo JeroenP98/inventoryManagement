@@ -164,7 +164,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         if (!empty($image_data)) {
           echo '<img id="articleImage" src="data:'.$image_mime.';base64,' . base64_encode($image_data) . '" alt="Article Image" width="400" height="400">';
         } else {
-          echo '<img id="articleImage" src="" alt="No Image" width="400" height="300">';
+          echo '<img id="articleImage" alt="No Image" width="400" height="300">';
         }
       ?>
     </div>
