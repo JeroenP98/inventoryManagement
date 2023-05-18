@@ -93,8 +93,10 @@ padding: 0 !important
  h1, h2 {
 color: #508279;
 font-weight: 100;
+}
 
-
+h3, h4, h5 {
+  color: #508279;
 }
 
 .hero-section .grid_item_2 button {
