@@ -48,7 +48,7 @@
     GROUP BY articles.id
   )
 
-  SELECT articles.id AS 'id', articles.name AS 'article_name', articles.selling_price AS 'selling_price',
+  SELECT articles.id AS 'id', articles.name AS 'article_name', articles.selling_price AS 'selling_price', articles.image_data AS 'article_image', articles.image_mime AS 'image_mime',
         COALESCE(SUM(total_incoming.incoming_stock), 0) - COALESCE(SUM(total_outgoing.outgoing_stock), 0) AS 'stock_level'
   FROM articles
   LEFT JOIN total_incoming
@@ -111,9 +111,18 @@
       <?php 
         if (mysqli_num_rows($result) > 0) {
         
-          while ($row = $result->fetch_assoc()) {?>  
+          while ($row = $result->fetch_assoc()) {
+            
+            
+            ?>  
           <div class="card col-md-3 px-0 mx-2 my-4">
-          <img src="../../php/articles/article_images/product2.png" class="card-img-top" alt="Item image">
+            <?php
+            if (!empty($row['article_image'])) {
+              echo '<img id="articleImage" class="p-4" src="data:'.$row['image_mime'].';base64,' . base64_encode($row['article_image']) . '" alt="Article Image">';
+            } else {
+              echo '<img id="articleImage" class="p-4" src="../../images/No-Image-Placeholder.svg.png" alt="No Image">';
+            }
+          ?>
               <div class="card-body">
                   <h5 class="card-title"><?=$row['article_name']?></h5>
                   <p class="card-text">€<?=$row['selling_price']?></p>
