@@ -74,7 +74,6 @@ CREATE TABLE articles (
   is_active tinyint(1) NOT NULL DEFAULT 1,
   image_data MEDIUMBLOB,
   image_mime varchar(50),
-  PRIMARY KEY (id)
 );
 
 

@@ -138,7 +138,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
       ?>
 
 <?php
-  // Fetch the image_data and image_mime from the database for the current article
+  // Fetch image_data and image_mime from the database for the article
   $sql = "SELECT image_data, image_mime FROM articles WHERE id = $id";
   $result = mysqli_query($connection, $sql);
   
