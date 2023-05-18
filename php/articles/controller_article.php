@@ -54,17 +54,17 @@ class UserController {
 
 
 public static function addArticle() {
-    // Retrieve the connection from the global scope to be used in the function
+    // Retrieve the connection from the global scope
     global $connection;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Store form data under variables which have been sanitized
+        // Store form data under variables
         $name = htmlspecialchars($_POST["name"]);
         $description = htmlspecialchars($_POST["description"]);
         $purchase_price = htmlspecialchars(filter_var($_POST["purchase_price"], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
         $selling_price = htmlspecialchars(filter_var($_POST["selling_price"], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 
-        // Check if all fields are filled
+        // Check if fields are filled
         if (empty($name) || empty($description) || empty($purchase_price) || empty($selling_price)) {
             $error_message = "All fields are required";
             echo $error_message;
@@ -82,7 +82,7 @@ public static function addArticle() {
             // Get the file extension
             $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 
-            // Define the allowed file extensions
+            // set the allowed file extensions
             $allowed_extensions = array("jpeg", "jpg", "png");
 
             // Check if the file extension is allowed
@@ -98,7 +98,7 @@ public static function addArticle() {
                     // Determine the image MIME type
                     $image_mime = $file_type;
 
-                    // Prepare the SQL query with parameters for the file data and MIME type
+                    // Prepare the SQL query for the file data and MIME type
                     $sql = "INSERT INTO articles (`name`, `description`, `purchase_price`, `selling_price`, `image_data`, `image_mime`) 
                             VALUES ('$name', '$description', '$purchase_price', '$selling_price', '$file_content', '$image_mime')";
 
