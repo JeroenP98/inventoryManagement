@@ -7,7 +7,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_SESSION['cart'])){
   // if no instance of the cart array was found, initialize it and push the form data to it
   $_SESSION['cart'] = [];
   array_push($_SESSION['cart'], $_POST);
-  exit;
+  
   
 } else {
 
