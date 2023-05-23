@@ -186,19 +186,15 @@ require_once "../include/header.php";
           </div>
           <hr class="my-4">
 
-          <button class="w-100 btn btn-primary btn-lg" type="submit">Place order</button>
+          <button class="w-100 btn btn-primary btn-lg" id="checkout-button" type="submit">Place order</button>
           <?php 
           // close the fieldset tag when the cart is empty
           if(empty($_SESSION['cart'])):?>
           </fieldset>
-          <?php endif; ?>
-
-
-      
+          <?php endif; ?>    
         </form>
       </div>
     </div>
-
   </div>
 </main>
 <?php require_once "../include/footer.php";?>

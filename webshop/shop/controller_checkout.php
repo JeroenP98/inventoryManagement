@@ -1,8 +1,10 @@
 <?php
 session_start();
-
 require_once "../../php/include/db_connect.php";
 
+echo '<script type="text/javascript">';
+echo 'document.getElementById("loading-overlay").style.display = "block";';
+echo '</script>';
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_SESSION['cart'])) {
 // data validation
@@ -85,9 +87,14 @@ foreach($cart as $key => $cart_item){
   }
 }
 
+
+
+
 unset($_SESSION['cart']);
 
-header("Location: GUI_order_placed.php?order_id=$order_id");
+
+
+header("Location: phpmailer.php?order_id=$order_id");
 exit;
 
 // redirect to order confirmation
@@ -95,8 +102,5 @@ exit;
   header("Location: GUI_cart.php");
   exit;
 }
-
-
-
 
 ?>
