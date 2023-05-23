@@ -68,7 +68,7 @@ $order_id = $_GET['order_id'];
         <?php 
           
           // get order data
-          $sql = "SELECT articles.name AS 'article_name', order_lines.quantity AS 'quantity', articles.selling_price AS 'selling_price'
+          $sql = "SELECT articles.name AS 'article_name', order_lines.quantity AS 'quantity', articles.selling_price AS 'selling_price', articles.image_data AS 'article_image', articles.image_mime AS 'image_mime'
           FROM order_lines
           JOIN articles
             ON articles.id = order_lines.article_id
@@ -79,7 +79,13 @@ $order_id = $_GET['order_id'];
           
           while($row = $result->fetch_assoc()): ?>
             <tr>
-              <td><img src="../../php/articles/article_images/product2.png" class="img-thumbnail" alt="Item image" style="width: 120px; height: 120px;"></td>
+              <td>
+                <?php if(!empty($row['article_image'])):?>
+                  <img src="data: <?=$row['image_mime']?>;base64, <?= base64_encode($row['article_image'])?>" class="img-thumbnail" alt="Item image" style="width: 120px; height: 120px;">
+                <?php else: ?>
+                  <img class="p-4 object-fit-cover" width="300px" height="300px" src="../../images/No-Image-Placeholder.svg.png" alt="No Image">
+                <?php endif; ?>
+              </td>
               <td><?=$row['article_name']?></td>
               <td><?=$row['quantity']?></td>
               <td>€<?=$row['quantity'] * $row['selling_price']?></td>
