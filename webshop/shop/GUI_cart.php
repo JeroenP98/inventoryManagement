@@ -1,13 +1,15 @@
 <?php
 session_start();
+$page_name = "Cart | GreenHome";
 require_once "../include/header.php";
 require_once './UpdateCartController.php';
+
+
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
   $cart = new UpdateCartController;
 }
 
-$page_name = "Cart | GreenHome";
 ?>
 <main>
   <div class="container justify-content-center">
