@@ -1,9 +1,14 @@
 <?php
 session_start();
-$page_name = "Cart | GreenHome";
 require_once "../include/header.php";
-?>
+require_once './UpdateCartController.php';
 
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+  $cart = new UpdateCartController;
+}
+
+$page_name = "Cart | GreenHome";
+?>
 <main>
   <div class="container justify-content-center">
     <div class="row">
@@ -39,7 +44,7 @@ require_once "../include/header.php";
               <h6 class="my-0"><?=$cart_item['article_name']?></h6>
             </div>
             <div class="d-flex">
-              <form action="update_cart.php" method="POST">
+              <form method="POST">
                 <input type="hidden" name="action" value="decrease">
                 <input type="hidden" name="key" value="<?=$key?>">
                 <button class="badge btn bg-secondary rounded-pill decrease-quantity" type="submit">
@@ -49,7 +54,7 @@ require_once "../include/header.php";
                 </button>
               </form>
               <span class="badge bg-primary rounded-pill quantity mx-1" data-cart-item-id="<?=$key?>"><?=$cart_item['quantity']?>x</span>
-              <form action="update_cart.php" method="POST">
+              <form method="POST">
                 <input type="hidden" name="action" value="increase">
                 <input type="hidden" name="key" value="<?=$key?>">
                 <button class="badge btn bg-secondary rounded-pill decrease-quantity" type="submit">
@@ -60,7 +65,7 @@ require_once "../include/header.php";
               </form>
 
             </div>
-            <form action="update_cart.php" method="POST">
+            <form method="POST">
               <input type="hidden" name="action" value="delete">
               <input type="hidden" name="key" value="<?=$key?>">
               <button class="btn px-2 align-items-center delete-item" type="submit">

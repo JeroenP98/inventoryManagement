@@ -69,6 +69,12 @@
   // Run the query
   $result = $connection->query($sql);
 
+
+  require_once './AddToCartController.php';
+  if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $cart = new AddToCartController;
+  }
+
 ?>
 <!-- Page content -->
 <div class="container">
@@ -137,7 +143,7 @@
           <?php endif; ?>
         </div>
         <div class="card-footer d-flex justify-content-center">
-          <form action="controller_cart.php" method="POST" class="form-control">
+          <form method="POST" class="form-control">
             <div class="input-group">
               <span class="input-group-text">Pieces</span>
               <input type="number" step="1" class="form-control" name="quantity" min="1" required>
@@ -147,6 +153,7 @@
                 <button type="submit" class="btn btn-success form-control">Add</button>
                 <?php endif; ?>
             </div>
+            <input type="hidden" name="action" value="add">
             <input type="hidden" name="article_id" value="<?=$row['id']?>">
             <input type="hidden" name="article_name" value="<?=$row['article_name']?>">
             <input type="hidden" name="selling_price" value="<?=$row['selling_price']?>">

@@ -2,9 +2,7 @@
 session_start();
 require_once "../../php/include/db_connect.php";
 
-echo '<script type="text/javascript">';
-echo 'document.getElementById("loading-overlay").style.display = "block";';
-echo '</script>';
+
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_SESSION['cart'])) {
 // data validation
