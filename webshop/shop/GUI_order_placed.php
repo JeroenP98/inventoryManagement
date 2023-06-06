@@ -12,8 +12,14 @@ $order_id = $_GET['order_id'];
 
 <main>
   <div class="container justify-content-center">
-    <div class="row">
+    <div class="row justify-content-center">
       <h1 class="fw-bold text-center mb-5">Bestelling geplaatst!</h1>
+      <?php if(isset($_GET['error'])):?>
+        <div class="alert alert-warning alert-dismissible fade show col-6 justify-content-center" role="alert">
+          <p><strong>Oops!</strong> Je bestelling is geplaats maar we konden je bevestigings-email niet versturen</p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <?php endif?>
     </div>
     <div class="row text-center">
       <h5 class="mb-5 text-black">
