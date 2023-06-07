@@ -51,6 +51,7 @@ require_once 'php/include/db_connect.php';
           <li class="nav-item"><a  href="php/companies/GUI_companies.php" class="nav-link">Companies</a></li>
           <li class="nav-item "><a  href="php/accessibilities/GUI_accessibilities.php" class="nav-link">Accesibility</a></li>
           <li class="nav-item "><a  href="php/functions/GUI_functions.php" class="nav-link">Functions</a></li>
+          <li class="nav-item "><a  href="php/searchesNotFound/GUI_searchesNotFound.php" class="nav-link">Searches</a></li>
         </ul>
         <?php
           //either display the users first name when logged in or give the option to log themselves in
