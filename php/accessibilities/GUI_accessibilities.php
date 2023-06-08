@@ -11,7 +11,7 @@ require_once '../include/db_connect.php';
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100" data-bs-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,8 +23,8 @@ require_once '../include/db_connect.php';
   <script src="../../js/tableSearch.js"></script>
   <link rel="shortcut icon" href="../../images/logo.png">
   <title>Accessibility | GreenHome</title>
-</head>
-<body>
+</head> 
+<body class="d-flex flex-column h-100">
   <header class="p-3 mb-3 border-bottom">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -37,12 +37,18 @@ require_once '../include/db_connect.php';
           <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link" >Articles</a></li>
           <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link" aria-current="page" >inventory</a></li>
           <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
-          <li class="nav-item"><a href="../incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
-          <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link" >Outgoing orders</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Orders</a>
+            <ul class="dropdown-menu">
+              <li><a href="../orders/GUI_incoming.php" class="dropdown-item">Incoming orders</a></li>
+              <li><a href="../orders/GUI_outgoing.php" class="dropdown-item">Outgoing orders</a></li>
+            </ul>
+          </li>
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link">Users</a></li>
           <li class="nav-item "><a class="nav-link" href="../companies/GUI_companies.php">Companies</a></li>
-          <li class="nav-item "><a class="nav-link active" href="../accessibilities/GUI_accessibilities.php"">Accessibility</a></li>
+          <li class="nav-item "><a class="nav-link active" href="../accessibilities/GUI_accessibilities.php">Accessibility</a></li>
           <li class="nav-item "><a  href="../functions/GUI_functions.php" class="nav-link">Functions</a></li>
+          <li class="nav-item "><a  href="../searchesNotFound/GUI_searchesNotFound.php" class="nav-link">Searches</a></li>
         </ul>
 
         <?php
@@ -215,7 +221,7 @@ require_once '../include/db_connect.php';
     $offset = ($current_page - 1) * $records_per_page;
 
     // prepare sql statement
-    $sql = "SELECT `function_name`, `can_acces_orders`, `can_acces_relations`, `can_acces_articles`, `can_acces_employees` FROM `accessibilities`
+    $sql = "SELECT `function_name`, IF(`can_acces_orders` = 1, 'Yes', 'No') AS 'can_acces_orders', IF(`can_acces_relations` = 1, 'Yes', 'No') AS 'can_acces_relations', IF(`can_acces_articles` = 1, 'Yes', 'No') AS 'can_acces_articles', IF(`can_acces_employees` = 1, 'Yes', 'No') AS 'can_acces_employees' FROM `accessibilities`
     LIMIT $records_per_page
     OFFSET $offset;";
     $result = $connection->query($sql);
@@ -226,10 +232,10 @@ require_once '../include/db_connect.php';
     while($row = $result->fetch_assoc()) {
       echo "<tr>
       <td>{$row['function_name']}</td>
-      <td>" . ($row['can_acces_orders'] ? 'Yes' : 'No') . "</td>
-      <td>" . ($row['can_acces_relations'] ? 'Yes' : 'No') . "</td>
-      <td>" . ($row['can_acces_articles'] ? 'Yes' : 'No') . "</td>
-      <td>" . ($row['can_acces_employees'] ? 'Yes' : 'No') . "</td>
+      <td>" . $row['can_acces_orders'] . "</td>
+      <td>" . $row['can_acces_relations'] . "</td>
+      <td>" . $row['can_acces_articles']. "</td>
+      <td>" . $row['can_acces_employees'] . "</td>
       <td>
       <a class='btn btn-primary' href='GUI_accessibilityEditor.php?function_name=$row[function_name]'>Edit</a>
       <a class='btn btn-danger' href='controller_accessibilities.php?action=delete&function_name=$row[function_name]'>Delete</a>

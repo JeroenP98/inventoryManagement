@@ -1,9 +1,8 @@
 <?php
-
 //if session was started, continue it so it
 session_start();
 
-//check if user has logged in, in order to gain acces to the page. this disallows user to reach the page by entering the correct url
+//check if user has logged in, in order to gain access to the page. this disallows user to reach the page by entering the correct url
 require_once '../include/loginCheck.php';
 
 // connect to database
@@ -22,7 +21,7 @@ $is_active = "";
 // declare variables for form handling when failing
 $errorMessage = "";
 
-
+$imageSrc = "";
 
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
   // if the method is GET, show the data found in the db record
@@ -53,11 +52,14 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     $selling_price = $row["selling_price"];
     $is_active = $row["is_active"];
 
+    // Fetch and encode the image data
+    $imageData = base64_encode($row['image_data']);
+    $imageSrc = 'data:image/png;base64,' . $imageData;
 } 
 ?>
 
 
-<html lang="en">
+<html lang="en" class="h-100" data-bs-theme="light">
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -82,9 +84,18 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
           <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link active" >Articles</a></li>
           <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link" >inventory</a></li>
           <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
-          <li class="nav-item"><a href="../incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
-          <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link" >Outgoing orders</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Orders</a>
+            <ul class="dropdown-menu">
+              <li><a href="../orders/GUI_incoming.php" class="dropdown-item">Incoming orders</a></li>
+              <li><a href="../orders/GUI_outgoing.php" class="dropdown-item">Outgoing orders</a></li>
+            </ul>
+          </li>
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link" aria-current="page">Users</a></li>
+          <li class="nav-item "><a class="nav-link" href="../companies/GUI_companies.php">Companies</a></li>
+          <li class="nav-item "><a class="nav-link" href="../accessibilities/GUI_accessibilities.php">Accessibility</a></li>
+          <li class="nav-item "><a  href="../functions/GUI_functions.php" class="nav-link">Functions</a></li>
+          <li class="nav-item "><a  href="../searchesNotFound/GUI_searchesNotFound.php" class="nav-link">Searches</a></li>
         </ul>
 
         <?php
@@ -110,7 +121,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
       </div>
     </div>
   </header>
-  <body>
+  <body class="d-flex flex-column h-100">
     <div class="container my-5">
       <h2 class="mb-5">Edit Article</h2>
 
@@ -127,51 +138,107 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         }
       ?>
 
-      <form method="POST" action="controller_article.php?action=edit">
-      <input type="hidden" value="<?php echo $id; ?>" name="id">
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Name</label>
-          <div class="col-sm-6">
-            <input type="text" class="form-control" name="name" value="<?php echo $name; //show the current value of the db record?>">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Description</label>
-          <div class="col-sm-6">
-            <input type="text" class="form-control" name="description" value="<?php echo $description; //show the current value of the db record?>">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Purchase price</label>
-          <div class="col-sm-3">
-            <input type="number" step=".01" class="form-control" name="purchase_price" value="<?php echo $purchase_price; //show the current value of the db record?>" required>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Selling price</label>
-          <div class="col-sm-3">
-            <input type="number" step=".01" class="form-control" name="selling_price" value="<?php echo $selling_price; //show the current value of the db record?>" required>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Active</label>
-          <div class="col-sm-6">
-            <input type="hidden" name="is_active" value="0">
-            <input type="checkbox" name="is_active" value="1" <?php if($is_active == 1) echo "checked"; ?>>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="offset-sm-3 col-sm-3 d-grid">
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </div>
-          <div class="col-sm-3 d-grid">
-            <a href="GUI_articles.php" class="btn btn-outline-danger" role="button">Cancel</a>
-          </div>
-        </div>
-      </form>
+<?php
+  // Fetch image_data and image_mime from the database for the article
+  $sql = "SELECT image_data, image_mime FROM articles WHERE id = $id";
+  $result = mysqli_query($connection, $sql);
+  
+  if ($result && mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    $image_data = $row['image_data'];
+    $image_mime = $row['image_mime'];
+  } else {
+    $image_data = null;
+    $image_mime = null;
+  }
+?>
+
+<form method="POST" action="controller_article.php?action=edit" enctype="multipart/form-data">
+  <input type="hidden" value="<?php echo $id; ?>" name="id">
+
+  <div class="row mb-3">
+    <div class="col-sm-3">
+      <label class="col-form-label">Article Image</label>
     </div>
+    <div class="col-sm-6">
+      <?php
+        if (!empty($image_data)) {
+          echo '<img id="articleImage" src="data:'.$image_mime.';base64,' . base64_encode($image_data) . '" alt="Article Image" width="400" height="400">';
+        } else {
+          echo '<img id="articleImage" src="" alt="No Image" width="400" height="300">';
+        }
+      ?>
+    </div>
+    <div class="col-sm-3">
+    <input type="file" class="form-control" id="article_image" name="article_image">
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-form-label col-sm-3">Name</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" name="name" value="<?php echo $name; ?>">
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-form-label col-sm-3">Description</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" name="description" value="<?php echo $description; ?>">
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-form-label col-sm-3">Purchase price</label>
+    <div class="col-sm-3">
+      <input type="number" step=".01" class="form-control" name="purchase_price" value="<?php echo $purchase_price; ?>" required>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-form-label col-sm-3">Selling price</label>
+    <div class="col-sm-3">
+      <input type="number" step=".01" class="form-control" name="selling_price" value="<?php echo $selling_price; ?>" required>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-form-label col-sm-3">Active</label>
+    <div class="col-sm-6">
+      <input type="hidden" name="is_active" value="0">
+      <input type="checkbox" name="is_active" value="1" <?php if($is_active == 1) echo "checked"; ?>>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3 d-grid">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+    <div class="col-sm-3 d-grid">
+      <a href="GUI_articles.php" class="btn btn-outline-danger" role="button">Cancel</a>
+    </div>
+  </div>
+</form>
+
+
+
+</div>
   </body>
-  <?php 
-  // use php to use footer
-  require_once '..\include\footer.php'?>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          $('#articleImage').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    $("input[type=file]").change(function() {
+      readURL(this);
+    });
+  </script>
 </html>

@@ -12,7 +12,7 @@ require_once '../include/db_connect.php';
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100" data-bs-theme="light">
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,7 +26,6 @@ require_once '../include/db_connect.php';
     <script src="../../js/darkMode.js"></script>
     <title>Users | GreenHome</title>
   </head>
-
   <!--Header-->
   <header class="p-3 mb-3 border-bottom">
     <div class="container">
@@ -40,9 +39,18 @@ require_once '../include/db_connect.php';
           <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link" >Articles</a></li>
           <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link" >inventory</a></li>
           <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
-          <li class="nav-item"><a href="../incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
-          <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link" >Outgoing orders</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Orders</a>
+            <ul class="dropdown-menu">
+              <li><a href="../orders/GUI_incoming.php" class="dropdown-item">Incoming orders</a></li>
+              <li><a href="../orders/GUI_outgoing.php" class="dropdown-item">Outgoing orders</a></li>
+            </ul>
+          </li>
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link active" aria-current="page">Users</a></li>
+          <li class="nav-item "><a class="nav-link" href="../companies/GUI_companies.php">Companies</a></li>
+          <li class="nav-item "><a class="nav-link" href="../accessibilities/GUI_accessibilities.php">Accessibility</a></li>
+          <li class="nav-item "><a  href="../functions/GUI_functions.php" class="nav-link">Functions</a></li>
+          <li class="nav-item "><a  href="../searchesNotFound/GUI_searchesNotFound.php" class="nav-link">Searches</a></li>
         </ul>
 
         <?php
@@ -70,7 +78,7 @@ require_once '../include/db_connect.php';
   </header>
 
   <!--Body-->
-  <body>
+  <body class="d-flex flex-column h-100">
     
     <!-- start logout Modal -->
     <div class="modal fade" id="logOutModal" tabindex="-1"      aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -198,15 +206,39 @@ require_once '../include/db_connect.php';
           </div>
       <?php endif ?>
 
-      <!-- Search bar-->
-      <div class="d-flex nowrap align-items-center">
+      <!-- Actions bar-->
+      <div class="d-flex align-items-center mb-5">
         <div class="input-group my-3 me-3">
           <span class="input-group-text" id="tableSearchBar">Search for article</span>
           <input type="text" class="form-control" id="searchInput" placeholder="Article name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
         </div>
         <a href="../include/exportData.php?report=exportUsers" class="btn btn-success my-3">Export</a>
+        <div class="container d-flex align-items-center justify-content-end my-3 me-3">
+          <form method="get">
+            <div class="form-group row align-items-center">
+              <label for="order_by" class="col-sm-3 col-form-label">Order by:</label>
+              <div class="col-sm-6">
+                <select class="form-control" id="order_by" name="order_by">
+                  <option value="id_asc">ID (Ascending)</option>
+                  <option value="id_desc">ID (Descending)</option>
+                  <option value="first_name_asc">Name (Ascending)</option>
+                  <option value="first_name_desc">Name (Descending)</option>
+                  <option value="name_asc">Company (Ascending)</option>
+                  <option value="name_desc">Company (Descending)</option>
+                  <option value="is_active_asc">Is active (Ascending)</option>
+                  <option value="is_active_desc">Is active (Descending)</option>
+                  <option value="function_name_asc">Function (Ascending)</option>
+                  <option value="function_name_desc">Function (Descending)</option>
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
-      <!-- End search bar-->
+      <!-- End actions bar-->
 
       <table class="table table-striped table-sm" id="table">
         <thead>
@@ -224,14 +256,75 @@ require_once '../include/db_connect.php';
 
         <tbody>
         <?php
-      
+
+        // set the number of records per page
+        $records_per_page = 25;
+
+        // get the total number of records
+        $sql_count = "SELECT COUNT(*) AS count FROM employees";
+        $result_count = $connection->query($sql_count);
+        $row_count = $result_count->fetch_assoc();
+        $total_records = $row_count['count'];
+
+        // calculate the total number of pages
+        $total_pages = ceil($total_records / $records_per_page);
+
+        // get the current page number
+        $current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+
+        // calculate the offset for the query
+        $offset = ($current_page - 1) * $records_per_page;
+
+        // Set order by value
+        if(isset($_GET["order_by"])){
+          $get_order_by = $_GET["order_by"];
+          switch($get_order_by) {
+            case "first_name_asc":
+              $order_by = "first_name ASC"; 
+              break;
+            case "first_name_desc":
+              $order_by = "first_name DESC"; 
+              break;
+            case "id_asc":
+              $order_by = "id ASC"; 
+              break;
+            case "id_desc":
+              $order_by = "id DESC"; 
+              break;
+            case "name_asc":
+              $order_by = "name ASC"; 
+              break;
+            case "name_desc":
+              $order_by = "name DESC"; 
+              break;
+            case "is_active_asc":
+              $order_by = "is_active ASC"; 
+              break;
+            case "is_active_desc":
+              $order_by = "is_active DESC"; 
+              break;
+            case "function_name_asc":
+              $order_by = "function_name ASC"; 
+              break;
+            case "function_name_desc":
+              $order_by = "function_name DESC"; 
+              break;
+            default:
+              $order_by = "id ASC";
+          }
+        } else {
+          $order_by = "id ASC";
+        }
 
         // select database
         $sql = 
         "SELECT employees.id, employees.first_name, employees.last_name, employees.email_adress, employees.function_name, companies.name, IF(employees.is_active = 1, 'Active', 'Non-active') AS 'is_active'
         FROM employees
         JOIN companies 
-          ON employees.company_id  = companies.id;";
+          ON employees.company_id  = companies.id
+        ORDER BY $order_by
+        LIMIT $records_per_page
+        OFFSET $offset;";
         $result = $connection->query($sql);
 
         // make a new table row for every row in database
@@ -261,4 +354,5 @@ require_once '../include/db_connect.php';
   <?php 
   // use php to use footer
   require_once '..\include\footer.php'?>
+
 </html>

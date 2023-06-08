@@ -40,9 +40,18 @@ require_once '../include/db_connect.php';
           <li class="nav-item"><a href="../articles/GUI_articles.php" class="nav-link active" aria-current="page">Articles</a></li>
           <li class="nav-item"><a href="../stock/GUI_stock.php" class="nav-link" >inventory</a></li>
           <li class="nav-item"><a href="../relations/GUI_relations.php" class="nav-link" aria-current="page" >Relations</a></li>
-          <li class="nav-item"><a href="../incoming_orders/GUI_incoming.php" class="nav-link">Incoming orders</a></li>
-          <li class="nav-item"><a href="../outgoing_orders/GUI_outgoing.php" class="nav-link">Outgoing orders</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Orders</a>
+            <ul class="dropdown-menu">
+              <li><a href="../orders/GUI_incoming.php" class="dropdown-item">Incoming orders</a></li>
+              <li><a href="../orders/GUI_outgoing.php" class="dropdown-item">Outgoing orders</a></li>
+            </ul>
+          </li>
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link">Users</a></li>
+          <li class="nav-item "><a class="nav-link" href="../companies/GUI_companies.php">Companies</a></li>
+          <li class="nav-item "><a class="nav-link" href="../accessibilities/GUI_accessibilities.php">Accessibility</a></li>
+          <li class="nav-item "><a  href="../functions/GUI_functions.php" class="nav-link">Functions</a></li>
+          <li class="nav-item "><a  href="../searchesNotFound/GUI_searchesNotFound.php" class="nav-link">Searches</a></li>
         </ul>
 
         <?php
@@ -92,54 +101,86 @@ require_once '../include/db_connect.php';
     </div>
     <!-- end logout modal-->
  
-        <!-- start new article Modal -->
-        <div class="modal fade" id="newArticleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Create a new article</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- start new article Modal -->
+<div class="modal fade" id="newArticleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Create a new article</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="controller_article.php?action=add" enctype="multipart/form-data">
+          <div class="row mb-3">
+            <label class="col-form-label col-sm-3">Article name</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" name="name" required>
+            </div>
           </div>
-          <div class="modal-body">
-            <form method="POST" action="controller_article.php?action=add">
-              <div class="row mb-3">
-                <label class="col-form-label col-sm-3">Article name</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" name="name" required>
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-form-label col-sm-3">Description</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" name="description" required>
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-form-label col-sm-3">Purchase price</label>
-                <div class="col-sm-3">
-                  <input type="number" step=".01" class="form-control" name="purchase_price" required>
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-form-label col-sm-3">Selling price</label>
-                <div class="col-sm-3">
-                  <input type="number" step=".01" class="form-control" name="selling_price" required>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <div class="offset-sm-3 col-sm-3 d-grid">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-                <div class="col-sm-3 d-grid">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </form>
+          <div class="row mb-3">
+            <label class="col-form-label col-sm-3">Description</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" name="description" required>
+            </div>
           </div>
-        </div>
+          <div class="row mb-3">
+            <label class="col-form-label col-sm-3">Purchase price</label>
+            <div class="col-sm-3">
+              <input type="number" step=".01" class="form-control" name="purchase_price" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-form-label col-sm-3">Selling price</label>
+            <div class="col-sm-3">
+              <input type="number" step=".01" class="form-control" name="selling_price" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-form-label col-sm-3">Article Image</label>
+            <div class="col-sm-9">
+              <input type="file" class="form-control" name="article_image">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="offset-sm-3 col-sm-3 d-grid">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            <div class="col-sm-3 d-grid">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-    <!-- end new article modal-->
+  </div>
+</div>
+<!-- end new article modal -->
+
+<!-- start CSV import Modal -->
+<div class="modal fade" id="csvImportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Import CSV File</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="controller_article.php?action=import" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="csvFile" class="form-label">Upload CSV File</label>
+            <input class="form-control" type="file" id="csvFile" name="csvFile" accept=".csv">
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Import</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end CSV import modal -->
+
   
     <!--Page data-->
     <div class="container">
@@ -170,15 +211,36 @@ require_once '../include/db_connect.php';
       }
       ?>
 
-      <!-- Search bar-->
-      <div class="d-flex nowrap align-items-center">
-        <div class="input-group my-3 me-3">
-          <span class="input-group-text" id="tableSearchBar">Search for article</span>
-          <input type="text" class="form-control" id="searchInput" placeholder="Article name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
-        </div>
-        <a href="../include/exportData.php?report=exportArticles" class="btn btn-success my-3">Export</a>
+    <!-- Actions bar-->
+    <div class="d-flex align-items-center mb-5">
+      <div class="input-group my-3 me-3">
+        <span class="input-group-text" id="tableSearchBar">Search for article</span>
+        <input type="text" class="form-control" id="searchInput" placeholder="Article name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
       </div>
-      <!-- End search bar-->
+      <a href="../include/exportData.php?report=exportArticles" class="btn btn-success my-3">Export</a>
+      <a href="#" class="btn btn-primary my-3 btn-success" data-bs-toggle="modal" data-bs-target="#csvImportModal">Import</a>
+      <div class="container d-flex align-items-center justify-content-end my-3 me-3">
+        <form method="get">
+          <div class="form-group row align-items-center">
+            <label for="order_by" class="col-sm-3 col-form-label">Order by:</label>
+            <div class="col-sm-6">
+              <select class="form-control" id="order_by" name="order_by">
+                <option value="id_asc">ID (Ascending)</option>
+                <option value="id_desc">ID (Descending)</option>
+                <option value="name_asc">Name (Ascending)</option>
+                <option value="name_desc">Name (Descending)</option>
+                <option value="selling_price_asc">Selling price (Ascending)</option>
+                <option value="selling_price_desc">Selling price (Descending)</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- End actions bar-->
       <table class="table table-striped table-sm" id="table">
         <thead>
           <tr>
@@ -213,9 +275,39 @@ require_once '../include/db_connect.php';
         // calculate the offset for the query
         $offset = ($current_page - 1) * $records_per_page;
 
+        // Set order by value
+        if(isset($_GET["order_by"])){
+          $get_order_by = $_GET["order_by"];
+          switch($get_order_by) {
+            case "name_asc":
+              $order_by = "name ASC"; 
+              break;
+            case "name_desc":
+              $order_by = "name DESC"; 
+              break;
+            case "id_asc":
+              $order_by = "id ASC"; 
+              break;
+            case "id_desc":
+              $order_by = "id DESC"; 
+              break;
+            case "selling_price_asc":
+              $order_by = "selling_price ASC"; 
+              break;
+            case "selling_price_desc":
+              $order_by = "selling_price DESC"; 
+              break;
+            default:
+              $order_by = "id ASC";
+          }
+        } else {
+          $order_by = "id ASC";
+        }
+
         // prepare query
         $sql = "SELECT id, name, CONCAT(LEFT(description, 25),'...') AS 'description', CONCAT('€ ', purchase_price) AS purchase_price, CONCAT('€ ', selling_price) AS selling_price, IF(is_active = 1, 'Active', 'Inactive') AS 'active_status'
-        FROM articles        
+        FROM articles 
+        ORDER BY $order_by       
         LIMIT $records_per_page
         OFFSET $offset;";
 
@@ -241,10 +333,11 @@ require_once '../include/db_connect.php';
 
 
         ?>
-
-        <?php if ($total_pages > 1): ?>
+        </tbody>
+      </table>
+      <?php if ($total_pages > 1): ?>
           <nav aria-label="Page navigation">
-            <ul class="pagination">
+            <ul class="pagination justify-content-center">
               <?php if ($current_page > 1): ?>
                 <li class="page-item"><a class="page-link" href="?page=<?= $current_page - 1 ?>">Previous</a></li>
               <?php endif; ?>
@@ -263,11 +356,7 @@ require_once '../include/db_connect.php';
             </ul>
           </nav>
         <?php endif; ?>
-        </tbody>
-      </table>
     </div>
   </body>
-  <?php 
-  // use php to use footer
-  require_once '..\include\footer.php'?>
+
 </html>
