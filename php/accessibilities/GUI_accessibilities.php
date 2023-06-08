@@ -154,7 +154,7 @@ require_once '../include/db_connect.php';
   </div>
   <!-- end new function modal-->
 
-  <div class="container">
+  <div class="container mb-5">
     <h1>Accessibility</h1>
     <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#newAccessibilityModal'>Add new</button>
 
@@ -180,13 +180,7 @@ require_once '../include/db_connect.php';
 
   <div class="container">
   <!-- Search bar-->
-  <div class="d-flex nowrap align-items-center">
-    <div class="input-group my-3 me-3">
-      <span class="input-group-text" id="tableSearchBar">Search for accessibility</span>
-      <input type="text" class="form-control" id="searchInput" placeholder="Accessibility name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
-    </div>
-    <a href="../include/exportData.php?report=exportFunction" class="btn btn-success my-3">Export</a>
-  </div>
+
   <!-- End search bar-->
   <table class="table table-striped table-sm" id="table">
     <thead>
