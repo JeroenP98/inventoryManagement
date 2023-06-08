@@ -12,7 +12,7 @@ require_once '../include/db_connect.php';
 
 
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en" data-bs-theme="light" class="h-100">
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -79,7 +79,7 @@ require_once '../include/db_connect.php';
   </header>
 
   <!--Body-->
-  <body>
+  <body class="d-flex flex-column h-100">
     
     <!-- start logout Modal -->
     <div class="modal fade" id="logOutModal" tabindex="-1"     aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -143,4 +143,5 @@ require_once '../include/db_connect.php';
       </div>
     </div>
   </body>
+  <?php require_once '../include/footer.php'; ?>
 </html>

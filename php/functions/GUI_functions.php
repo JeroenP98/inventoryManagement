@@ -11,7 +11,7 @@ require_once '../include/db_connect.php';
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,7 +24,7 @@ require_once '../include/db_connect.php';
   <link rel="shortcut icon" href="../../images/logo.png">
   <title>Functions | GreenHome</title>
 </head>
-<body>
+<body class="d-flex flex-column h-100">
   <header class="p-3 mb-3 border-bottom">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -200,22 +200,5 @@ require_once '../include/db_connect.php';
     </table>
   </div>
 
-  <?php 
-    $records_per_page = 25;
-    $sql_count = "SELECT COUNT(*) AS count FROM functions";
-    $result_count = $connection->query($sql_count);
-    $row_count = $result_count->fetch_assoc();
-    $total_records = $row_count['count'];
-    $total_pages = ceil($total_records / $records_per_page);
-    $current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-    $offset = ($current_page - 1) * $records_per_page;
-    $sql = "SELECT `id`, `name`, CONCAT(street, ' ', house_nr) AS 'address', `zip_code`, `city`, `country_code`, `email_adress`, `phone_number` FROM `functions` LIMIT $records_per_page OFFSET $offset";
-    $result = $connection->query($sql);
-  ?>
-
-  <?php if ($total_pages > 1): ?>
-    <nav aria-label="Page navigation">
-      <!-- Pagination content -->
-    </nav>
-  <?php endif; ?>
+<?php require_once '../include/footer.php'; ?>
 </html>
