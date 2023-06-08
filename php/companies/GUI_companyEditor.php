@@ -98,7 +98,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link">Users</a></li>
           <li class="nav-item "><a class="nav-link active" href="../companies/GUI_companies.php">Companies</a></li>
           <li class="nav-item "><a class="nav-link " href="../accessibilities/GUI_accessibilities.php"">Accessibility</a></li>
-          <li class="nav-item "><a class="nav-link" href="../functions/GUI_functions.php"">Functions</a></li>
+          <li class="nav-item "><a class="nav-link" href="../functions/GUI_functions.php">Functions</a></li>
+          <li class="nav-item "><a  href="../searchesNotFound/GUI_searchesNotFound.php" class="nav-link">Searches</a></li>
         </ul>
 
         <?php

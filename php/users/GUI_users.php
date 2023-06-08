@@ -50,6 +50,7 @@ require_once '../include/db_connect.php';
           <li class="nav-item "><a class="nav-link" href="../companies/GUI_companies.php">Companies</a></li>
           <li class="nav-item "><a class="nav-link" href="../accessibilities/GUI_accessibilities.php">Accessibility</a></li>
           <li class="nav-item "><a  href="../functions/GUI_functions.php" class="nav-link">Functions</a></li>
+          <li class="nav-item "><a  href="../searchesNotFound/GUI_searchesNotFound.php" class="nav-link">Searches</a></li>
         </ul>
 
         <?php

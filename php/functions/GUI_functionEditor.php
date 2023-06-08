@@ -1,81 +1,36 @@
 <?php
-
-//if session was started, continue it so it
+//if session was started, continue it so it can display the user name and enable logging out
 session_start();
 
-//check if user has logged in, in order to gain acces to the page. this disallows user to reach the page by entering the correct url
+//check if user has logged in, in order to gain acces to the page
 require_once '../include/loginCheck.php';
 
-// connect to database
+// create connection with database
 require_once '../include/db_connect.php';
 
-// add the php file for the action logging
-require_once '../logging/controller_logfile.php';
-
-// declare empty variables for form handling
-$name = "";
-$street = "";
-$house_nr = "";
-$zip_code = "";
-$city = "";
-$country_code = "";
-$email_adress =  "";
-$phone_number = "";
-
-// declare variables for form handling when failing
-$errorMessage = "";
-
-
-
-if($_SERVER['REQUEST_METHOD'] == 'GET'){
-  // if the method is GET, show the data found in the db record
-
-    if(!isset($_GET["id"])){
-    header("location: GUI_accesibilities.php");
-    exit;
-    }
-
-    $id = $_GET["id"];
-
-    // read the row of selected record by searching for the ID
-    $sql = "SELECT * FROM accesbilities WHERE id=$id";
-    $result = $connection->query($sql);
-    $row = $result->fetch_assoc();
-
-    //exit and return to main page if no ID can be found
-    if(!$row) {
-      header("location: GUI_accesibilities.php");
-      exit;
-    }
-
-
-    //Store the found data of the query to variables
-    $name = $row["name"];
-    $street = $row["street"];
-    $house_nr = $row["house_nr"];
-    $zip_code = $row["zip_code"];
-    $city = $row["city"];
-    $country_code = $row["country_code"];
-    $email_adress =  $row["email_adress"];
-    $phone_number = $row["phone_number"];
-
-} 
+// Check if the error message should be displayed
+$error = false;
+if (isset($_GET['status']) && $_GET['status'] == 'error') {
+    $error = true;
+}
 ?>
 
 
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--Bootstrap code-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <link rel="shortcut icon" href="../../images/logo.png">
-    <script src="../../js/formValidator.js"></script>
-    <script src="../../js/darkMode.js"></script>
-    <title>edit <?php echo $name ?> | GreenHome</title>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--Bootstrap code-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <script src="../../js/darkMode.js"></script>
+  <script src="../../js/tableSearch.js"></script>
+  <link rel="shortcut icon" href="../../images/logo.png">
+  <title>Functions | GreenHome</title>
+</head>
+<body>
   <header class="p-3 mb-3 border-bottom">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -98,7 +53,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link">Users</a></li>
           <li class="nav-item "><a class="nav-link" href="../companies/GUI_companies.php">Companies</a></li>
           <li class="nav-item "><a class="nav-link " href="../accessibilities/GUI_accessibilities.php"">Accessibility</a></li>
-          <li class="nav-item "><a class="nav-link active" href="../functions/GUI_functions.php"">Functions</a></li>
+          <li class="nav-item "><a class="nav-link active" href="../functions/GUI_functions.php">Functions</a></li>
+          <li class="nav-item "><a  href="../searchesNotFound/GUI_searchesNotFound.php" class="nav-link">Searches</a></li>
         </ul>
 
         <?php
@@ -124,83 +80,63 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
       </div>
     </div>
   </header>
-  <body>
-    <div class="container my-5">
-      <h2 class="mb-5">Edit Function</h2>
-
-      <?php
-        // display error message when failing to upload data
-        if(!empty($errorMessage)){
-          echo "
-          
-          <div class='alert alert-danger alert-dismissible fade show' role='alert'>
-            <strong>$errorMessage</strong>
-            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-          </div>
-          ";
-        }
-      ?>
-
-      <form method="POST" action="controller_functions.php?action=edit">
-        <input type="hidden" value="<?php echo $id; ?>" name="id">
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Function name</label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="name" value="<?php echo $name; //show the current value of the db record?>" required>
-          </div>
+  <!-- start logout Modal -->
+  <div class="modal fade" id="logOutModal" tabindex="-1"     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">You are about to log out!</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Street</label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="street" required value="<?php echo $street;?>">
-          </div>
+        <div class="modal-body">
+          <p>Are you sure?</p>
         </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">House Nr.</label>
-          <div class="col-sm-3">
-            <input type="text" maxlength="10" class="form-control" name="house_nr" value="<?php echo $house_nr;?>">
-          </div>
-          <label class="col-form-label col-sm-3">Zip code</label>
-          <div class="col-sm-3">
-            <input type="text" class="form-control" name="zip_code" required value="<?php echo $zip_code;?>">
-          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Keep me logged in</button>
+          <a href="../users/GUI_logged_out.php"><button type="button" class="btn btn-warning">Log out</button></a>
         </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">City</label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="city" required value="<?php echo $city;?>">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Country code</label>
-          <div class="col-sm-3">
-            <input type="text"  maxlength="2" class="form-control" name="country_code" required value="<?php echo $country_code;?>">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Email address</label>
-          <div class="col-sm-9">
-            <input type="email" class="form-control" name="email_adress" required value="<?php echo $email_adress;?>">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Tel. number</label>
-          <div class="col-sm-9">
-            <input type="tel" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" class="form-control" name="phone_number" required value="<?php echo $phone_number;?>">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="offset-sm-3 col-sm-3 d-grid">
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </div>
-          <div class="col-sm-3 d-grid">
-            <a href="GUI_functions.php" class="btn btn-outline-danger" role="button">Cancel</a>
-          </div>
-        </div>
-      </form>
+      </div>
     </div>
-  </body>
+  </div>
+  <!-- end logout modal-->
+
+<div class="container">
+    <h1>Edit Function</h1>
+
+    <?php if ($error): ?>
+        <div class="alert alert-danger" role="alert">
+            Error: The function is currently in use and cannot be edited.
+        </div>
+        <a href="GUI_functions.php" class="btn btn-primary">Return</a>
+    <?php else: ?>
+        <form method="POST" action="controller_functions.php?action=edit&name=<?php echo $_GET['name']; ?>">
+            <div class="row mb-3">
+                <label class="col-form-label col-sm-2">Current Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="name" value="<?php echo $_GET['name']; ?>"
+                           readonly>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-form-label col-sm-2">New Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="new_name" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="offset-sm-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a href="GUI_functions.php" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </form>
+    <?php endif; ?>
+</div>
+
+
   <?php 
-  // use php to use footer
-  require_once '..\include\footer.php'?>
+  // use php to include the footer
+  require_once '../include/footer.php'?>
 </html>

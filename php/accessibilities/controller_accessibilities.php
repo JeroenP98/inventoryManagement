@@ -80,40 +80,56 @@ class UserController {
   }
 
 
-  public static function editAccessibility(){
-    global $connection;
-
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
-      $function_name = htmlspecialchars($_POST["function_name"]);
-      $can_access_orders = htmlspecialchars($_POST["can_access_orders"]);
-      $can_access_relations = htmlspecialchars($_POST["can_access_relations"]);
-      $can_access_articles = htmlspecialchars($_POST["can_access_articles"]);
-      $can_access_employees = htmlspecialchars($_POST["can_access_employees"]);
-
-      if (!isset($function_name) || !isset($can_access_orders) || !isset($can_access_relations) || !isset($can_access_articles) || !isset($can_access_employees)) {
-        $error_message = "All fields are required";
-        echo $error_message;
+  public static function editAccessibility()
+  {
+      global $connection;
+  
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+          $function_name = htmlspecialchars($_POST["function_name"]);
+          $can_access_orders = isset($_POST["can_access_orders"]) ? 1 : 0;
+          $can_access_relations = isset($_POST["can_access_relations"]) ? 1 : 0;
+          $can_access_articles = isset($_POST["can_access_articles"]) ? 1 : 0;
+          $can_access_employees = isset($_POST["can_access_employees"]) ? 1 : 0;
+  
+          if (empty($function_name)) {
+              $error_message = "Function name is required";
+              echo $error_message;
+              exit;
+          }
+  
+          try {
+              // Prepare SQL query to update the record
+              $sql = "UPDATE `accessibilities` SET `can_acces_orders`=?, `can_acces_relations`=?, `can_acces_articles`=?, `can_acces_employees`=? WHERE `function_name`=?";
+  
+              // Prepare the update statement
+              $stmt = $connection->prepare($sql);
+              $stmt->bind_param("iiiss", $can_access_orders, $can_access_relations, $can_access_articles, $can_access_employees, $function_name);
+  
+              // Execute the update statement
+              if ($stmt->execute()) {
+                  // Add logfile record
+                  $action = "edit";
+                  $object_type = "Accessibility";
+                  LogfileHandler::addLogfileRecord($action, $object_type, $function_name, "edit Accessibility");
+  
+                  // Redirect back to the accessibilities page with success message
+                  header("Location: GUI_Accessibilities.php?action=edit&status=success&accessibility=$function_name");
+                  exit();
+              } else {
+                  // Handle query execution error
+                  echo "Error updating accessibility: " . $stmt->error;
+              }
+          } catch (mysqli_sql_exception $e) {
+              // Handle the exception and display the error message
+              $error_message = "Error updating accessibility: " . $e->getMessage();
+              echo $error_message;
+          }
       }
-
-      try {
-        $sql = "UPDATE `accessibilities` SET `function_name`='$function_name',`can_acces_orders`='$can_access_orders',`can_acces_relations`='$can_access_relations',`can_acces_articles`='$can_access_articles',`can_acces_employees`='$can_access_employees' WHERE `function_name` = '$function_name'";
-        mysqli_query($connection, $sql);
-
-        $action = "edit";
-        $object_type = "Accessibility";
-        LogfileHandler::addLogfileRecord($action, $object_type, $function_name, "edit Accessibility");
-
-      } catch(mysqli_sql_exception $e){
-        $error_message = "Invalid query: " . $e;
-        echo $error_message;
-      }
-
-      header("location: GUI_accessibilities.php?action=edit&status=succes&accessibility=$function_name");
-      exit;
-    
-      } while(false);
-
-    }
+  }
+  
+  
+  
+  
   
 
     public static function deleteAccessibility() {
