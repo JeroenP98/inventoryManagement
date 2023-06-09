@@ -1,5 +1,5 @@
 <?php 
-session_start();
+//session_start();
 $page_name = "Home | Greenhome";
 require_once "../include/header.php"; 
 

@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 $page_name = "Cart | GreenHome";
 require_once "../include/header.php";
 require_once './UpdateCartController.php';

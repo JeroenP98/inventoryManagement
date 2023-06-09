@@ -340,6 +340,7 @@ footer {
 /* Contact page styling */
 
 .contact_container {
+    margin-top: 5rem !important; 
     width: 100vw;
     margin: 0 auto;
     display: flex;
@@ -394,7 +395,7 @@ footer {
     .contact_links_top h1 {
         font-weight: normal;
         font-size: 2rem;
-        margin-top: 10vw;
+        margin-top: 5vw;
         color: white;
     }
 
@@ -416,7 +417,7 @@ footer {
     color: #fff;
     padding: 10px 0;
     justify-self: flex-start;
-    margin-top: 7rem;
+    margin-top: 5vw;
 }
 
     .contact_rechts_top h1 {
@@ -650,4 +651,9 @@ iframe {
     text-align: center;
     font-family: inter, sans-serif;
     overflow-wrap: anywhere;
+}
+
+.dropdown-taal-menu {
+    left: auto !important;
+    right: 0px !important;
 }

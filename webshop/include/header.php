@@ -1,4 +1,37 @@
+<?php
+session_start();
 
+// translation.php
+function translate($key) {
+    if (!isset($_GET['lang'])) {
+        if (empty($_SESSION['language'])) {
+            $_SESSION['language'] = "nl";
+        }
+    }
+    $language = $_SESSION['language']; 
+    $translations = include('translations/' . $language . '.php');
+    return $translations[$key] ?? $key;
+}
+
+if (isset($_GET['lang'])) {
+    $allowedLanguages = array("en", "nl", "de");
+    $userLanguage = $_GET['lang'];
+
+    if (in_array($userLanguage, $allowedLanguages)) {
+        $_SESSION['language'] = $userLanguage;
+        header("Location: ".$_SERVER['PHP_SELF']);
+        exit();
+    } else {
+        echo "Gekozen taal is niet beschikbaar";
+        // Additional error handling if desired
+    }
+}
+
+$language = $_SESSION['language'] ?? 'nl';
+$translations = include('translations/' . $language . '.php');
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="en" class="h-100" data-bs-theme="light">
@@ -34,22 +67,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <?php 
 
-
-
-     // translation.php
-    function translate($key) {
-        if (!isset($_GET['lang'])) {
-            $_SESSION['language'] = "nl";
-        }
-        $language = $_SESSION['language']; 
-        $translations = include('translations/' . $language . '.php');
-        return $translations[$key] ?? $key; 
-
-    }
-
-    ?>
 
 </head>
 
@@ -114,7 +132,7 @@
             </ul>
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <?php 
+            <?php
             if (isset($_GET['lang'])) {
                 $allowedLanguages = array("en", "nl", "de");
                 $userLanguage = $_GET['lang'];
@@ -133,7 +151,7 @@
             }
              ?>
           </button>
-          <div class="dropdown-menu language-selector" aria-labelledby="languageDropdown">
+          <div class="dropdown-menu language-selector dropdown-taal-menu" aria-labelledby="languageDropdown">
             <a class="dropdown-item" href="?lang=nl"> <i class="flag flag-netherlands"></i> Nederlands</a>
             <a class="dropdown-item" href="?lang=en"> <i class="flag flag-united-kingdom"></i> English </a>
             <a class="dropdown-item" href="?lang=de"><i class="flag flag-germany"></i> Deutsch</a>
@@ -147,3 +165,4 @@
 
     
     <!-- Nav end -->
+

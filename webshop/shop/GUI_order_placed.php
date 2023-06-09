@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 $page_name = "Order confirmation | GreenHome";
 require_once "../include/header.php";
 require_once "../../php/include/db_connect.php";

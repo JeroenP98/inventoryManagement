@@ -64,7 +64,7 @@
     'Over ons' => '&#252;ber uns',
     'Contact' => 'Kontakt',
     'Naam' => 'Name',
-    'E-mail adres' => 'EMail addresse',
+    'E-mail adres' => 'Email addresse',
     'Jouw bericht' => 'Ihre nachricht',
 
 ];
