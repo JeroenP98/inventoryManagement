@@ -1,6 +1,6 @@
 <?php
 
-  session_start();
+  //session_start();
   $page_name = "Shop | GreenHome";
   require_once "../include/header.php";
   require_once "../../php/include/db_connect.php";
@@ -78,7 +78,7 @@
 ?>
 <!-- Page content -->
 <div class="container">
-  <h2 class="text-center fw-bold">Artikelen</h2>
+  <h2 class="text-center fw-bold"><?php echo translate('Artikelen')?></h2>
   <div class="row justify-content-center">
   <!-- article search -->
   <div class="col-md-9 mt-5">
@@ -86,9 +86,9 @@
       <div class="input-group mb-3">
         <div class="form-floating">
           <input type="text" class="form-control" name="search_input" id="search_input" placeholder="Zoek een artikel" aria-label="Search term">
-          <label for="search_input">Zoek een artikel</label>
+          <label for="search_input"><?php echo translate('Zoek een artikel')?></label>
         </div>
-        <button class="btn btn-primary" type="submit">Zoek</button>
+        <button class="btn btn-primary" type="submit"><?php echo translate('Zoek')?></button>
       </div>
       <?php
         if (isset($_GET['search_input'])) {
@@ -136,21 +136,21 @@
         <div class="card-body mt-auto">
           <h5 class="card-title"><?=$row['article_name']?></h5>
           <p class="card-text">€<?=$row['selling_price']?></p>
-          <p class="card-text">Stock status: <?php if($row['stock_level'] >= 1):?>
-          <span class="text-success">In stock</span></p>
+          <p class="card-text"><?php echo translate('Stock status: ')?><?php if($row['stock_level'] >= 1):?>
+          <span class="text-success"><?php echo translate('In stock')?></span></p>
           <?php else:?>
-          <span class="text-danger">Out of stock</span></p>
+          <span class="text-danger"><?php echo translate('Out of stock')?></span></p>
           <?php endif; ?>
         </div>
         <div class="card-footer d-flex justify-content-center">
           <form method="POST" class="form-control">
             <div class="input-group">
-              <span class="input-group-text">Pieces</span>
+              <span class="input-group-text"><?php echo translate('Pieces')?></span>
               <input type="number" step="1" class="form-control" name="quantity" min="1" required>
                 <?php if($row['stock_level'] <= 0):?>
-                <button type="submit" class="btn btn-secondary disabled form-control">Add</button>
+                <button type="submit" class="btn btn-secondary disabled form-control"><?php echo translate('Add')?></button>
                 <?php else: ?>
-                <button type="submit" class="btn btn-success form-control">Add</button>
+                <button type="submit" class="btn btn-success form-control"><?php echo translate('Add')?></button>
                 <?php endif; ?>
             </div>
             <input type="hidden" name="action" value="add">
@@ -180,7 +180,7 @@
   <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
       <?php if ($current_page > 1): ?>
-        <li class="page-item"><a class="page-link" href="?page=<?= $current_page - 1 ?>">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="?page=<?= $current_page - 1 ?>"><?php echo translate('Previous')?></a></li>
       <?php endif; ?>
       <?php 
         $start_page = max(1, $current_page - 5);
@@ -192,7 +192,7 @@
         </li>
       <?php endfor; ?>
       <?php if ($current_page < $total_pages): ?>
-        <li class="page-item"><a class="page-link" href="?page=<?= $current_page + 1 ?>">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page=<?= $current_page + 1 ?>"><?php echo translate('Next')?></a></li>
       <?php endif; ?>
     </ul>
   </nav>
