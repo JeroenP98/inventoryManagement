@@ -34,7 +34,7 @@ $translations = include('translations/' . $language . '.php');
 ?>
 
 <!DOCTYPE html>
-<html lang="en" class="h-100" data-bs-theme="light">
+<html lang="<?=$_SESSION['language']?>" class="h-100" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -103,6 +103,33 @@ $translations = include('translations/' . $language . '.php');
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
+              <div class="dropdown mx-3">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <?php
+                  if (isset($_GET['lang'])) {
+                      $allowedLanguages = array("en", "nl", "de");
+                      $userLanguage = $_GET['lang'];
+      
+                      if (in_array($userLanguage, $allowedLanguages)) {
+                          $_SESSION['language'] = $userLanguage;
+                          echo $_SESSION['language'] ?? 'Language';
+                      } else {
+                          echo "Gekozen taal is niet beschikbaar";
+                          // Additional error handling if desired
+                      }
+                  }
+                  else {
+                      //$_SESSION['language'] = "nl"; // default taal nederlands
+                      echo $_SESSION['language'] ?? 'Language';
+                  }
+                   ?>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="?lang=nl">Nederlands</a></li>
+                  <li><a class="dropdown-item" href="?lang=en">English</a></li>
+                  <li><a class="dropdown-item" href="?lang=de">Deutsch</a></li>
+                </ul>
+              </div>
                 <!-- shoppingcart -->
                 <a class="navIcon shopIcon nav-item collection present-on-mobile" href="../shop/GUI_cart.php"
                     aria-label="Link naar het winkelmandje">
@@ -130,36 +157,7 @@ $translations = include('translations/' . $language . '.php');
                         aria-label="Link naar het gebruikersprofiel"><?php echo translate('PROFIEL')?></a>
                 </li>
             </ul>
-        <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <?php
-            if (isset($_GET['lang'])) {
-                $allowedLanguages = array("en", "nl", "de");
-                $userLanguage = $_GET['lang'];
-
-                if (in_array($userLanguage, $allowedLanguages)) {
-                    $_SESSION['language'] = $userLanguage;
-                    echo $_SESSION['language'] ?? 'Language';
-                } else {
-                    echo "Gekozen taal is niet beschikbaar";
-                    // Additional error handling if desired
-                }
-            }
-            else {
-                //$_SESSION['language'] = "nl"; // default taal nederlands
-                echo $_SESSION['language'] ?? 'Language';
-            }
-             ?>
-          </button>
-          <div class="dropdown-menu language-selector dropdown-taal-menu" aria-labelledby="languageDropdown">
-            <a class="dropdown-item" href="?lang=nl"> <i class="flag flag-netherlands"></i> Nederlands</a>
-            <a class="dropdown-item" href="?lang=en"> <i class="flag flag-united-kingdom"></i> English </a>
-            <a class="dropdown-item" href="?lang=de"><i class="flag flag-germany"></i> Deutsch</a>
-          </div>
         </div>
-        </div>
-
-
     </nav>
 
 
