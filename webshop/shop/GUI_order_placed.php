@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 $page_name = "Order confirmation | GreenHome";
 require_once "../include/header.php";
 require_once "../../php/include/db_connect.php";
@@ -12,8 +12,14 @@ $order_id = $_GET['order_id'];
 
 <main>
   <div class="container justify-content-center">
-    <div class="row">
+    <div class="row justify-content-center">
       <h1 class="fw-bold text-center mb-5">Bestelling geplaatst!</h1>
+      <?php if(isset($_GET['error'])):?>
+        <div class="alert alert-warning alert-dismissible fade show col-6 justify-content-center" role="alert">
+          <p><strong>Oops!</strong> Je bestelling is geplaats maar we konden je bevestigings-email niet versturen</p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <?php endif?>
     </div>
     <div class="row text-center">
       <h5 class="mb-5 text-black">
@@ -68,7 +74,7 @@ $order_id = $_GET['order_id'];
         <?php 
           
           // get order data
-          $sql = "SELECT articles.name AS 'article_name', order_lines.quantity AS 'quantity', articles.selling_price AS 'selling_price'
+          $sql = "SELECT articles.name AS 'article_name', order_lines.quantity AS 'quantity', articles.selling_price AS 'selling_price', articles.image_data AS 'article_image', articles.image_mime AS 'image_mime'
           FROM order_lines
           JOIN articles
             ON articles.id = order_lines.article_id
@@ -79,7 +85,13 @@ $order_id = $_GET['order_id'];
           
           while($row = $result->fetch_assoc()): ?>
             <tr>
-              <td><img src="../../php/articles/article_images/product2.png" class="img-thumbnail" alt="Item image" style="width: 120px; height: 120px;"></td>
+              <td>
+                <?php if(!empty($row['article_image'])):?>
+                  <img src="data: <?=$row['image_mime']?>;base64, <?= base64_encode($row['article_image'])?>" class="img-thumbnail" alt="Item image" style="width: 120px; height: 120px;">
+                <?php else: ?>
+                  <img class="p-4 object-fit-cover" width="300px" height="300px" src="../../images/No-Image-Placeholder.svg.png" alt="No Image">
+                <?php endif; ?>
+              </td>
               <td><?=$row['article_name']?></td>
               <td><?=$row['quantity']?></td>
               <td>€<?=$row['quantity'] * $row['selling_price']?></td>

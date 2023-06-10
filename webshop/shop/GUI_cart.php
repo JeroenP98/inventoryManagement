@@ -1,17 +1,24 @@
 <?php
-session_start();
+//session_start();
 $page_name = "Cart | GreenHome";
 require_once "../include/header.php";
-?>
+require_once './UpdateCartController.php';
 
+
+
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+  $cart = new UpdateCartController;
+}
+
+?>
 <main>
   <div class="container justify-content-center">
     <div class="row">
-      <h1 class="fw-bold">Winkelwagen & verzend details</h1>
+      <h1 class="fw-bold"><?php echo translate('Winkelwagen & verzend details')?></h1>
       <hr>
       <?php if(isset($_GET['error_message'])):?>
         <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
-          <p><strong>Oeps!</strong> <?=$_GET['error_message']?></p>
+          <p><strong><?php echo translate('Oeps!')?></strong> <?=$_GET['error_message']?></p>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
       <?php endif; ?>
@@ -19,7 +26,7 @@ require_once "../include/header.php";
     <div class="row">
       <div class="col-md-5 col-lg-4 order-md-last">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-primary">Winkelwagen</span>
+          <span class="text-primary"><?php echo translate('Winkelwagen')?></span>
           <span class="badge bg-success rounded-pill">
             <?php 
             // calculate and show how many unique items are in the cart
@@ -39,7 +46,7 @@ require_once "../include/header.php";
               <h6 class="my-0"><?=$cart_item['article_name']?></h6>
             </div>
             <div class="d-flex">
-              <form action="update_cart.php" method="POST">
+              <form method="POST">
                 <input type="hidden" name="action" value="decrease">
                 <input type="hidden" name="key" value="<?=$key?>">
                 <button class="badge btn bg-secondary rounded-pill decrease-quantity" type="submit">
@@ -49,7 +56,7 @@ require_once "../include/header.php";
                 </button>
               </form>
               <span class="badge bg-primary rounded-pill quantity mx-1" data-cart-item-id="<?=$key?>"><?=$cart_item['quantity']?>x</span>
-              <form action="update_cart.php" method="POST">
+              <form method="POST">
                 <input type="hidden" name="action" value="increase">
                 <input type="hidden" name="key" value="<?=$key?>">
                 <button class="badge btn bg-secondary rounded-pill decrease-quantity" type="submit">
@@ -60,7 +67,7 @@ require_once "../include/header.php";
               </form>
 
             </div>
-            <form action="update_cart.php" method="POST">
+            <form method="POST">
               <input type="hidden" name="action" value="delete">
               <input type="hidden" name="key" value="<?=$key?>">
               <button class="btn px-2 align-items-center delete-item" type="submit">
@@ -76,7 +83,7 @@ require_once "../include/header.php";
           }} else {?>
           <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
-              <h6 class="my-0">Je winkelwagen is leeg!</h6>
+              <h6 class="my-0"><?php echo translate('Je winkelwagen is leeg!')?></h6>
             </div>
           </li>
 
@@ -90,7 +97,7 @@ require_once "../include/header.php";
         <ul class="list-group">
           <li class="list-group-item fw-bold">
           <h4 class="d-flex justify-content-between" id="cart-total">
-            <span class="text-primary">Totaal:</span>
+            <span class="text-primary"><?php echo translate('Totaal:')?></span>
             €<?php 
             $cart_total = 0;
             foreach($cart as $cart_item){
@@ -103,7 +110,7 @@ require_once "../include/header.php";
         <?php endif; ?>
       </div>
       <div class="col-md-7 col-lg-8">
-        <h4 class="mb-3">Verzend details</h4>
+        <h4 class="mb-3"><?php echo translate('Verzend details')?></h4>
         <form class="needs-validation" method="POST" action="controller_checkout.php">
           <?php 
           
@@ -114,39 +121,39 @@ require_once "../include/header.php";
           <div class="row g-3">
 
             <div class="col-sm-6">
-              <label for="first_name" class="form-label">Voornaam</label>
+              <label for="first_name" class="form-label"><?php echo translate('Voornaam')?></label>
               <input type="text" class="form-control" id="first_name"  name="first_name" required>
             </div>
 
             <div class="col-sm-6">
-              <label for="last_name" class="form-label">Achternaam</label>
+              <label for="last_name" class="form-label"><?php echo translate('Achternaam')?></label>
               <input type="text" class="form-control" id="last_name" name="last_name" required>
             </div>
 
             <div class="col-7">
-              <label for="email_adress" class="form-label">Email</label>
+              <label for="email_adress" class="form-label"><?php echo translate('Email')?></label>
               <input type="email" class="form-control" id="email_adress" name="email_adress" required>
             </div>
 
             <div class="col-5">
-              <label for="phone_number" class="form-label">Telefoon</label>
+              <label for="phone_number" class="form-label"><?php echo translate('Telefoon')?></label>
               <input type="text" class="form-control" id="phone_number" name="phone_number" required>
             </div>
 
             <div class="col-8">
-              <label for="street" class="form-label">Straat</label>
+              <label for="street" class="form-label"><?php echo translate('Straat')?></label>
               <input type="text" class="form-control" id="street" name="street" required>
             </div>
 
             <div class="col-4">
-              <label for="house_nr" class="form-label">Huisnummer</label>
+              <label for="house_nr" class="form-label"><?php echo translate('Huisnummer')?></label>
               <input type="text" class="form-control" id="house_nr" name="house_nr" required>
             </div>
 
             <div class="col-md-5">
-              <label for="country_code" class="form-label">Land</label>
+              <label for="country_code" class="form-label"><?php echo translate('Land')?></label>
               <select class="form-control" id="country_code" name="country_code" required>
-                <option value="" disabled selected>Select a country</option>
+                <option value="" disabled selected><?php echo translate('Select a country')?></option>
               </select>
             </div>
 
@@ -175,30 +182,26 @@ require_once "../include/header.php";
 
 
             <div class="col-md-4">
-              <label for="city" class="form-label">Stad</label>
+              <label for="city" class="form-label"><?php echo translate('Stad')?></label>
               <input type="text" class="form-control" id="city"  name="city" required>
             </div>
 
             <div class="col-md-3">
-              <label for="zip_code" class="form-label">Postcode</label>
+              <label for="zip_code" class="form-label"><?php echo translate('Postcode')?></label>
               <input type="text" class="form-control" id="zip_code" name="zip_code" required>
             </div>
           </div>
           <hr class="my-4">
 
-          <button class="w-100 btn btn-primary btn-lg" type="submit">Place order</button>
+          <button class="w-100 btn btn-primary btn-lg" id="checkout-button" type="submit"><?php echo translate('Place order')?></button>
           <?php 
           // close the fieldset tag when the cart is empty
           if(empty($_SESSION['cart'])):?>
           </fieldset>
-          <?php endif; ?>
-
-
-      
+          <?php endif; ?>    
         </form>
       </div>
     </div>
-
   </div>
 </main>
 <?php require_once "../include/footer.php";?>

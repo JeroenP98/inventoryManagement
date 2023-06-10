@@ -47,6 +47,7 @@ require_once '../include/db_connect.php';
           <li class="nav-item"><a href="../companies/GUI_companies.php" class="nav-link">Companies</a></li>
           <li class="nav-item"><a href="../accessibilities/GUI_accessibilities.php" class="nav-link">Accessibility</a></li>
           <li class="nav-item"><a href="../functions/GUI_functions.php" class="nav-link">Functions</a></li>
+          <li class="nav-item "><a  href="../searchesNotFound/GUI_searchesNotFound.php" class="nav-link">Searches</a></li>
         </ul>
         <?php
           //either display the users first name when logged in or give the option to log themselves in
@@ -239,10 +240,6 @@ require_once '../include/db_connect.php';
 
     <!-- Actions bar-->
     <div class="d-flex align-items-center mb-5">
-      <div class="input-group my-3 me-3">
-        <span class="input-group-text" id="tableSearchBar">DOES NOT WORK</span>
-        <input type="text" class="form-control" id="searchInput" placeholder="Article name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
-      </div>
       <a href="../include/exportData.php?report=exportOrders&type=incoming" class="btn btn-success my-3">Export</a>
       <div class="container d-flex align-items-center justify-content-end my-3 me-3">
         <form method="get">

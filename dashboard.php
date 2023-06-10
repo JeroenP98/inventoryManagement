@@ -32,7 +32,7 @@ require_once 'php/include/db_connect.php';
   <header class="p-3 mb-3 border-bottom">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="../../POC greenhome/dashboard.php" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none me-5">
+        <a href="webshop/index/index.php" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none me-5">
           <img src="images/logo.png" alt="company logo" srcset="" width="40" height="40">
         </a>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-cßenter mb-md-0 nav-pills">
@@ -51,6 +51,7 @@ require_once 'php/include/db_connect.php';
           <li class="nav-item"><a  href="php/companies/GUI_companies.php" class="nav-link">Companies</a></li>
           <li class="nav-item "><a  href="php/accessibilities/GUI_accessibilities.php" class="nav-link">Accesibility</a></li>
           <li class="nav-item "><a  href="php/functions/GUI_functions.php" class="nav-link">Functions</a></li>
+          <li class="nav-item "><a  href="php/searchesNotFound/GUI_searchesNotFound.php" class="nav-link">Searches</a></li>
         </ul>
         <?php
           //either display the users first name when logged in or give the option to log themselves in

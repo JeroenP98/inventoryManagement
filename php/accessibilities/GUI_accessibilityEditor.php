@@ -91,7 +91,8 @@ $can_access_employees = $row["can_acces_employees"];
           </li>
           <li class="nav-item"><a href="../users/GUI_users.php" class="nav-link" aria-current="page">Users</a></li>
           <li class="nav-item "><a class="nav-link active" href="../accessibilities/GUI_accessibilities.php">Accessibility</a></li>
-          <li class="nav-item "><a class="nav-link" href="../functions/GUI_functions.php"">Functions</a></li>
+          <li class="nav-item "><a class="nav-link" href="../functions/GUI_functions.php">Functions</a></li>
+                    <li class="nav-item "><a  href="../searchesNotFound/GUI_searchesNotFound.php" class="nav-link">Searches</a></li>
         </ul>
 
         <?php
@@ -135,50 +136,47 @@ $can_access_employees = $row["can_acces_employees"];
       ?>
 
 <form method="POST" action="controller_accessibilities.php?action=edit">
-        <input type="hidden" value="<?php echo $function_name; ?>" name="function_name">
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Function name</label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="name" value="<?php echo $name; //show the current value of the db record?>" required>
-          </div>
+    <input type="hidden" value="<?php echo $function_name; ?>" name="function_name">
+    <div class="row mb-3">
+        <label class="col-form-label col-sm-3">Function name</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" name="function_name" value="<?php echo $function_name; //show the current value of the db record?>" required readonly>
         </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Can access orders</label>
-          <div class="col-sm-9">
-            <input type="hidden" name="can_access_orders" value="0">
+    </div>
+    <div class="row mb-3">
+        <label class="col-form-label col-sm-3">Can access orders</label>
+        <div class="col-sm-9">
             <input type="checkbox" name="can_access_orders" value="1" <?php if($can_access_orders == 1) echo "checked"; ?>>
-          </div>
         </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Can access relations</label>
-          <div class="col-sm-9">
-            <input type="hidden" name="can_access_relations" value="0">
+    </div>
+    <div class="row mb-3">
+        <label class="col-form-label col-sm-3">Can access relations</label>
+        <div class="col-sm-9">
             <input type="checkbox" name="can_access_relations" value="1" <?php if($can_access_relations == 1) echo "checked"; ?>>
-          </div>
         </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Can access articles</label>
-          <div class="col-sm-9">
-            <input type="hidden" name="can_access_articles" value="0">
+    </div>
+    <div class="row mb-3">
+        <label class="col-form-label col-sm-3">Can access articles</label>
+        <div class="col-sm-9">
             <input type="checkbox" name="can_access_articles" value="1" <?php if($can_access_articles == 1) echo "checked"; ?>>
-          </div>
         </div>
-        <div class="row mb-3">
-          <label class="col-form-label col-sm-3">Can access employees</label>
-          <div class="col-sm-9">
-            <input type="hidden" name="" value="0">
+    </div>
+    <div class="row mb-3">
+        <label class="col-form-label col-sm-3">Can access employees</label>
+        <div class="col-sm-9">
             <input type="checkbox" name="can_access_employees" value="1" <?php if($can_access_employees == 1) echo "checked"; ?>>
-          </div>
         </div>
-        <div class="row mb-3">
-          <div class="offset-sm-3 col-sm-3 d-grid">
+    </div>
+
+    <div class="row mb-3">
+        <div class="offset-sm-3 col-sm-3 d-grid">
             <button type="submit" class="btn btn-primary">Submit</button>
-          </div>
-          <div class="col-sm-3 d-grid">
-            <a href="GUI_accessibilities.php" class="btn btn-outline-danger" role="button">Cancel</a>
-          </div>
         </div>
-      </form>
+        <div class="col-sm-3 d-grid">
+            <a href="GUI_accessibilities.php" class="btn btn-outline-danger" role="button">Cancel</a>
+        </div>
+    </div>
+</form>
     </div>
   </body>
   <?php 
