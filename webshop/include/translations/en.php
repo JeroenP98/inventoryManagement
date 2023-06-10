@@ -66,6 +66,7 @@
     'Naam' => 'Name',
     'E-mail adres' => 'E-mail address',
     'Jouw bericht' => 'Your message',
+    'Verzend details' => 'Shipment details',
 ];
     ?>
 
