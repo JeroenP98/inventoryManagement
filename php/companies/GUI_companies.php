@@ -11,7 +11,7 @@ require_once '../include/db_connect.php';
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,7 +24,7 @@ require_once '../include/db_connect.php';
   <link rel="shortcut icon" href="../../images/logo.png">
   <title>Companies | GreenHome</title>
 </head>
-<body>
+<body class="d-flex flex-column h-100">
   <header class="p-3 mb-3 border-bottom">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -48,6 +48,7 @@ require_once '../include/db_connect.php';
           <li class="nav-item "><a class="nav-link active" href="../companies/GUI_companies.php">Companies</a></li>
           <li class="nav-item "><a class="nav-link " href="../accessibilities/GUI_accessibilities.php">Accessibility</a></li>
           <li class="nav-item "><a class="nav-link" href="../functions/GUI_functions.php">Functions</a></li>
+          <li class="nav-item "><a  href="../searchesNotFound/GUI_searchesNotFound.php" class="nav-link">Searches</a></li>
         </ul>
 
         <?php
@@ -164,7 +165,7 @@ require_once '../include/db_connect.php';
   </div>
   <!-- end new company modal-->
 
-  <div class="container">
+  <div class="container mb-5">
     <h1>Companies</h1>
     <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#newCompanyModal'>Add new</button>
 
@@ -189,15 +190,7 @@ require_once '../include/db_connect.php';
 
 
   <div class="container">
-    <!-- Search bar-->
-    <div class="d-flex nowrap align-items-center">
-      <div class="input-group my-3 me-3">
-        <span class="input-group-text" id="tableSearchBar">Search for company</span>
-        <input type="text" class="form-control" id="searchInput" placeholder="Company name..." aria-label="articlename" aria-describedby="tableSearchBar" onkeyup="tableSearch()">
-      </div>
-      <a href="../include/exportData.php?report=exportCompany" class="btn btn-success my-3">Export</a>
-    </div>
-    <!-- End search bar-->
+
     <table class="table table-striped table-sm" id="table">
       <thead>
         <tr>

@@ -1,5 +1,40 @@
+<?php
+session_start();
+
+// translation.php
+function translate($key) {
+    if (!isset($_GET['lang'])) {
+        if (empty($_SESSION['language'])) {
+            $_SESSION['language'] = "nl";
+        }
+    }
+    $language = $_SESSION['language']; 
+    $translations = include('translations/' . $language . '.php');
+    return $translations[$key] ?? $key;
+}
+
+if (isset($_GET['lang'])) {
+    $allowedLanguages = array("en", "nl", "de");
+    $userLanguage = $_GET['lang'];
+
+    if (in_array($userLanguage, $allowedLanguages)) {
+        $_SESSION['language'] = $userLanguage;
+        header("Location: ".$_SERVER['PHP_SELF']);
+        exit();
+    } else {
+        echo "Gekozen taal is niet beschikbaar";
+        // Additional error handling if desired
+    }
+}
+
+$language = $_SESSION['language'] ?? 'nl';
+$translations = include('translations/' . $language . '.php');
+
+
+?>
+
 <!DOCTYPE html>
-<html lang="en" class="h-100" data-bs-theme="light">
+<html lang="<?=$_SESSION['language']?>" class="h-100" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -26,18 +61,25 @@
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
     <script defer src="../js/mapbox_API.js"></script>
     -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 
-    
+
 
 </head>
 
 <body class="d-flex flex-column h-100">
+
+
     <!-- Nav begin -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
         <a class="navbar-brand" href="../index/Index.php">
             <img src="../images/logo-green.svg" width="30" height="30" class="d-inline-block align-top" alt="">
         </a>
+        <i class="flag flag-united-states"></i>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -45,22 +87,49 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="../collectie/GUI_collectie.php">COLLECTIE <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="../index/Index.php"><?php echo translate('COLLECTIE')?> <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../shop/GUI_shop.php">SHOP <span class="sr-only"></span></a>
+                    <a class="nav-link" href="../shop/GUI_shop.php"><?php echo translate('SHOP')?> <span class="sr-only"></span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../duurzaamheid/GUI_duurzaamheid.php">DUURZAAMHEID</a>
+                    <a class="nav-link" href="../duurzaamheid/GUI_duurzaamheid.php"><?php echo translate('DUURZAAMHEID')?></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../over ons/GUI_over_ons.php">OVER ONS</a>
+                    <a class="nav-link" href="../over ons/GUI_over_ons.php"><?php echo translate('OVER ONS')?></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../contact/GUI_contact.php">CONTACT</a>
+                    <a class="nav-link" href="../contact/GUI_contact.php"><?php echo translate('CONTACT')?></a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
+              <div class="dropdown mx-3">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <?php
+                  if (isset($_GET['lang'])) {
+                      $allowedLanguages = array("en", "nl", "de");
+                      $userLanguage = $_GET['lang'];
+      
+                      if (in_array($userLanguage, $allowedLanguages)) {
+                          $_SESSION['language'] = $userLanguage;
+                          echo $_SESSION['language'] ?? 'Language';
+                      } else {
+                          echo "Gekozen taal is niet beschikbaar";
+                          // Additional error handling if desired
+                      }
+                  }
+                  else {
+                      //$_SESSION['language'] = "nl"; // default taal nederlands
+                      echo $_SESSION['language'] ?? 'Language';
+                  }
+                   ?>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="?lang=nl">Nederlands</a></li>
+                  <li><a class="dropdown-item" href="?lang=en">English</a></li>
+                  <li><a class="dropdown-item" href="?lang=de">Deutsch</a></li>
+                </ul>
+              </div>
                 <!-- shoppingcart -->
                 <a class="navIcon shopIcon nav-item collection present-on-mobile" href="../shop/GUI_cart.php"
                     aria-label="Link naar het winkelmandje">
@@ -71,7 +140,7 @@
                     </svg>
                 </a>
                 <!-- user profile -->
-                <a class="navIcon userIcon nav-item collection present-on-mobile" href="../profiel/GUI_profiel.php"
+                <a class="navIcon userIcon nav-item collection present-on-mobile" href="../../dashboard.php"
                     aria-label="Link naar het gebruikersprofiel">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="navitem user-icon">
@@ -81,13 +150,17 @@
                 </a>
                 <li class="nav-item hidden-on-mobile">
                     <a id="iconText-shop" class="iconText navitem collection nav-link" href="../shop/GUI_cart.php"
-                        aria-label="Link naar het winkelmandje">WINKELWAGEN</a>
+                        aria-label="Link naar het winkelmandje"><?php echo translate('WINKELWAGEN')?></a>
                 </li>
                 <li class="nav-item hidden-on-mobile">
                     <a id="iconText-user" class="iconText navitem collection nav-link" href="../profiel/GUI_profiel.php"
-                        aria-label="Link naar het gebruikersprofiel">PROFIEL</a>
+                        aria-label="Link naar het gebruikersprofiel"><?php echo translate('PROFIEL')?></a>
                 </li>
             </ul>
         </div>
     </nav>
+
+
+    
     <!-- Nav end -->
+

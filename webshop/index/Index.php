@@ -1,4 +1,5 @@
 <?php 
+//session_start();
 $page_name = "Home | Greenhome";
 require_once "../include/header.php"; 
 
@@ -14,9 +15,9 @@ require_once "../include/header.php";
             </div>
             <div class="col-6 indexGrid ">
                 <div class="grid_item_2 text-center">
-                    <h1>GreenHome</h1>
-                    <h2>Furniture with an eco friendly origin</h2>
-                    <a href="../collectie/GUI_collectie.php"><button class="btn btn-lg btn-primary">Discover</button></a>
+                    <h1><?php echo translate('GreenHome')?></h1>
+                    <h2><?php echo translate('Furniture with an eco friendly origin')?></h2>
+                    <a href="../shop/GUI_shop.php"><button class="btn btn-lg btn-primary"><?php echo translate('Discover')?></button></a>
                 </div>
             </div>
         </div>
@@ -28,8 +29,8 @@ require_once "../include/header.php";
 <div class="container">
     <div class="row">
         <div class="col-4 d-flex flex-column justify-content-center align-items-center">
-            <h1>Een impactvolle manier van wonen</h1>
-            <p class="indexText">Stijl je woonkamer met de meest moderne stijlen van dit moment, met een duurzameboventoon</p>
+            <h1><?php echo translate('Een impactvolle manier van wonen')?></h1>
+            <p class="indexText"><?php echo translate('Stijl je woonkamer met de meest moderne stijlen van dit moment, met een duurzameboventoon')?></p>
         </div>
         <div class="col-8">
             <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -71,8 +72,8 @@ require_once "../include/header.php";
         </div>
 
         <div class="col-4 d-flex flex-column justify-content-center align-items-center">
-            <h1>Duurzaamheid voorop</h1>
-            <p class="indexText">Duurzaam ontwikkelde meubelstukken voor de milieubewuste geest</p>
+            <h1><?php echo translate('Duurzaamheid voorop')?></h1>
+            <p class="indexText"><?php echo translate('Duurzaam ontwikkelde meubelstukken voor de milieubewuste geest')?></p>
         </div>
     </div>
 </div>

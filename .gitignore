@@ -1,0 +1,6 @@
+
+# ignore PHPstorm settings
+.idea/
+
+# ignore composer packages
+/vendor/

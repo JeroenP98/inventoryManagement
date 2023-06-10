@@ -1,6 +1,6 @@
 <?php 
 // start sessions su user data gets carried over
-session_start();
+//session_start();
 
 // define the page name for dynamic page name loading in header file
 $page_name = "Collectie | GreenHome";
